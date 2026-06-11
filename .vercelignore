@@ -1,0 +1,5 @@
+# Ignore source files and compiler script from Vercel deployment
+compile_app.py
+src/
+.git
+.gitignore
