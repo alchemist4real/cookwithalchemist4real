@@ -2,11 +2,12 @@ import os
 import re
 
 proj_dir = r"d:\DOWNLOAD\cookwithalchemist4real"
-ch1_path = os.path.join(proj_dir, "ch1_structure.html")
-ch2_path = os.path.join(proj_dir, "ch2_transmutation.html")
-ch3_path = os.path.join(proj_dir, "ch3_ascension.html")
-legacy_path = os.path.join(proj_dir, "legacy_transcript.html")
-warranty_path = os.path.join(proj_dir, "warranty_check.html")
+src_dir = os.path.join(proj_dir, "src")
+ch1_path = os.path.join(src_dir, "ch1_structure.html")
+ch2_path = os.path.join(src_dir, "ch2_transmutation.html")
+ch3_path = os.path.join(src_dir, "ch3_ascension.html")
+legacy_path = os.path.join(src_dir, "legacy_transcript.html")
+warranty_path = os.path.join(src_dir, "warranty_check.html")
 
 output_path = os.path.join(proj_dir, "index.html")
 
