@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ALCHEMIST: CH.02 TRANSMUTATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#FAFAFA',
+                        surface: '#FFFFFF',
+                        border: '#0D0D0D',
+                        accent: '#10b981', 
+                        accentdim: '#a7f3d0',
+                        mist: '#4b5563',
+                        text: '#0D0D0D'
+                    },
+                    fontFamily: {
+                        sans: ['DM Mono', 'monospace'],
+                        mono: ['DM Mono', 'monospace'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    typography: (theme) => ({
+                        DEFAULT: {
+                            css: {
+                                color: '#0D0D0D',
+                                fontFamily: 'DM Mono, monospace',
+                                h1: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
+                                h2: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
+                                h3: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
+                                strong: { color: '#10b981', fontWeight: 'bold' },
+                                blockquote: { borderLeftColor: '#10b981', color: '#4b5563', fontStyle: 'italic' },
+                                code: { color: '#10b981', backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '2px', fontFamily: 'DM Mono, monospace' },
+                            },
+                        },
+                    }),
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #FAFAFA;
+            --fg: #0D0D0D;
+            --accent: #10b981;
+            --fg-faint: #0D0D0D;
+            --radius: 2px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'DM Mono', monospace;
+            position: relative;
+        }
+
+        /* Grain Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: var(--fg);
+        }
+
+        .code-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .code-scroll::-webkit-scrollbar-track { background: #FFFFFF; border-left: 1px solid var(--fg-faint); }
+        .code-scroll::-webkit-scrollbar-thumb { background: var(--accent); border: 1px solid var(--fg-faint); border-radius: var(--radius); }
+
+        /* Neo-Brutalist cards, inputs, and buttons */
+        .neo-card {
+            background: #FFFFFF;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .neo-card-hover:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        .neo-btn {
+            background: var(--accent);
+            color: var(--fg);
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            font-weight: 700;
+            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 2px 2px 0 var(--fg);
+            cursor: pointer;
+        }
+
+        .neo-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 var(--fg);
+            background: #34d399; /* emerald hover */
+        }
+        
+        .neo-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0 var(--fg);
+        }
+
+        .neo-input {
+            background: #FFFFFF;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            color: var(--fg);
+            transition: all 0.15s ease;
+        }
+
+        .neo-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0% {
+                text-shadow: 1px 0.5px 0 rgba(255,0,0,0.2), -1px -0.5px 0 rgba(0,0,255,0.2);
+            }
+            50% {
+                text-shadow: -1px 0.5px 0 rgba(255,0,0,0.2), 1px -0.5px 0 rgba(16,185,129,0.3);
+            }
+            100% {
+                text-shadow: 0.5px -0.5px 0 rgba(16,185,129,0.3), -0.5px 0.5px 0 rgba(0,0,255,0.2);
+            }
+        }
+        .glitch-effect:hover {
+            animation: glitch 0.3s infinite linear;
+        }
+
+        /* Flicker Effect */
+        @keyframes flicker {
+            0%, 19.99%, 22%, 62.99%, 64%, 64.99%, 70%, 100% {
+                opacity: 1;
+            }
+            20%, 21.99%, 63%, 63.99%, 65%, 69.99% {
+                opacity: 0.45;
+            }
+        }
+        .flicker-effect {
+            animation: flicker 5s infinite;
+        }
+
+        /* Reveal Staggered */
+        @keyframes revealUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .reveal-staggered > * {
+            opacity: 0;
+            animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .reveal-staggered > *:nth-child(1) { animation-delay: 80ms; }
+        .reveal-staggered > *:nth-child(2) { animation-delay: 160ms; }
+        .reveal-staggered > *:nth-child(3) { animation-delay: 240ms; }
+        .reveal-staggered > *:nth-child(4) { animation-delay: 320ms; }
+        .reveal-staggered > *:nth-child(5) { animation-delay: 400ms; }
+
+        /* Card Flip details */
+        .card-flip { perspective: 1000px; }
+        .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-style: preserve-3d; }
+        .flip-active .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: var(--radius); border: 1px solid var(--fg-faint); }
+        .card-back { background-color: #a7f3d0; color: var(--fg); transform: rotateY(180deg); }
+        .card-front { background-color: #FFFFFF; color: var(--fg); }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-accent selection:text-black overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-[#FAFAFA] border-b-2 border-[#0D0D0D]">
+        <div class="max-w-3xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-bold tracking-tight text-lg text-[#0d0d0d] flex items-center gap-3">
+                <span class="text-xl border border-[#0d0d0d] px-2 py-0.5 rounded-[2px] font-serif italic text-white bg-[#10b981] shadow-[1px_1px_0_#0D0D0D]">Ta</span>
+                <span class="text-sm tracking-widest font-bold">THE ALCHEMIST</span>
+            </div>
+            <div class="text-[10px] uppercase tracking-[0.2em] text-[#0d0d0d] font-mono hidden md:block border border-[#0d0d0d] px-2 py-1 bg-white shadow-[1px_1px_0_#0d0d0d] rounded-[2px]">
+                Chapter 02: Transmutation
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-24 px-6 md:px-0">
+        <div class="max-w-2xl mx-auto">
+
+            <!-- GATEKEEPER SECTION (LOGIN) -->
+            <section id="gate-section" class="min-h-[60vh] flex flex-col justify-center items-center text-center space-y-8 reveal-staggered">
+                <div class="space-y-4">
+                    <div class="inline-block px-3 py-1 bg-red-100 border border-[#0d0d0d] text-red-600 text-[10px] uppercase tracking-widest font-mono rounded-[2px] shadow-[1px_1px_0_#0d0d0d] flicker-effect">
+                        Security Protocol Active
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-serif font-bold text-[#0D0D0D] glitch-effect cursor-default">
+                        Identifikasi Diperlukan.
+                    </h1>
+                    <p class="text-gray-700 max-w-md mx-auto text-sm leading-relaxed font-mono">
+                        Materi terenkripsi. Masukkan <span class="bg-[#a7f3d0] px-1 border border-[#0d0d0d] font-bold text-[#0D0D0D]">Genesis Key</span> dari Chapter 1 untuk mendekripsi transmisi data ini.
+                    </p>
+                </div>
+
+                <div class="w-full max-w-md space-y-4">
+                    <input type="text" id="genesis-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-white border border-[#0D0D0D] p-4 text-center text-[#0D0D0D] rounded-[2px] transition-all font-mono text-lg uppercase tracking-widest focus:outline-none focus:border-[#10b981] focus:shadow-[2px_2px_0_#0D0D0D]">
+                    <button onclick="unlockGate()" class="w-full bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-8 py-4 font-bold text-sm uppercase tracking-wider rounded-[2px]">
+                        DEKRIPSI & MASUK
+                    </button>
+                    <div id="gate-error" class="bg-red-100 border border-red-500 text-red-700 text-xs font-mono p-3 rounded-[2px] hidden">
+                        Error: Kunci invalid atau data korup.
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-mono">Belum punya kunci? <a href="#" class="text-gray-800 font-bold underline hover:text-[#10b981]">Selesaikan Chapter 1 dulu.</a></p>
+                </div>
+            </section>
+
+            <!-- MAIN CONTENT (Initially Hidden) -->
+            <div id="main-content" class="hidden space-y-24">
+                
+                <!-- Welcome Header -->
+                <header class="space-y-6 border-b border-[#0d0d0d] pb-8">
+                    <div class="flex items-center gap-2 text-[#10b981] font-mono text-xs uppercase tracking-widest font-bold">
+                        <span class="w-2.5 h-2.5 bg-[#10b981] border border-[#0d0d0d] rounded-none animate-pulse"></span>
+                        Akses Diberikan
+                    </div>
+                    <h1 class="text-4xl font-serif font-bold text-[#0D0D0D] glitch-effect">
+                        Selamat Kembali, <span id="user-display-name" class="text-[#10b981] underline decoration-[#0d0d0d] decoration-2 underline-offset-8">User</span>.
+                    </h1>
+                    <p class="text-gray-700 text-base leading-relaxed font-mono">
+                        Di Chapter 1, lo belajar menyusun bata (HTML). Di Chapter 2, kita akan belajar memasang listrik dan otak. Kita akan mengubah halaman statis ini menjadi <strong class="text-white bg-[#0D0D0D] px-1 py-0.5 font-bold">Aplikasi Hidup</strong>.
+                    </p>
+                    <div class="bg-white border border-[#0d0d0d] p-4 rounded-[2px] text-xs font-mono text-[#0D0D0D] flex justify-between shadow-[2px_2px_0_#0d0d0d]">
+                        <span>DATA CH.01:</span>
+                        <span>PRE: <span id="p1-pre" class="font-bold text-[#10b981]">0</span>% | POST: <span id="p1-post" class="font-bold text-[#10b981]">0</span>%</span>
+                    </div>
+                </header>
+
+                <!-- PRE-TEST PART 2 -->
+                <section id="pretest-section" class="bg-white border border-[#0d0d0d] p-8 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                    <div id="pretest-intro">
+                        <h2 class="text-2xl font-serif font-bold text-[#0D0D0D] mb-4">Kalibrasi Lanjutan</h2>
+                        <p class="text-gray-600 mb-6 text-sm font-mono">
+                            Sebelum kita bicara soal API dan Logic, gue perlu cek asumsi lo tentang bagaimana internet bekerja di ranah asinkron dan logika pertukaran data.
+                        </p>
+                        <button onclick="startPreTest()" class="bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-6 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                            MULAI DIAGNOSA LEVEL 2
+                        </button>
+                    </div>
+                    <div id="pretest-container" class="hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-mono text-[#10b981] font-bold border border-[#0d0d0d] px-2 py-1 bg-[#FAFAFA] shadow-[1px_1px_0_#0d0d0d]">PERTANYAAN <span id="pre-q-num">1</span>/5</span>
+                        </div>
+                        <h3 id="pre-q-text" class="text-xl font-serif font-bold text-[#0D0D0D] mb-6 leading-relaxed">?</h3>
+                        <div id="pre-options" class="space-y-3"></div>
+                    </div>
+                </section>
+
+                <!-- MATERI SECTION -->
+                <section id="materi-section" class="opacity-20 blur-sm pointer-events-none transition-all duration-1000 space-y-20">
+                    
+                    <!-- MATERI 1: LOGIC & STATE -->
+                    <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700">
+                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 border-b border-[#0d0d0d] pb-2 glitch-effect">1. Memberi "Ingatan" pada Halaman (State)</h2>
+                        <p class="mb-4">
+                            HTML itu pelupa. Lo refresh, dia reset. Untuk membuat Game, Kuis, atau Flashcard, lo butuh <strong class="text-[#10b981] font-bold">State (Ingatan)</strong>.
+                        </p>
+                        <p>
+                            Bayangkan lo mau bikin Flashcard. Lo butuh HTML untuk kartunya, CSS untuk animasinya, tapi lo butuh <strong class="text-[#0D0D0D] underline decoration-[#10b981] decoration-2">Javascript</strong> untuk mengingat: <em>"Sekarang lagi nampilin kartu depan atau belakang?"</em>
+                        </p>
+                    </div>
+
+                    <!-- MATERI 2: THE INFINITE CANVAS -->
+                    <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700">
+                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 border-b border-[#0d0d0d] pb-2 glitch-effect">2. Anatomi Mesin Digital</h2>
+                        <p class="mb-4">
+                            Single File HTML itu bukan cuma halaman brosur statis. Itu adalah <em>Runtime Environment</em> yang lengkap. Lo bisa bikin aplikasi kompleks tanpa server. Mari kita bedah satu per satu:
+                        </p>
+
+                        <!-- FITUR A: FLASHCARD -->
+                        <div class="border-l-4 border-[#10b981] pl-6 py-2 my-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl mt-0">A. Mesin Flashcard (Hafalan)</h3>
+                            <p class="text-sm my-2 text-gray-600">
+                                <strong>Logika Dasar:</strong> Ada dua lapis konten (Depan/Belakang) dalam satu kotak. Javascript bertugas membalik kelas CSS (misal: `rotate-180`) saat diklik.
+                            </p>
+                            <!-- Demo Flashcard -->
+                            <div class="not-prose my-6 p-6 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-center">
+                                <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Demo: Logic Toggle</h4>
+                                <div class="card-flip w-full max-w-xs mx-auto h-40 cursor-pointer group" onclick="this.classList.toggle('flip-active')">
+                                    <div class="card-inner">
+                                        <div class="card-front flex flex-col gap-2 bg-[#FAFAFA] border border-[#0D0D0D] rounded-[2px] shadow-[1px_1px_0_#0D0D0D]">
+                                            <span class="text-lg font-serif font-bold text-[#0D0D0D]">Apa itu HTML?</span>
+                                            <span class="text-[10px] text-gray-500 font-mono">(Klik untuk balik)</span>
+                                        </div>
+                                        <div class="card-back flex flex-col gap-2 bg-[#a7f3d0] border border-[#0D0D0D] text-[#0D0D0D] rounded-[2px] shadow-[1px_1px_0_#0D0D0D]">
+                                            <span class="text-sm font-bold font-mono">Hypertext Markup Language</span>
+                                            <span class="text-[10px] text-[#059669] font-mono font-bold">Struktur Dasar Web</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FITUR B: KUIS ENGINE -->
+                        <div class="border-l-4 border-[#10b981] pl-6 py-2 my-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl mt-0">B. Mesin Kuis & Ujian</h3>
+                            <p class="text-sm my-2 text-gray-600">
+                                <strong>Logika Dasar:</strong> Lo menyimpan soal dalam <strong>Array</strong> (Daftar). Javascript akan menampilkan soal satu per satu, mengecek jawaban user, dan menyimpan skor di variabel sementara.
+                            </p>
+                            <!-- Demo Quiz -->
+                            <div class="not-prose my-6 p-4 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Demo: Logic Array & Score</h4>
+                                <div id="mini-quiz-ui" class="space-y-3">
+                                    <p class="text-[#0D0D0D] text-sm font-bold font-mono">Soal: 1 + 1 = ?</p>
+                                    <div class="grid grid-cols-2 gap-2 font-mono">
+                                        <button onclick="miniQuiz(false)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-red-100 transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">11</button>
+                                        <button onclick="miniQuiz(true)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-[#a7f3d0] transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">2</button>
+                                    </div>
+                                    <p id="mini-quiz-result" class="text-xs text-gray-500 h-4 italic font-mono">Status: Menunggu jawaban...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FITUR C: GAME LOOP -->
+                        <div class="border-l-4 border-[#10b981] pl-6 py-2 my-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl mt-0">C. Game Loop Sederhana</h3>
+                            <p class="text-sm my-2 text-gray-600">
+                                <strong>Logika Dasar:</strong> Menggunakan pengacakan (`Math.random`). Komputer memilih angka/pilihan, User menebak. Jika cocok = Menang.
+                            </p>
+                            <!-- Demo Game -->
+                            <div class="not-prose my-6 p-4 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Demo: Logic Random Number (Tebak 1-3)</h4>
+                                <div class="flex gap-4 justify-center mb-3">
+                                    <button onclick="miniGame(1)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">1</button>
+                                    <button onclick="miniGame(2)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">2</button>
+                                    <button onclick="miniGame(3)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">3</button>
+                                </div>
+                                <p id="mini-game-result" class="text-center text-xs text-gray-500 h-4 font-mono">Komputer menyembunyikan angka...</p>
+                            </div>
+                        </div>
+
+                         <!-- FITUR D: PERSONALISASI -->
+                         <div class="border-l-4 border-[#10b981] pl-6 py-2 my-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl mt-0">D. Personalisasi (Interaksi Waktu)</h3>
+                            <p class="text-sm my-2 text-gray-600">
+                                <strong>Logika Dasar:</strong> Javascript bisa membaca jam di HP/Laptop user. Dengan logika `if/else` sederhana, website bisa menyapa "Selamat Pagi" atau "Selamat Malam" secara otomatis. Ini membuat web terasa hidup.
+                            </p>
+                            <!-- Demo Greeting -->
+                            <div class="not-prose my-6 p-4 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-center">
+                                <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-2">Demo: Real-time Greeting</h4>
+                                <p id="dynamic-greeting" class="text-xl font-serif font-bold text-[#10b981] uppercase tracking-wide">Halo...</p>
+                                <p class="text-[10px] text-gray-500 mt-1 font-mono">(Mendeteksi waktu lokal perangkat lo)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MATERI 3: THE API & ASYNC -->
+                    <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700">
+                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 border-b border-[#0d0d0d] pb-2 glitch-effect">3. The API & Asynchronous Programming</h2>
+                        
+                        <!-- 3A. Konsep API -->
+                        <div class="mb-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3A. Menghubungkan Diri dengan Dunia Luar (API)</h3>
+                            <p class="my-2">
+                                Fitur lokal seperti Kuis, Game, dan Waktu berjalan di browser secara tertutup. Namun, bagaimana jika website lo membutuhkan data cuaca real-time, grafik saham terbaru, atau respons cerdas dari AI?
+                            </p>
+                            <p class="my-2">
+                                Di sinilah kita menggunakan <strong>API (Application Programming Interface)</strong>. API layaknya seorang pelayan restoran:
+                            </p>
+                            <ul class="list-none pl-0 space-y-3 text-xs bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Lo (Client)</span>
+                                    <span>Browser / Perangkat pengguna yang meminta data.</span>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Pelayan (API)</span>
+                                    <span>Media transmisi yang menerima pesanan lo dan membawanya ke server, lalu mengembalikan data hasil olahan ke browser.</span>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Dapur (Server)</span>
+                                    <span>Sistem backend terpusat yang mengolah data rahasia atau database besar. Lo tidak boleh langsung masuk ke dapur.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 3B. Pemrograman Asinkron -->
+                        <div class="mb-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3B. Pemrograman Asinkron (Async/Await, Promise, & fetch)</h3>
+                            <p class="my-2">
+                                Mengambil data dari internet membutuhkan waktu (transmisi jaringan). Jika JavaScript memprosesnya secara sinkron (blocking), browser akan membeku (*freeze*) selama menunggu server merespons. Oleh karena itu, kita wajib menggunakan <strong>Asynchronous JavaScript</strong>.
+                            </p>
+                            
+                            <div class="space-y-4 my-4">
+                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                    <span class="font-bold text-[#10b981] block mb-1">1. Promise (Janji Data)</span>
+                                    <p class="text-xs text-gray-600">Sebuah wadah penampung nilai yang belum selesai diproses. Promise memiliki status: <code class="text-black bg-gray-100 px-1 font-bold">Pending</code> (berjalan), <code class="text-black bg-gray-100 px-1 font-bold">Fulfilled</code> (sukses/selesai), dan <code class="text-black bg-gray-100 px-1 font-bold">Rejected</code> (gagal/error).</p>
+                                </div>
+
+                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                    <span class="font-bold text-[#10b981] block mb-1">2. fetch() (Pengirim HTTP Request)</span>
+                                    <p class="text-xs text-gray-600">Web API bawaan browser untuk menembak endpoint URL server secara asinkron. Fungsi ini secara default mengembalikan sebuah objek Promise.</p>
+                                </div>
+
+                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                    <span class="font-bold text-[#10b981] block mb-1">3. Async/Await (Sintaks Linear Modern)</span>
+                                    <p class="text-xs text-gray-600">Modifikasi penulisan asinkron agar menyerupai kode sinkron yang mudah dibaca. Penambahan kata kunci <code class="text-black bg-gray-100 px-1 font-bold">async</code> di depan deklarasi fungsi memungkinkan kita memakai kata kunci <code class="text-black bg-gray-100 px-1 font-bold">await</code> untuk menunda eksekusi baris berikutnya hingga Promise terselesaikan.</p>
+                                </div>
+
+                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                                    <span class="font-bold text-[#10b981] block mb-1">4. Error Handling: Try/Catch</span>
+                                    <p class="text-xs text-gray-600">Saat request API gagal (misalnya internet putus atau server down), aplikasi bisa mengalami crash. Kita membungkus instruksi asinkron di dalam blok <code class="text-black bg-gray-100 px-1 font-bold">try</code> dan mengantisipasi kegagalannya pada blok <code class="text-black bg-gray-100 px-1 font-bold">catch</code> agar program tetap dapat berjalan lancar.</p>
+                                </div>
+                            </div>
+
+                            <!-- Code Block Async -->
+                            <div class="my-4">
+                                <span class="text-xs font-bold text-gray-500 block mb-1">Struktur Kode Asinkron (fetch & try-catch):</span>
+<pre class="bg-[#0D0D0D] text-[#FAFAFA] border border-[#0d0d0d] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-xs overflow-x-auto font-mono">
+<code><span class="text-gray-500">// Fungsi asinkron mengambil resep Alchemist</span>
+async function fetchRecipeData() {
+    try {
+        <span class="text-[#10b981]">const</span> response = <span class="text-[#10b981]">await</span> fetch('https://api.alchemist.com/recipes');
+        
+        <span class="text-gray-500">// Cek apakah respons HTTP sukses (status 200-299)</span>
+        if (!response.ok) {
+            throw new Error(`Koneksi Dapur Gagal! Status: ${response.status}`);
+        }
+        
+        <span class="text-[#10b981]">const</span> data = <span class="text-[#10b981]">await</span> response.json();
+        console.log('Recipe Transmuted:', data);
+    } catch (error) {
+        console.error('Transmutation Error:', error.message);
+    }
+}</code>
+</pre>
+                            </div>
+                        </div>
+
+                        <!-- 3C. Caesar Cipher -->
+                        <div class="mb-8">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3C. Caesar Cipher (Shift +1) & Obfuscation Data</h3>
+                            <p class="my-2">
+                                Dalam aplikasi Single-File HTML, menyimpan rahasia atau membatasi akses antar bab membutuhkan penyandian data sederhana (obfuscation). Salah satu bentuk sandi tertua dan paling dasar adalah <strong>Caesar Cipher</strong> (Sandi Geser).
+                            </p>
+                            <p class="my-2">
+                                Sandi ini bekerja dengan memanipulasi kode karakter (ASCII/Unicode) dari string teks. Di halaman kuis *The Alchemist* ini, lo menggunakan **Shift +1** untuk penguncian data (enkripsi) dan **Shift -1** untuk pembacaan data (dekripsi).
+                            </p>
+
+                            <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] my-4 text-xs space-y-2">
+                                <p><strong>1. Serialisasi Data:</strong> Objek JavaScript diubah menjadi string JSON datar: <code class="text-black bg-gray-100 px-1 font-bold">JSON.stringify(state)</code>.</p>
+                                <p><strong>2. Enkripsi (Shift +1):</strong> Setiap karakter dalam teks dibaca nilai ASCII-nya, lalu dinaikkan sebesar +1. Karakter <code class="text-black bg-gray-100 px-1 font-bold">'A'</code> (ASCII 65) digeser menjadi <code class="text-black bg-gray-100 px-1 font-bold">'B'</code> (ASCII 66): <code class="text-black bg-gray-100 px-1 font-bold">String.fromCharCode(char.charCodeAt(0) + 1)</code>.</p>
+                                <p><strong>3. Base64 Obfuscation:</strong> Teks hasil pergeseran di-encode ke Base64 menggunakan fungsi <code class="text-black bg-gray-100 px-1 font-bold">btoa()</code> agar menjadi string alfanumerik yang rapi (seperti **Exodus Key** lo).</p>
+                                <p><strong>4. Dekripsi (Shift -1):</strong> Kebalikannya, saat lo memasukkan kunci, program akan men-decode Base64 dengan <code class="text-black bg-gray-100 px-1 font-bold">atob()</code>, lalu menggeser balik setiap karakter sebesar -1 agar kembali menjadi format JSON string yang bisa dibaca.</p>
+                            </div>
+
+                            <!-- Code Block Caesar Cipher -->
+                            <div class="my-4">
+                                <span class="text-xs font-bold text-gray-500 block mb-1">Implementasi Caesar Cipher (Shift +1):</span>
+<pre class="bg-[#0D0D0D] text-[#FAFAFA] border border-[#0d0d0d] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-xs overflow-x-auto font-mono">
+<code><span class="text-gray-500">// Enkripsi data JSON dengan Shift +1 & Base64</span>
+function encryptData(dataObject) {
+    const jsonStr = JSON.stringify(dataObject);
+    let obfuscated = "";
+    for (let i = 0; i < jsonStr.length; i++) {
+        obfuscated += String.fromCharCode(jsonStr.charCodeAt(i) + 1);
+    }
+    return btoa(obfuscated).replace(/=/g, '');
+}
+
+<span class="text-gray-500">// Dekripsi data (Shift -1)</span>
+function decryptData(keyString) {
+    const decodedStr = atob(keyString);
+    let decrypted = "";
+    for (let i = 0; i < decodedStr.length; i++) {
+        decrypted += String.fromCharCode(decodedStr.charCodeAt(i) - 1);
+    }
+    return JSON.parse(decrypted);
+}</code>
+</pre>
+                            </div>
+                        </div>
+
+                        <!-- API Simulator (Neo-Brutalist Light Mode) -->
+                        <div class="not-prose my-8 neo-card p-6 bg-white relative overflow-hidden shadow-[4px_4px_0_#0d0d0d]">
+                            <div class="absolute top-0 left-0 bg-[#0d0d0d] text-xs text-[#FAFAFA] px-3 py-1 font-mono uppercase tracking-widest border-r border-b border-[#0d0d0d]">API SIMULATOR v2.0</div>
+                            
+                            <div class="flex flex-col md:flex-row gap-6 items-stretch justify-between mt-8">
+                                <!-- CLIENT CARD -->
+                                <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
+                                    <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">CLIENT</div>
+                                    <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-4">Web Browser</div>
+                                    <button onclick="fetchSimulatedData()" id="api-btn" class="neo-btn px-4 py-2 text-xs uppercase tracking-wider bg-[#10b981] text-[#0D0D0D] font-mono font-bold rounded-[2px] shadow-[2px_2px_0_#0D0D0D]">
+                                        Send fetch()
+                                    </button>
+                                </div>
+
+                                <!-- API BRIDGE -->
+                                <div class="flex-grow flex flex-col items-center justify-center relative min-h-[80px] w-full md:w-1/3">
+                                    <div class="text-[9px] font-mono text-gray-400 mb-1 uppercase tracking-widest absolute top-0">API Bridge (HTTP Request)</div>
+                                    <div id="api-flow" class="h-[2px] w-full bg-[#0D0D0D] relative">
+                                        <!-- Packet: Neo-Brutalist Square -->
+                                        <div id="api-packet" class="absolute top-1/2 -translate-y-1/2 left-0 w-4 h-4 bg-[#10b981] border border-[#0D0D0D] shadow-[1px_1px_0_#0D0D0D] hidden"></div>
+                                    </div>
+                                    <div class="text-[9px] font-mono text-[#10b981] mt-2 font-bold tracking-wider" id="api-status-text">IDLE / READY</div>
+                                </div>
+
+                                <!-- SERVER CARD -->
+                                <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
+                                    <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">SERVER</div>
+                                    <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-3">Dapur API</div>
+                                    <div id="api-result" class="bg-white border border-[#0D0D0D] p-3 rounded-none text-xs font-mono text-[#0D0D0D] h-24 flex items-center justify-center w-full overflow-hidden break-all">
+                                        // Menunggu Request...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MATERI 4: AI & DESIGN RELEVANSI -->
+                    <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700 border-t border-[#0d0d0d] pt-8">
+                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 glitch-effect">4. Relevansi di Era AI: Menjadi Arsitek</h2>
+                        <p class="mb-4">
+                            Lupakan contoh jadul seperti "Dashboard Crypto" atau "Kuis Karyawan" kalau itu gak relevan buat lo.
+                            Poin utamanya adalah: <strong>AI sangat fleksibel</strong>. Dia bisa menyajikan Single File HTML apapun yang lo imajinasikan.
+                        </p>
+                        
+                        <div class="bg-[#a7f3d0]/20 border border-[#10b981] p-6 rounded-[2px] my-6 shadow-[2px_2px_0_#0d0d0d]">
+                            <p class="text-base text-[#0D0D0D] font-bold mb-2">The Golden Rule:</p>
+                            <p class="text-gray-700 italic">
+                                "Lo TIDAK PERLU paham coding untuk membuat ini. Lo cuma perlu paham LOGIKA-nya, lalu perintahkan AI untuk menulis kodenya."
+                            </p>
+                        </div>
+
+                        <p class="mb-4">
+                            Bayangkan apa yang bisa lo buat sekarang, hanya dengan prompt yang tepat:
+                        </p>
+
+                        <ul class="space-y-4 list-none pl-0">
+                            <li class="bg-white p-4 rounded-[2px] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d]">
+                                <strong class="text-[#10b981] block text-base mb-1 font-bold">1. Interactive Research Paper (Makalah Hidup)</strong>
+                                <span class="text-xs text-gray-600">Jangan kumpulkan PDF mati ke dosen. Buat HTML di mana dosen bisa menggeser "Slider Inflasi" dan melihat grafik ekonomi di makalah lo berubah secara real-time.</span>
+                            </li>
+                            <li class="bg-white p-4 rounded-[2px] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d]">
+                                <strong class="text-[#10b981] block text-base mb-1 font-bold">2. Second Brain (Personal Wiki)</strong>
+                                <span class="text-xs text-gray-600">Buat sistem catatan kuliah yang saling terhubung (seperti Obsidian), tapi berjalan di satu file browser. Bisa di-search instan, offline, dan 100% milik lo.</span>
+                            </li>
+                            <li class="bg-white p-4 rounded-[2px] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d]">
+                                <strong class="text-[#10b981] block text-base mb-1 font-bold">3. Kalkulator Skripsi Spesifik</strong>
+                                <span class="text-xs text-gray-600">Penelitian lo butuh rumus aneh yang gak ada di Excel? Minta AI buatkan kalkulator HTML khusus untuk menghitung data spesifik lo. Hemat waktu berjam-jam.</span>
+                            </li>
+                            <li class="bg-white p-4 rounded-[2px] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d]">
+                                <strong class="text-[#10b981] block text-base mb-1 font-bold">4. Portofolio Interaktif</strong>
+                                <span class="text-xs text-gray-600">CV bukan lagi kertas. Buat HTML di mana recruiter bisa "bermain" simulasi proyek yang pernah lo kerjakan.</span>
+                            </li>
+                        </ul>
+                        
+                        <p class="mt-6 text-[10px] text-gray-500">
+                            *Semua contoh di atas adalah Single File HTML. AI modern bisa membuatnya dalam hitungan detik jika arsitektur logikanya matang.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- POST-TEST PART 2 -->
+                <section id="posttest-section" class="bg-white border border-[#0d0d0d] p-8 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] hidden">
+                    <div id="posttest-intro">
+                        <h2 class="text-2xl font-serif font-bold text-[#0D0D0D] mb-4">Validasi Akhir (Transmutasi)</h2>
+                        <p class="text-gray-600 mb-6 text-sm font-mono">
+                            Lo udah paham konsepnya secara teori. Sekarang buktikan bahwa lo layak mendapatkan <strong>Exodus Key</strong>.
+                        </p>
+                        <button onclick="startPostTest()" class="bg-[#0D0D0D] text-white border border-[#0d0d0d] shadow-[2px_2px_0_#10b981] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#10b981] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#10b981] transition-all px-8 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                            UJI PEMAHAMAN FINAL
+                        </button>
+                    </div>
+                    <div id="posttest-container" class="hidden">
+                         <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-mono text-[#10b981] font-bold border border-[#0d0d0d] px-2 py-1 bg-[#FAFAFA] shadow-[1px_1px_0_#0d0d0d]">PERTANYAAN FINAL <span id="post-q-num">1</span>/5</span>
+                        </div>
+                        <h3 id="post-q-text" class="text-xl font-serif font-bold text-[#0D0D0D] mb-6 leading-relaxed">?</h3>
+                        <div id="post-options" class="space-y-3"></div>
+                    </div>
+                </section>
+
+                <!-- FINAL RESULT (EXODUS KEY) -->
+                <div id="result-section" class="hidden text-center py-12 border-t border-[#0d0d0d] reveal-staggered">
+                    <h2 class="text-3xl font-serif font-bold text-[#0d0d0d] mb-2">Transmutasi Selesai</h2>
+                    <p class="text-gray-500 text-sm mb-8 font-mono">Evolusi Logic Terkonfirmasi</p>
+                    
+                    <div class="flex justify-center gap-4 mb-10 text-xs font-mono text-gray-500">
+                        <div>CH.1 SCORE: <span id="final-s1" class="text-[#0d0d0d] font-bold">0</span></div>
+                        <div>|</div>
+                        <div>CH.2 SCORE: <span id="final-s2" class="text-[#10b981] font-bold">0</span></div>
+                    </div>
+
+                    <div id="final-analysis" class="bg-white border border-[#0d0d0d] p-6 rounded-[2px] max-w-xl mx-auto text-left shadow-[4px_4px_0_#0d0d0d]">
+                        <!-- JS Analysis -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-[#0d0d0d] bg-white py-10 mt-20">
+        <div class="max-w-2xl mx-auto px-6 text-center text-xs text-gray-600 font-mono">
+            &copy; 2025 THE ALCHEMIST PROJECT. <br>
+            <span class="text-[10px] mt-2 block text-gray-400 font-bold uppercase tracking-widest">Don't trust the code. Trust the logic.</span>
+        </div>
+    </footer>
+
+    <script>
+        // --- STATE MANAGEMENT ---
+        let userState = {
+            name: "Guest",
+            ch1_pre: 0,
+            ch1_post: 0,
+            ch2_pre: 0,
+            ch2_post: 0,
+            qIndex: 0,
+            isPre: true
+        };
+
+        // --- MINI DEMO LOGIC ---
+        function miniQuiz(isCorrect) {
+            const el = document.getElementById('mini-quiz-result');
+            if(isCorrect) {
+                el.innerText = "Benar! Logic: if(input === 2) return true";
+                el.className = "text-xs text-[#10b981] font-bold h-4 font-mono";
+            } else {
+                el.innerText = "Salah. Logic: else return false";
+                el.className = "text-xs text-red-500 font-bold h-4 font-mono";
+            }
+        }
+
+        function miniGame(choice) {
+            const target = Math.floor(Math.random() * 3) + 1;
+            const el = document.getElementById('mini-game-result');
+            
+            if(choice === target) {
+                el.innerHTML = `Menang! Komputer memilih <span class="text-[#10b981] font-bold">${target}</span>.`;
+                el.className = "text-center text-xs text-[#0D0D0D] h-4 font-bold font-mono";
+            } else {
+                el.innerHTML = `Kalah. Komputer memilih <span class="text-red-500 font-bold">${target}</span>.`;
+                el.className = "text-center text-xs text-gray-500 h-4 font-mono";
+            }
+        }
+
+        function updateGreeting() {
+            const el = document.getElementById('dynamic-greeting');
+            const hour = new Date().getHours();
+            let text = "Halo";
+            if(hour < 12) text = "Selamat Pagi";
+            else if(hour < 18) text = "Selamat Siang";
+            else text = "Selamat Malam";
+            
+            el.innerText = `"${text}, ${userState.name || 'User'}."`;
+        }
+
+        // --- QUESTIONS DATABASE (Part 2 Focused with 5 Questions) ---
+        const questions = [
+            {
+                q: "Untuk membuat 'Game Tebak Angka' sederhana, elemen logika apa yang paling krusial?",
+                options: [
+                    "Warna background yang cerah (CSS).",
+                    "Fungsi pengacak angka (Randomizer) dan pembanding (If/Else).",
+                    "Koneksi internet super cepat.",
+                    "Database SQL yang mahal."
+                ],
+                correct: 1
+            },
+            {
+                q: "Saat mengambil data dari API, mengapa kita menggunakan pemrograman asinkron (async/await)?",
+                options: [
+                    "Agar browser tidak freeze selama menunggu respons dari server.",
+                    "Agar data terkirim lebih aman dan terenkripsi secara biner.",
+                    "Untuk mengubah kode HTML menjadi instruksi CSS secara dinamis.",
+                    "Agar memori RAM server tidak terbeban oleh request Client."
+                ],
+                correct: 0
+            },
+            {
+                q: "Fungsi/objek JavaScript mana yang digunakan untuk mengirim HTTP request secara asinkron di browser?",
+                options: [
+                    "JSON.stringify()",
+                    "Math.random()",
+                    "fetch()",
+                    "atob()"
+                ],
+                correct: 2
+            },
+            {
+                q: "Di dalam Caesar Cipher (Shift +1), bagaimana cara mengembalikan pesan asli yang telah dienkripsi?",
+                options: [
+                    "Menggeser karakter dengan operasi charCodeAt(i) - 1.",
+                    "Menambahkan spasi di setiap karakter kata.",
+                    "Mengalikan kode biner karakter dengan index array.",
+                    "Menggunakan fungsi btoa() tanpa modifikasi character code."
+                ],
+                correct: 0
+            },
+            {
+                q: "Bagaimana cara menangani potensi error pada fetch() request agar aplikasi tidak crash?",
+                options: [
+                    "Membungkus kode di dalam block statement try...catch.",
+                    "Mengubah semua variabel menjadi const.",
+                    "Melakukan reload halaman secara otomatis.",
+                    "Menghapus parameter endpoint API."
+                ],
+                correct: 0
+            }
+        ];
+
+        // --- GATE LOGIC (DECRYPTION) ---
+        function unlockGate() {
+            const input = document.getElementById('genesis-key-input').value.trim().replace(/-/g, '');
+            const errorMsg = document.getElementById('gate-error');
+            
+            if (!input) {
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // 1. Base64 Decode
+                const decodedStr = atob(input);
+                
+                // 2. De-obfuscate (Shift char code -1)
+                let jsonStr = "";
+                for (let i = 0; i < decodedStr.length; i++) {
+                    jsonStr += String.fromCharCode(decodedStr.charCodeAt(i) - 1);
+                }
+
+                // 3. Parse JSON
+                const data = JSON.parse(jsonStr);
+
+                // Validasi struktur data dasar
+                if (!data.n || data.s1 === undefined || data.s2 === undefined) {
+                    throw new Error("Invalid Structure");
+                }
+
+                // Load Data
+                userState.name = data.n;
+                userState.ch1_pre = data.s1;
+                userState.ch1_post = data.s2;
+
+                // Update UI
+                document.getElementById('user-display-name').innerText = userState.name;
+                document.getElementById('p1-pre').innerText = Math.round((userState.ch1_pre/3)*100);
+                document.getElementById('p1-post').innerText = Math.round((userState.ch1_post/3)*100);
+
+                // Start Greeting Clock
+                updateGreeting();
+                setInterval(updateGreeting, 60000); // Update every minute
+
+                // Transition
+                document.getElementById('gate-section').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                window.scrollTo(0, 0);
+
+            } catch (e) {
+                console.error(e);
+                errorMsg.innerText = "Error: Kunci Invalid. Pastikan menyalin dari Chapter 1 dengan benar.";
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        // --- PRE-TEST LOGIC ---
+        function startPreTest() {
+            document.getElementById('pretest-intro').classList.add('hidden');
+            document.getElementById('pretest-container').classList.remove('hidden');
+            renderQ();
+        }
+
+        // --- RENDER QUESTIONS ---
+        function renderQ() {
+            const container = userState.isPre ? 'pre' : 'post';
+            const q = questions[userState.qIndex];
+            
+            document.getElementById(`${container}-q-num`).innerText = userState.qIndex + 1;
+            document.getElementById(`${container}-q-text`).innerText = q.q;
+            
+            const opts = document.getElementById(`${container}-options`);
+            opts.innerHTML = '';
+            
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-[2px] bg-white border border-[#0d0d0d] hover:bg-[#a7f3d0]/30 hover:shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] text-[#0d0d0d] transition-all text-xs font-mono font-bold group flex justify-between items-center";
+                btn.innerHTML = `<span>${opt}</span> <span class="opacity-0 group-hover:opacity-100 text-[#10b981] font-bold transition-opacity">→</span>`;
+                btn.onclick = () => answer(i);
+                opts.appendChild(btn);
+            });
+        }
+
+        function answer(idx) {
+            if (idx === questions[userState.qIndex].correct) {
+                if (userState.isPre) userState.ch2_pre++; else userState.ch2_post++;
+            }
+            
+            userState.qIndex++;
+            if (userState.qIndex < questions.length) {
+                renderQ();
+            } else {
+                finishSection();
+            }
+        }
+
+        function finishSection() {
+            if (userState.isPre) {
+                // Unlock Materi
+                document.getElementById('pretest-section').innerHTML = `
+                    <div class="p-6 text-center border border-[#10b981] bg-[#a7f3d0]/30 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
+                        <h3 class="text-[#0d0d0d] font-bold mb-2 font-serif text-lg">Kalibrasi Selesai</h3>
+                        <p class="text-gray-700 text-sm font-mono">Sekarang, mari kita bedah mesinnya di bawah.</p>
+                    </div>
+                `;
+                const materi = document.getElementById('materi-section');
+                materi.classList.remove('opacity-20', 'blur-sm', 'pointer-events-none');
+                
+                // Activate Post Test trigger at bottom
+                document.getElementById('posttest-section').classList.remove('hidden');
+
+                setTimeout(() => materi.scrollIntoView({behavior: 'smooth'}), 500);
+            } else {
+                // Show Result
+                document.getElementById('posttest-section').classList.add('hidden');
+                document.getElementById('result-section').classList.remove('hidden');
+                renderFinalResult();
+            }
+        }
+
+        // --- SIMULATED API LOGIC ---
+        function fetchSimulatedData() {
+            const btn = document.getElementById('api-btn');
+            const resultBox = document.getElementById('api-result');
+            const packet = document.getElementById('api-packet');
+            const statusText = document.getElementById('api-status-text');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'pointer-events-none');
+            resultBox.innerText = "// Menghubungkan...";
+            statusText.innerText = "ASYNC FETCH() STARTED...";
+            statusText.className = "text-[9px] font-mono text-amber-600 mt-2 font-bold tracking-wider flicker-effect";
+            packet.classList.remove('hidden');
+            
+            // Animation: Packet goes Client -> Server
+            packet.style.left = '0%';
+            packet.style.transition = 'left 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            setTimeout(() => {
+                packet.style.left = 'calc(100% - 16px)';
+                statusText.innerText = "HTTP REQUEST SENT (PENDING)...";
+            }, 50);
+
+            setTimeout(() => {
+                // Server Processing
+                statusText.innerText = "SERVER PROCESSING (PROMISE)...";
+                statusText.className = "text-[9px] font-mono text-blue-600 mt-2 font-bold tracking-wider";
+                resultBox.innerText = "try { parseRequest(); } catch(e) {}";
+            }, 1250);
+
+            setTimeout(() => {
+                // Packet Return
+                statusText.innerText = "SENDING RESPONSE BACK...";
+                statusText.className = "text-[9px] font-mono text-[#10b981] mt-2 font-bold tracking-wider";
+                packet.style.transition = 'left 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                packet.style.left = '0%';
+            }, 2200);
+
+            setTimeout(() => {
+                // Data Received
+                const quotes = [
+                    '"Stay hungry, stay foolish."',
+                    '"Code is poetry."',
+                    '"Simplicity is the ultimate sophistication."',
+                    '"Hello World."',
+                    '"Logic will get you from A to B. Imagination will take you everywhere."'
+                ];
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                
+                resultBox.innerHTML = `<span class="text-[#10b981] font-bold">200 OK (JSON):</span><br>{ "quote": "${randomQuote}" }`;
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'pointer-events-none');
+                statusText.innerText = "SUCCESS (RESOLVED)";
+                statusText.className = "text-[9px] font-mono text-[#10b981] mt-2 font-bold tracking-wider";
+                packet.classList.add('hidden');
+            }, 3400);
+        }
+
+        // --- POST-TEST START ---
+        function startPostTest() {
+            userState.isPre = false;
+            userState.qIndex = 0;
+            document.getElementById('posttest-intro').classList.add('hidden');
+            document.getElementById('posttest-container').classList.remove('hidden');
+            renderQ();
+        }
+
+        // --- ENCRYPTION LOGIC (EXODUS KEY) ---
+        function generateExodusKey() {
+            // Pack Data: Nama, Ch1 Scores, Ch2 Scores, Timestamp
+            const payload = {
+                n: userState.name,
+                c1: [userState.ch1_pre, userState.ch1_post],
+                c2: [userState.ch2_pre, userState.ch2_post],
+                rank: "ALCHEMIST_L2",
+                t: Date.now()
+            };
+
+            const jsonStr = JSON.stringify(payload);
+            
+            // Client-side simple obfuscation (Shift +1)
+            let obfuscated = "";
+            for (let i = 0; i < jsonStr.length; i++) {
+                obfuscated += String.fromCharCode(jsonStr.charCodeAt(i) + 1);
+            }
+
+            const encoded = btoa(obfuscated).replace(/=/g, '');
+            const chunks = encoded.match(/.{1,4}/g);
+            return chunks ? chunks.join('-') : encoded;
+        }
+
+        function renderFinalResult() {
+            const ch2_score = Math.round((userState.ch2_post / questions.length) * 100);
+            
+            document.getElementById('final-s1').innerText = Math.round((userState.ch1_post/3)*100) + "%";
+            document.getElementById('final-s2').innerText = ch2_score + "%";
+
+            const analysis = document.getElementById('final-analysis');
+            let key = '';
+
+            const passed = ch2_score >= 60; // 3 out of 5 is 60%
+
+            if (passed) {
+                key = generateExodusKey();
+                analysis.innerHTML = `
+                    <p class="text-[#0d0d0d] font-serif font-bold text-xl mb-2">Akses Level 3 Terbuka.</p>
+                    <p class="mb-6 text-sm text-gray-700 leading-relaxed font-mono">Lo sekarang paham bahwa HTML bisa 'berpikir' (Logic), 'berbicara' (API) secara asinkron, dan menyandikan datanya (Caesar Cipher). Lo bukan lagi sekadar menyusun bata, lo sedang merakit mesin digital.</p>
+                    
+                    <div class="bg-[#FAFAFA] border border-[#0d0d0d] p-6 rounded-[2px] relative group mt-6 break-words shadow-[2px_2px_0_#0d0d0d]">
+                        <div class="absolute top-0 right-0 bg-[#10b981] text-[#0d0d0d] px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-wider border-l border-b border-[#0d0d0d]">EXODUS KEY</div>
+                        
+                        <p class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-widest">Simpan Kunci Ini:</p>
+                        <div class="font-mono text-lg tracking-widest text-[#0d0d0d] select-all cursor-text mb-4 break-all hover:text-[#10b981] transition-colors border border-dashed border-[#0d0d0d] p-4 bg-white">${key}</div>
+                        
+                        <p class="text-[10px] text-gray-500 border-t border-gray-200 pt-3 italic font-mono">
+                            Kunci ini berisi data gabungan Chapter 1 & 2. Gunakan untuk proyek selanjutnya.
+                        </p>
+                    </div>
+                `;
+            } else {
+                analysis.innerHTML = `
+                    <p class="text-red-600 font-serif font-bold text-xl mb-2">Logic Error.</p>
+                    <p class="mb-4 text-sm text-gray-700 font-mono">Pemahaman lo tentang API, State, atau Sandi Caesar masih kabur. Jangan memaksa lanjut jika pondasi retak.</p>
+                    <button onclick="location.reload()" class="neo-btn bg-red-100 hover:bg-red-200 text-[#0d0d0d] text-xs px-4 py-2 font-bold font-mono">
+                        Reset Protokol Chapter 2
+                    </button>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

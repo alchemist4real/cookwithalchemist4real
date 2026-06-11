@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ALCHEMIST: CH.03 ASCENSION</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* BRANDING VARIABLES - Neo-Brutalist Light Mode */
+        :root {
+            --bg: #FAFAFA;
+            --fg: #0D0D0D;
+            --fg-faint: rgba(13, 13, 13, 0.2);
+            --accent: #fbbf24; /* Emas */
+            --accent-light: #fef3c7; /* Emas pudar */
+            --accent-dark: #b45309;
+            --card-bg: #FFFFFF;
+            --radius: 2px;
+        }
+
+        /* RESET & GENERAL STYLES */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: var(--bg);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'DM Mono', monospace;
+            font-weight: 400;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* GRAIN OVERLAY USING INLINE SVG TURBULENCE */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* SELECTION STYLES */
+        ::selection {
+            background-color: var(--accent);
+            color: var(--fg);
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: var(--fg);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid var(--fg);
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+        }
+
+        strong {
+            font-weight: 700;
+            background-color: var(--accent-light);
+            padding: 0 4px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* CONTAINERS & SECTIONS */
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* FIXED NAVBAR */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg);
+            border-bottom: 1px solid var(--fg-faint);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            border: 1px solid var(--fg-faint);
+            padding: 2px 8px;
+            background-color: var(--accent-light);
+            border-radius: var(--radius);
+        }
+
+        .brand-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+        }
+
+        .nav-tag {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            border: 1px solid var(--fg-faint);
+            padding: 4px 8px;
+            background-color: var(--bg);
+            border-radius: var(--radius);
+        }
+
+        /* NEO-BRUTALIST CARD STYLE */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 35px;
+            box-shadow: 2px 2px 0 var(--fg);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--fg);
+        }
+
+        /* FORMS & INTERACTIVES */
+        .input-group {
+            width: 100%;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem;
+            color: var(--fg);
+            background-color: #FFFFFF;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+            outline: none;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        input[type="text"]:focus {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 var(--fg);
+        }
+
+        button {
+            cursor: pointer;
+            background-color: var(--accent);
+            color: var(--fg);
+            font-family: 'DM Mono', monospace;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+            transition: all 0.15s ease;
+            display: inline-block;
+        }
+
+        button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--fg);
+            background-color: #fcd34d;
+        }
+
+        button:active {
+            transform: translate(0, 0);
+            box-shadow: 0 0 0 var(--fg);
+        }
+
+        /* METRIC GRID */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            border: 1px solid var(--fg-faint);
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: var(--radius);
+            margin: 15px 0;
+            box-shadow: 1px 1px 0 var(--fg);
+        }
+
+        .metric-item {
+            font-size: 0.8rem;
+        }
+
+        .metric-val {
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        /* CODE & PROMPT TEMPLATES */
+        .prompt-box {
+            position: relative;
+            background-color: #F3F4F6;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            padding: 22px 18px 18px 18px;
+            margin: 25px 0;
+            box-shadow: 2px 2px 0 var(--fg);
+            font-size: 0.85rem;
+        }
+
+        .prompt-box::before {
+            content: "PROMPT TEMPLATE";
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            background-color: var(--accent);
+            border: 1px solid var(--fg);
+            border-radius: var(--radius);
+            padding: 1px 6px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            box-shadow: 1px 1px 0 var(--fg);
+        }
+
+        pre {
+            background-color: #111827;
+            color: #E5E7EB;
+            padding: 16px;
+            border: 1px solid var(--fg);
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+            overflow-x: auto;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            margin: 20px 0;
+        }
+
+        code {
+            font-family: 'DM Mono', monospace;
+            background-color: var(--accent-light);
+            color: var(--fg);
+            padding: 1px 4px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-size: inherit;
+        }
+
+        /* LIST OF OPTIONS FOR KUIS */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 14px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--fg-faint);
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--fg);
+            border-color: var(--fg);
+            background-color: var(--accent-light);
+        }
+
+        .option-btn span.arrow {
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            font-weight: bold;
+        }
+
+        .option-btn:hover span.arrow {
+            opacity: 1;
+        }
+
+        /* CH.03 CONTENT LAYOUT */
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .warning-box {
+            border: 1px solid var(--fg);
+            border-left: 6px solid #ef4444;
+            background-color: #fee2e2;
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+        }
+
+        .tips-box {
+            border: 1px solid var(--fg);
+            border-left: 6px solid var(--accent);
+            background-color: var(--accent-light);
+            padding: 18px;
+            margin: 25px 0;
+            border-radius: var(--radius);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        .tips-box p {
+            margin-bottom: 0;
+        }
+
+        /* DYNAMIC STATES */
+        .blur-locked {
+            opacity: 0.15;
+            filter: blur(4px);
+            pointer-events: none;
+            user-select: none;
+            transition: all 0.8s ease;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        /* MICRO-ANIMATIONS */
+        @keyframes glitch {
+            0% {
+                text-shadow: 1px 1px 0 rgba(239, 68, 68, 0.5), -1px -1px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(0);
+            }
+            20% {
+                text-shadow: -2px 1px 0 rgba(239, 68, 68, 0.5), 1px -2px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(-1px, 1px);
+            }
+            40% {
+                text-shadow: 1px -1px 0 rgba(239, 68, 68, 0.5), -1px 2px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(1px, -1px);
+            }
+            60% {
+                text-shadow: -1px 2px 0 rgba(239, 68, 68, 0.5), 2px -1px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(-1px, -1px);
+            }
+            80% {
+                text-shadow: 2px -1px 0 rgba(239, 68, 68, 0.5), -2px 1px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(1px, 1px);
+            }
+            100% {
+                text-shadow: 1px 1px 0 rgba(239, 68, 68, 0.5), -1px -1px 0 rgba(59, 130, 246, 0.5);
+                transform: translate(0);
+            }
+        }
+        
+        .glitch-hover:hover {
+            animation: glitch 0.2s linear infinite;
+        }
+
+        @keyframes flicker {
+            0%, 19.99%, 22%, 62.99%, 64%, 64.99%, 70%, 100% {
+                opacity: 0.99;
+            }
+            20%, 21.99%, 63%, 63.99%, 65%, 69.99% {
+                opacity: 0.35;
+            }
+        }
+
+        .flicker-effect {
+            animation: flicker 4s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .float-effect {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .shake-trigger {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* EXODUS KEY SHOWCASE */
+        .key-box {
+            background-color: var(--fg);
+            color: var(--bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            font-size: 1.15rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid var(--fg);
+            box-shadow: 3px 3px 0 var(--accent);
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--fg-faint);
+            background-color: var(--card-bg);
+            padding: 40px 24px;
+            text-align: center;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-logo">Ac</span>
+                <span class="brand-text">ALCHEMIST4REAL</span>
+            </div>
+            <div class="nav-tag flicker-effect">
+                Trilogy Final: Ascension
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <!-- GATEKEEPER SECTION (LOGIN) -->
+        <section id="gate-section" class="gate-section">
+            <div class="card text-center" style="max-width: 520px;">
+                <span class="badge float-effect" style="background-color: var(--accent-light);">Gatekeeper Protocol</span>
+                <h1 class="glitch-hover">Kunci Eksodus Diperlukan.</h1>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">
+                    Ini adalah gerbang terakhir perjalanan. Tempelkan <span style="font-weight: bold; color: var(--accent-dark);">Exodus Key</span> yang lo peroleh setelah menyelesaikan Ujian Chapter 2.
+                </p>
+                
+                <div class="input-group">
+                    <label for="exodus-key-input">Exodus Key Code</label>
+                    <input type="text" id="exodus-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" style="text-align: center; text-transform: uppercase; letter-spacing: 0.1em;">
+                    <p id="gate-error" class="error-message hidden">Kunci invalid atau salah. Coba periksa kembali!</p>
+                </div>
+                
+                <button onclick="unlockGate()" style="width: 100%; margin-top: 10px;">Buka Gerbang Ascension</button>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT (Initially Hidden) -->
+        <div id="main-content" class="hidden">
+            
+            <!-- Welcome Header -->
+            <header class="card">
+                <div class="float-effect" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent); border: 1px solid var(--fg); border-radius: 50%;"></span>
+                    STATUS: GRANDMASTER INITIATE
+                </div>
+                <h1 class="glitch-hover" style="font-size: 3rem;">Saatnya Naik Kelas, <span id="user-display-name" style="background: var(--accent-light); padding: 0 8px;">Alchemist</span>.</h1>
+                <p style="font-size: 1.05rem; margin-top: 15px;">
+                    Di Chapter 1 dan 2 lo udah kelar belajar struktur dasar HTML dan logika interaktif Javascript. Keren. Tapi kalau lo cuma nulis kode baris-per-baris manual di zaman sekarang, lo bakal ketinggalan jauh. 
+                </p>
+                <p style="font-size: 1.05rem;">
+                    Sekarang adalah era di mana lo memerintah AI untuk jadi juru ketik lo. Kunci kekuatannya bukan di ingatan sintaks, tapi di <strong>Prompt Engineering</strong>. Mari kita pelajari teknik tingkat dewa agar lo bisa memanifestasikan aplikasi secara instan.
+                </p>
+                
+                <div class="metric-grid">
+                    <div class="metric-item">CH.01 PRE-POST AVG: <span id="s1-avg" class="metric-val">0</span>%</div>
+                    <div class="metric-item">CH.02 PRE-POST AVG: <span id="s2-avg" class="metric-val">0</span>%</div>
+                </div>
+            </header>
+
+            <!-- DIAGNOSTIC TEST SECTION -->
+            <section id="pretest-section" class="card">
+                <div id="pretest-intro">
+                    <h2 style="margin-top:0;">Kalibrasi Pemahaman Awal</h2>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">
+                        Sebelum gue buka tirai materi rahasia ini, mari kita uji seberapa jauh pemahaman lo tentang cara berkomunikasi secara optimal dengan mesin.
+                    </p>
+                    <button onclick="startPreTest()">Mulai Diagnosa Awal</button>
+                </div>
+                
+                <div id="pretest-container" class="hidden">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--fg-faint); padding-bottom: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">Kalibrasi Awal</span>
+                        <span style="font-size: 0.75rem; font-weight: bold;">Pertanyaan <span id="pre-q-num">1</span>/5</span>
+                    </div>
+                    <h3 id="pre-q-text" style="font-family: 'DM Mono', monospace; font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; font-weight: 500;">Pertanyaan</h3>
+                    <div id="pre-options" class="options-list"></div>
+                </div>
+            </section>
+
+            <!-- MATERI SECTION (Initially Blurred/Locked) -->
+            <section id="materi-section" class="blur-locked">
+                
+                <!-- Subchapter 1: Reasoning Models -->
+                <div class="content-section">
+                    <h2>1. Otak di Atas Mulut (Reasoning Models)</h2>
+                    <p>
+                        Kesalahan paling umum dari pemula adalah menggunakan model chat standar (seperti GPT-4o mini) untuk memecahkan arsitektur pemrograman yang kompleks. Model standar dioptimalkan untuk respons cepat sehingga rentan terhadap "halusinasi" kode karena mereka langsung menebak kata berikutnya tanpa proses pemecahan masalah yang mendalam.
+                    </p>
+                    <p>
+                        Gunakan model berkemampuan <strong>Reasoning</strong> untuk memprogram. Model seperti <strong>OpenAI o1 / o3-mini</strong> atau <strong>DeepSeek R1</strong> menggunakan mekanisme internal bernama <strong>Chain of Thought (CoT)</strong>. 
+                    </p>
+                    <div class="tips-box">
+                        <p><strong>Bagaimana Cara Kerjanya?</strong> Sebelum mengembalikan kode HTML/JS ke layar lo, model Reasoning akan menulis "logika berpikir" rahasia di belakang layar, mengecek potensi bug, menyusun struktur modul, baru kemudian menuangkannya dalam kode yang matang.</p>
+                    </div>
+                </div>
+
+                <!-- Subchapter 2: Few-shot Prompting -->
+                <div class="content-section">
+                    <h2>2. Few-shot Prompting: Belajar dari Contoh</h2>
+                    <p>
+                        Jangan hanya memberi instruksi deskriptif yang abstrak. AI belajar sangat cepat dari pola. <strong>Few-shot Prompting</strong> adalah teknik di mana lo menyisipkan satu atau beberapa contoh pasangan input-output yang lo inginkan di dalam struktur instruksi sebelum menyuruh AI mengerjakan tugas utama.
+                    </p>
+                    
+                    <div class="prompt-box">
+                        <strong>Contoh Prompt Few-Shot:</strong><br><br>
+                        Tugas lo adalah mengubah format text mentah menjadi tag HTML badge.<br><br>
+                        
+                        Input: "Kategori game, warna kuning"<br>
+                        Output: &lt;span class="badge" style="background-color: yellow;"&gt;GAME&lt;/span&gt;<br><br>
+                        
+                        Input: "Kategori utility, warna biru"<br>
+                        Output: &lt;span class="badge" style="background-color: blue;"&gt;UTILITY&lt;/span&gt;<br><br>
+                        
+                        Input: "Kategori error, warna merah"<br>
+                        Output: [AI otomatis menghasilkan sesuai pola di atas]
+                    </div>
+                    <p>
+                        Dengan cara ini, AI tidak menebak-nebak format tag, sintaks CSS inline, maupun penamaan class yang lo harapkan.
+                    </p>
+                </div>
+
+                <!-- Subchapter 3: Meta-Prompting -->
+                <div class="content-section">
+                    <h2>3. Meta-Prompting: AI Mengoptimasi AI</h2>
+                    <p>
+                        Banyak orang menghabiskan uang untuk membeli PDF berisi ribuan prompt kaku. Itu konyol. Orang yang paling memahami struktur internal AI adalah AI itu sendiri. Gunakan teknik <strong>Meta-Prompting</strong>, yaitu menyuruh AI untuk bertindak sebagai Prompt Designer dan membuat instruksi terbaik untuk dirinya sendiri.
+                    </p>
+                    
+                    <div class="prompt-box">
+                        <strong>Metode Meta-Prompt:</strong><br>
+                        "Gue mau bikin aplikasi web visualisasi data. Gue ga ngerti istilah teknis prompt engineering. Tolong buatkan system prompt terbaik dan paling detail agar model AI lain (atau lo sendiri) bisa membangun aplikasi visualisasi data dengan estetika Neo-Brutalist dan logic yang bug-free."
+                    </div>
+                    <p>
+                        AI akan mengembalikan sebuah instruksi yang super padat, terstruktur, lengkap dengan batasan teknis yang bahkan gak pernah terpikirkan oleh lo sebelumnya.
+                    </p>
+                </div>
+
+                <!-- Subchapter 4: Structured Output & JSON Mode -->
+                <div class="content-section">
+                    <h2>4. Structured Output (JSON)</h2>
+                    <p>
+                        Saat lo membangun aplikasi web dinamis yang butuh mengonsumsi data secara dinamis dari AI, lo gak butuh penjelasan basa-basi seperti <em>"Ini adalah data yang Anda minta..."</em>. Lo butuh format data yang bisa langsung dibaca oleh Javascript: <strong>JSON</strong>.
+                    </p>
+                    <p>
+                        Untuk memaksa AI menghasilkan data terstruktur tanpa bumbu obrolan:
+                    </p>
+                    <ul>
+                        <li>Gunakan fitur native <strong>Structured Output / JSON Schema</strong> pada API modern (seperti Gemini API atau OpenAI API).</li>
+                        <li>Jika menggunakan interface chat biasa, instruksikan AI dengan format kaku dan berikan tag kontainer pembungkus.</li>
+                    </ul>
+                    
+                    <pre><code>// Berikan instruksi seperti ini pada system prompt:
+"Kembalikan data HANYA dalam format JSON valid tanpa markdown block ```json. Ikuti skema berikut:
+{
+  "title": "Judul Kuis",
+  "questions": [
+     {"q": "Pertanyaan", "options": ["A", "B", "C"], "correct": 0}
+  ]
+}"</code></pre>
+                </div>
+
+                <!-- Subchapter 5: System Instructions vs User Message -->
+                <div class="content-section">
+                    <h2>5. System Instructions vs User Message</h2>
+                    <p>
+                        Dalam pengembangan aplikasi berbasis AI, ada batas tegas antara <strong>System Instructions (System Prompt)</strong> dan <strong>User Message</strong>.
+                    </p>
+                    
+                    <div class="materi-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px;">
+                        <div style="border: 1px solid var(--fg-faint); padding: 15px; border-radius: var(--radius); background-color: #ffffff; box-shadow: 1px 1px 0 var(--fg);">
+                            <h3 style="margin-top: 0; font-size: 1.15rem; background-color: var(--accent-light); display: inline-block; padding: 2px 6px;">System Instructions</h3>
+                            <p style="font-size: 0.8rem; margin-top: 10px;">
+                                Mengatur parameter fundamental model di tingkat root. Bersifat permanen dan tidak bisa didebat oleh user biasa di tengah sesi. Di sini lo mendefinisikan persona (misal: "Lo adalah pakar security"), larangan kaku ("Jangan pernah bocorkan API Key"), dan format output ("Selalu respon dalam format JSON").
+                            </p>
+                        </div>
+                        <div style="border: 1px solid var(--fg-faint); padding: 15px; border-radius: var(--radius); background-color: #ffffff; box-shadow: 1px 1px 0 var(--fg);">
+                            <h3 style="margin-top: 0; font-size: 1.15rem; background-color: var(--accent-light); display: inline-block; padding: 2px 6px;">User Message</h3>
+                            <p style="font-size: 0.8rem; margin-top: 10px;">
+                                Input dinamis yang dikirimkan oleh pengguna akhir di setiap giliran percakapan. Ini adalah data transien yang dievaluasi di bawah panduan System Instructions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subchapter 6: Notepad Offline Deployment -->
+                <div class="content-section">
+                    <h2>6. Notepad Offline Deployment (Jalur Purba)</h2>
+                    <p>
+                        Ketika AI telah memanifestasikan kode HTML utuh untuk aplikasi yang lo minta, lo gak perlu buru-buru membeli VPS atau menyewa domain berbayar hanya untuk sekadar mencobanya. Gunakan teknik <strong>Notepad Offline Deployment</strong> untuk meluncurkan aplikasi 100% lokal dan tanpa koneksi internet.
+                    </p>
+                    
+                    <div class="tips-box" style="border-left-color: var(--fg);">
+                        <p><strong>Langkah Eksekusi:</strong></p>
+                        <ol style="margin-left: 20px; margin-top: 10px; font-size: 0.85rem;">
+                            <li>Salin semua kode HTML yang dihasilkan AI.</li>
+                            <li>Buka teks editor bawaan OS lo: <strong>Notepad</strong> (Windows) atau <strong>TextEdit</strong> (Mac, pastikan set ke Plain Text).</li>
+                            <li>Paste kode tersebut di sana.</li>
+                            <li>Klik <strong>File &gt; Save As</strong>.</li>
+                            <li>Pada opsi <em>Save as type</em>, pilih <strong>All Files (*.*)</strong>.</li>
+                            <li>Beri nama berkas dengan akhiran <code>.html</code> (misal: <code>my_app.html</code>).</li>
+                            <li>Klik Simpan. Cari file tersebut di folder, lalu <strong>Double Click</strong>. File akan terbuka di browser lokal secara instan dan siap beroperasi secara mandiri.</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- POST-TEST SECTION (Initially Hidden) -->
+            <section id="posttest-section" class="card hidden">
+                <div id="posttest-intro">
+                    <h2 style="margin-top:0;">Ujian Kelulusan (Philosopher's Stone)</h2>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">
+                        Tunjukkan bahwa lo bukan sekadar "NPC" yang meniru kode tanpa mengerti esensinya. Selesaikan ujian akhir ini untuk mendapatkan segel kelulusan lo.
+                    </p>
+                    <button onclick="startPostTest()">Mulai Ujian Akhir</button>
+                </div>
+                
+                <div id="posttest-container" class="hidden">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--fg-faint); padding-bottom: 10px; margin-bottom: 20px;">
+                        <span style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; color: var(--accent-dark);">Ujian Akhir</span>
+                        <span style="font-size: 0.75rem; font-weight: bold;">Pertanyaan <span id="post-q-num">1</span>/5</span>
+                    </div>
+                    <h3 id="post-q-text" style="font-family: 'DM Mono', monospace; font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; font-weight: 500;">Pertanyaan</h3>
+                    <div id="post-options" class="options-list"></div>
+                </div>
+            </section>
+
+            <!-- FINAL RESULT & DEPLOYMENT KEY -->
+            <section id="result-section" class="card hidden text-center" style="border: 2px solid var(--fg); background-color: var(--accent-light);">
+                <h2 id="final-rank-title" style="font-size: 2.5rem; margin-top: 0;">Ascension Status</h2>
+                <p id="final-rank-subtitle" style="font-size: 0.9rem; font-weight: bold; text-transform: uppercase; margin-bottom: 20px;">Grade: Calculating...</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0;">
+                    <div style="border: 1px solid var(--fg); padding: 8px; background: #FFF;">CH1: <span id="final-s1" style="font-weight: bold;">0%</span></div>
+                    <div style="border: 1px solid var(--fg); padding: 8px; background: #FFF;">CH2: <span id="final-s2" style="font-weight: bold;">0%</span></div>
+                    <div style="border: 1px solid var(--fg); padding: 8px; background: #FFF; border-color: var(--fg); outline: 2px solid var(--fg);">CH3: <span id="final-s3" style="font-weight: bold; color: var(--accent-dark);">0%</span></div>
+                </div>
+
+                <div id="final-analysis" style="text-align: left; margin-top: 25px;">
+                    <!-- DYNAMIC ANALYSIS MESSAGE -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="font-weight: bold; font-size: 0.85rem; font-family: 'Cormorant Garamond', serif;">&copy; 2026 THE ALCHEMIST PROJECT</p>
+            <p class="footer-note">End of Trilogy. Terapkan apa yang lo pelajari dan bangun sistem lo sendiri.</p>
+        </div>
+    </footer>
+
+    <!-- LOGICAL SCRIPT -->
+    <script>
+        // --- GLOBAL STATE ---
+        let userState = {
+            name: "Alchemist",
+            ch1_scores: [0, 0], // pre, post
+            ch2_scores: [0, 0], // pre, post
+            ch3_pre: 0,
+            ch3_post: 0,
+            qIndex: 0,
+            isPre: true
+        };
+
+        // --- QUESTIONS DATA (5 QUESTIONS ABOUT ADVANCED PROMPTING) ---
+        const questions = [
+            {
+                q: "Mengapa kita sebaiknya menggunakan 'Reasoning Model' (seperti o1, o3-mini, atau DeepSeek R1) untuk tugas pemrograman yang rumit?",
+                options: [
+                    "Karena responsnya instan tanpa jeda sama sekali.",
+                    "Karena mereka menggunakan Chain of Thought (proses berpikir internal) untuk menyusun modul logika dan mengurangi halusinasi kode.",
+                    "Karena mereka gratis dan tidak membutuhkan koneksi internet sama sekali.",
+                    "Karena model reasoning secara otomatis menghapus file di laptop kita jika salah ketik."
+                ],
+                correct: 1
+            },
+            {
+                q: "Apa esensi mendasar dari teknik 'Few-shot prompting' dalam prompt engineering?",
+                options: [
+                    "Menuliskan prompt sesingkat mungkin agar AI tidak kehabisan memori token.",
+                    "Menyisipkan satu atau beberapa contoh pasangan input-output yang diinginkan sebelum meminta AI menyelesaikan instruksi baru.",
+                    "Mengunggah file PDF dokumentasi setebal 1000 halaman tanpa instruksi tambahan.",
+                    "Menyuruh AI mematikan fitur auto-complete pada editor teks lokal."
+                ],
+                correct: 1
+            },
+            {
+                q: "Bagaimana cara paling andal untuk memastikan model AI mengembalikan data terstruktur dalam format JSON yang bersih?",
+                options: [
+                    "Cukup mengetik 'Jangan lupa kirim JSON ya' di akhir percakapan.",
+                    "Menggunakan fitur native JSON Mode/Structured Output, memberikan skema target secara kaku, atau menyuruh AI membungkus responnya dalam tag custom.",
+                    "Menuliskan seluruh prompt dengan menggunakan huruf kapital (Caps Lock).",
+                    "Mengubah nama ekstensi file program kita dari .html menjadi .json sebelum diunggah."
+                ],
+                correct: 1
+            },
+            {
+                q: "Apa perbedaan mendasar antara 'System Instructions' dan 'User Message'?",
+                options: [
+                    "System Instructions mengatur parameter fundamental, batasan, dan persona model di tingkat root secara konsisten, sedangkan User Message berisi prompt dinamis per percakapan.",
+                    "System Instructions ditulis oleh sistem komputer, sedangkan User Message ditulis oleh browser secara otomatis.",
+                    "System Instructions hanya bisa dibaca oleh aplikasi Notepad, sedangkan User Message wajib dibaca oleh VS Code.",
+                    "Tidak ada perbedaan sama sekali, keduanya memiliki prioritas pengolahan yang setara di dalam memori AI."
+                ],
+                correct: 0
+            },
+            {
+                q: "Di bawah ini adalah langkah yang benar dalam metode 'Notepad offline deployment', KECUALI...",
+                options: [
+                    "Menyalin kode HTML utuh yang dihasilkan AI ke editor teks bawaan seperti Notepad.",
+                    "Menyimpan file dengan nama berakhiran .html.",
+                    "Pada opsi Save as type di Notepad, memilih All Files (*.*).",
+                    "Mengunggah berkas HTML tersebut ke cloud VPS berbayar terlebih dahulu agar bisa dieksekusi secara lokal."
+                ],
+                correct: 3
+            }
+        ];
+
+        // --- GATE DECRYPTION FROM CHAPTER 2 ---
+        function unlockGate() {
+            const input = document.getElementById('exodus-key-input').value.trim().replace(/-/g, '');
+            const errorMsg = document.getElementById('gate-error');
+            const gateCard = document.querySelector('#gate-section .card');
+
+            if (!input) {
+                showErrorGate("Kunci eksodus tidak boleh kosong.");
+                return;
+            }
+
+            try {
+                // 1. Base64 Decode
+                const decodedStr = atob(input);
+
+                // 2. De-obfuscate (Shift char code -1)
+                let jsonStr = "";
+                for (let i = 0; i < decodedStr.length; i++) {
+                    jsonStr += String.fromCharCode(decodedStr.charCodeAt(i) - 1);
+                }
+
+                // 3. Parse JSON
+                // Expected: { n, c1:[pre,post], c2:[pre,post] }
+                const data = JSON.parse(jsonStr);
+
+                if (!data.n || !data.c1 || !data.c2) {
+                    throw new Error("Invalid structure");
+                }
+
+                // Load to state
+                userState.name = data.n;
+                userState.ch1_scores = data.c1;
+                userState.ch2_scores = data.c2;
+
+                // Update UI Display
+                document.getElementById('user-display-name').innerText = userState.name;
+
+                // Hitung rata-rata kuis lama (Chapter 1 & Chapter 2 menggunakan pembagi 6 karena masing-masing ada 3 pertanyaan, total pre+post = 6)
+                const s1_avg_val = Math.round(((data.c1[0] + data.c1[1]) / 6) * 100);
+                const s2_avg_val = Math.round(((data.c2[0] + data.c2[1]) / 6) * 100);
+
+                document.getElementById('s1-avg').innerText = s1_avg_val;
+                document.getElementById('s2-avg').innerText = s2_avg_val;
+
+                // Transition to main content
+                document.getElementById('gate-section').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                window.scrollTo(0, 0);
+
+            } catch (e) {
+                console.error(e);
+                showErrorGate("Exodus Key tidak valid. Pastikan lo menyalin seluruh kode Exodus Key dengan benar.");
+            }
+        }
+
+        function showErrorGate(msg) {
+            const errorMsg = document.getElementById('gate-error');
+            const gateCard = document.querySelector('#gate-section .card');
+            
+            errorMsg.innerText = msg;
+            errorMsg.classList.remove('hidden');
+            
+            // Trigger shake effect
+            gateCard.classList.remove('shake-trigger');
+            void gateCard.offsetWidth; // Trigger reflow
+            gateCard.classList.add('shake-trigger');
+        }
+
+        // --- PRETEST LOGIC ---
+        function startPreTest() {
+            document.getElementById('pretest-intro').classList.add('hidden');
+            document.getElementById('pretest-container').classList.remove('hidden');
+            renderQ();
+        }
+
+        function renderQ() {
+            const container = userState.isPre ? 'pre' : 'post';
+            const qData = questions[userState.qIndex];
+
+            document.getElementById(`${container}-q-num`).innerText = userState.qIndex + 1;
+            document.getElementById(`${container}-q-text`).innerText = qData.q;
+
+            const optsDiv = document.getElementById(`${container}-options`);
+            optsDiv.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span>${opt}</span><span class="arrow">&rarr;</span>`;
+                btn.onclick = () => answer(idx);
+                optsDiv.appendChild(btn);
+            });
+        }
+
+        function answer(selectedIdx) {
+            const correctIdx = questions[userState.qIndex].correct;
+            if (selectedIdx === correctIdx) {
+                if (userState.isPre) {
+                    userState.ch3_pre++;
+                } else {
+                    userState.ch3_post++;
+                }
+            }
+
+            userState.qIndex++;
+            if (userState.qIndex < questions.length) {
+                renderQ();
+            } else {
+                finishSection();
+            }
+        }
+
+        function finishSection() {
+            if (userState.isPre) {
+                // Selesai pretest
+                document.getElementById('pretest-section').innerHTML = `
+                    <div style="text-align: center; padding: 10px 0;">
+                        <span class="badge" style="background-color: var(--accent-light);">Kalibrasi Awal Selesai</span>
+                        <h3 style="margin-top:5px; margin-bottom:10px;">Akses Materi Ascension Terbuka!</h3>
+                        <p style="font-size:0.85rem; margin-bottom:0;">Baca dan pahami materi di bawah ini secara saksama. Ujian Akhir menunggu di bagian paling bawah halaman.</p>
+                    </div>
+                `;
+                
+                // Unlock materi
+                const materi = document.getElementById('materi-section');
+                materi.classList.remove('blur-locked');
+                
+                // Tampilkan post-test trigger di bawah
+                document.getElementById('posttest-section').classList.remove('hidden');
+
+                // Smooth scroll ke materi
+                setTimeout(() => {
+                    materi.scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+
+            } else {
+                // Selesai posttest
+                document.getElementById('posttest-section').classList.add('hidden');
+                document.getElementById('result-section').classList.remove('hidden');
+                renderFinalResult();
+                
+                // Smooth scroll ke hasil
+                setTimeout(() => {
+                    document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            }
+        }
+
+        // --- POST TEST LOGIC ---
+        function startPostTest() {
+            userState.isPre = false;
+            userState.qIndex = 0;
+            document.getElementById('posttest-intro').classList.add('hidden');
+            document.getElementById('posttest-container').classList.remove('hidden');
+            renderQ();
+        }
+
+        // --- ENCRYPTION LOGIC FOR PHILOSOPHER'S STONE ---
+        function generatePhilosopherStone(rank) {
+            const payload = {
+                n: userState.name,
+                c1: userState.ch1_scores,
+                c2: userState.ch2_scores,
+                c3: [userState.ch3_pre, userState.ch3_post],
+                rank: rank,
+                t: Date.now()
+            };
+
+            const jsonStr = JSON.stringify(payload);
+
+            // Simple obfuscation (Shift +1)
+            let obfuscated = "";
+            for (let i = 0; i < jsonStr.length; i++) {
+                obfuscated += String.fromCharCode(jsonStr.charCodeAt(i) + 1);
+            }
+
+            const encoded = btoa(obfuscated).replace(/=/g, '');
+            // Formating XXXX-XXXX-XXXX-XXXX
+            const chunks = encoded.match(/.{1,4}/g);
+            return chunks ? chunks.join('-') : encoded;
+        }
+
+        // --- RENDER FINAL GRADE & KEY ---
+        function renderFinalResult() {
+            const questionsCount = questions.length;
+            
+            // Hitung rata-rata tiap chapter
+            const s1_avg = ((userState.ch1_scores[0] + userState.ch1_scores[1]) / 6) * 100;
+            const s2_avg = ((userState.ch2_scores[0] + userState.ch2_scores[1]) / 6) * 100;
+            const s3_avg = ((userState.ch3_pre + userState.ch3_post) / (questionsCount * 2)) * 100;
+
+            const total_avg = (s1_avg + s2_avg + s3_avg) / 3;
+
+            // Render persentase Chapter 3 ke UI
+            const s3_post_pct = Math.round((userState.ch3_post / questionsCount) * 100);
+            document.getElementById('final-s1').innerText = Math.round((userState.ch1_scores[1] / 3) * 100) + "%";
+            document.getElementById('final-s2').innerText = Math.round((userState.ch2_scores[1] / 3) * 100) + "%";
+            document.getElementById('final-s3').innerText = s3_post_pct + "%";
+
+            const title = document.getElementById('final-rank-title');
+            const subtitle = document.getElementById('final-rank-subtitle');
+            const analysis = document.getElementById('final-analysis');
+            const resultBox = document.getElementById('result-section');
+
+            let rank = "";
+            let message = "";
+            let isSuccess = false;
+
+            if (total_avg >= 90) {
+                rank = "VERIFIED_HUMAN_ALPHA";
+                title.innerText = "VERIFIED HUMAN ALPHA";
+                subtitle.innerText = "Grade: A (Sentient Architect)";
+                message = "Luar biasa. Lo membuktikan bahwa otak lo bukan cuma kumpulan sirkuit memori basi, tapi lo punya pemahaman arsitektur prompt yang sangat matang. AI di tangan lo akan menjadi senjata manipulasi kode yang mematikan. Ini segel kelulusan lo, simpan baik-baik.";
+                isSuccess = true;
+            } else if (total_avg >= 70) {
+                rank = "VERIFIED_HUMAN_BETA";
+                title.innerText = "VERIFIED HUMAN BETA";
+                subtitle.innerText = "Grade: B (Standard Prompt Operator)";
+                message = "Lo lulus, tapi performa lo masih standar. Lo bisa ngasih perintah dasar tapi belum sepenuhnya memaksimalkan kendali sistem. Terus asah logika lo. Ini kunci kelulusan lo, jangan sampai hilang.";
+                isSuccess = true;
+            } else {
+                rank = "UNVERIFIED_ORGANISM";
+                title.innerText = "UNVERIFIED ORGANISM";
+                subtitle.innerText = "Grade: F (Waste of Carbon)";
+                message = "Menyedihkan. Hampir di semua kuis lo kebingungan. Lo kayaknya butuh lebih banyak latihan daripada sekadar copy-paste tanpa mikir. Tapi, karena The Alchemist itu murah hati, nih gue kasih kunci datanya. Belajar lagi sana.";
+                isSuccess = false;
+            }
+
+            if (!isSuccess) {
+                resultBox.style.backgroundColor = "#fee2e2";
+                resultBox.style.borderColor = "#ef4444";
+            }
+
+            const finalKey = generatePhilosopherStone(rank);
+
+            analysis.innerHTML = `
+                <p style="font-style: italic; font-size: 1rem; margin-bottom: 20px; font-weight: 500;">"${message}"</p>
+                <div style="margin-top: 25px;">
+                    <label style="font-size: 0.75rem; font-weight: bold; color: var(--fg);">PHILOSOPHER'S STONE EXODUS KEY</label>
+                    <div class="key-box">${finalKey}</div>
+                    <p style="font-size: 0.7rem; color: #555; margin-top: 10px; font-style: italic;">
+                        *Salin seluruh kode di atas. Kunci ini merangkum seluruh rekam jejak lo dari Chapter 1 sampai Chapter 3 secara permanen. Lo bisa menggunakannya di portal The Alchemist berikutnya.
+                    </p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
