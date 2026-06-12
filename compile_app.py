@@ -89,7 +89,7 @@ def apply_replacements(html_text, js_text, prefix):
         js_text = js_text.replace(f'$("{id_name}")', f'$("{prefix}-{id_name}")')
 
     # Replace local functions & state variables in JS
-    funcs_to_replace = ["answer", "startPreTest", "startPostTest", "renderQuestion", "finishSection", "renderResult", "unlockGate"]
+    funcs_to_replace = ["answer", "startPreTest", "startPostTest", "renderQuestion", "renderQ", "finishSection", "renderResult", "renderFinalResult", "unlockGate"]
     for func in funcs_to_replace:
         js_text = js_text.replace(f"function {func}(", f"function {prefix}_{func}(")
         js_text = js_text.replace(f" {func}(", f" {prefix}_{func}(")
@@ -533,14 +533,14 @@ template = """<!DOCTYPE html>
             original_ch2_unlockGate();
         };
         
-        const original_ch2_renderResult = ch2_renderResult;
-        ch2_renderResult = function() {
-            original_ch2_renderResult();
-            const ch2_postPct = Math.round((ch2_state.postScore / 3) * 100);
+        const original_ch2_renderFinalResult = ch2_renderFinalResult;
+        ch2_renderFinalResult = function() {
+            original_ch2_renderFinalResult();
+            const ch2_postPct = Math.round((ch2_userState.ch2_post / 3) * 100);
             if(ch2_postPct >= 66) {
                 appState.ch2_passed = true;
-                appState.ch2_pre = ch2_state.preScore;
-                appState.ch2_post = ch2_state.postScore;
+                appState.ch2_pre = ch2_userState.ch2_pre;
+                appState.ch2_post = ch2_userState.ch2_post;
                 saveAppState();
                 syncUIState();
                 setTimeout(() => {
@@ -558,14 +558,14 @@ template = """<!DOCTYPE html>
             original_ch3_unlockGate();
         };
         
-        const original_ch3_renderResult = ch3_renderResult;
-        ch3_renderResult = function() {
-            original_ch3_renderResult();
-            const ch3_postPct = Math.round((ch3_state.postScore / 5) * 100);
+        const original_ch3_renderFinalResult = ch3_renderFinalResult;
+        ch3_renderFinalResult = function() {
+            original_ch3_renderFinalResult();
+            const ch3_postPct = Math.round((ch3_userState.ch3_post / 5) * 100);
             if(ch3_postPct >= 60) {
                 appState.ch3_passed = true;
-                appState.ch3_pre = ch3_state.preScore;
-                appState.ch3_post = ch3_state.postScore;
+                appState.ch3_pre = ch3_userState.ch3_pre;
+                appState.ch3_post = ch3_userState.ch3_post;
                 
                 const avg1 = ((appState.ch1_pre + appState.ch1_post) / 6) * 100;
                 const avg2 = ((appState.ch2_pre + appState.ch2_post) / 6) * 100;
