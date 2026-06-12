@@ -100,10 +100,7 @@ def apply_replacements(html_text, js_text, prefix):
         js_text = js_text.replace(f"onclick='{func}(", f"onclick='{prefix}_{func}(")
 
     # Replace state and QUESTIONS arrays
-    js_text = js_text.replace("let state = ", f"let {prefix}_state = ")
-    js_text = js_text.replace("const state = ", f"const {prefix}_state = ")
-    js_text = js_text.replace(" state.", f" {prefix}_state.")
-    js_text = js_text.replace("(state.", f"({prefix}_state.")
+    js_text = re.sub(r'\bstate\b', f'{prefix}_state', js_text)
     js_text = js_text.replace("state_instance", f"{prefix}_state_instance")
     
     # Prefix userState as well to prevent re-declaration SyntaxErrors
@@ -127,6 +124,8 @@ ch3_html, ch3_js = apply_replacements(ch3_html, ch3_js, "ch3")
 # Additional replacements for Legacy & Warranty specifically
 legacy_html = legacy_html.replace('id="master-key-input"', 'id="legacy-master-key-input"')
 legacy_html = legacy_html.replace('id="gate-section"', 'id="legacy-gate-section"')
+legacy_html = legacy_html.replace("unlockTranscript()", "legacy_unlockTranscript()")
+legacy_html = legacy_html.replace("downloadPDF()", "legacy_downloadPDF()")
 legacy_html = legacy_html.replace('id="gate-error"', 'id="legacy-gate-error"')
 legacy_html = legacy_html.replace('id="cert-section"', 'id="legacy-cert-section"')
 legacy_html = legacy_html.replace('id="transcript-container"', 'id="legacy-transcript-container"')
@@ -158,6 +157,7 @@ legacy_js = legacy_js.replace("score-2", "legacy-score-2")
 legacy_js = legacy_js.replace("score-3", "legacy-score-3")
 
 warranty_html = warranty_html.replace('id="verify-input"', 'id="warranty-verify-input"')
+warranty_html = warranty_html.replace("verifyKey()", "warranty_verifyKey()")
 warranty_html = warranty_html.replace('id="gate-section"', 'id="warranty-gate-section"')
 warranty_html = warranty_html.replace('id="gate-error"', 'id="warranty-gate-error"')
 warranty_html = warranty_html.replace('id="dashboard-content"', 'id="warranty-dashboard-content"')
