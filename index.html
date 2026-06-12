@@ -98,7 +98,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            color: #6B6B6B;
+            color: #0D0D0D;
             border: 1px solid transparent;
             border-radius: 2px;
             cursor: pointer;
@@ -1638,34 +1638,34 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="mb-8">
-            <span class="label text-[10px] text-gray-400 block mb-1">alchemist4real</span>
-            <span class="font-serif font-bold text-xl tracking-wider text-gold">THE MASTERCLASS</span>
+            <span class="label text-[10px] text-black block mb-1">alchemist4real</span>
+            <span class="font-serif font-bold text-xl tracking-wider text-black">THE MASTERCLASS</span>
         </div>
         
         <div class="flex-grow flex flex-col justify-between">
             <div class="space-y-2">
                 <div onclick="switchTab('ch1')" id="tab-ch1" class="nav-item active-tab">
-                    <span>📖</span> Ch 1: Structure
+                    Ch 1: Structure
                 </div>
                 <div onclick="switchTab('ch2')" id="tab-ch2" class="nav-item nav-locked">
-                    <span>🧪</span> Ch 2: Transmutation
+                    Ch 2: Transmutation
                 </div>
                 <div onclick="switchTab('ch3')" id="tab-ch3" class="nav-item nav-locked">
-                    <span>⚡</span> Ch 3: Ascension
+                    Ch 3: Ascension
                 </div>
                 <div onclick="switchTab('legacy')" id="tab-legacy" class="nav-item nav-locked">
-                    <span>🎓</span> Transcript
+                    Transcript
                 </div>
                 <div onclick="switchTab('warranty')" id="tab-warranty" class="nav-item">
-                    <span>🛡️</span> Authority Check
+                    Authority Check
                 </div>
             </div>
             
-            <div class="border-t border-gray-200 pt-6">
-                <div class="text-[10px] text-gray-400 font-mono">
+            <div class="border-t border-black pt-6">
+                <div class="text-[10px] text-black font-mono">
                     STATE: <span id="app-state-label" class="text-green-500 font-bold animate-pulse">ARC_01</span>
                 </div>
-                <div class="text-[9px] text-gray-400 mt-2 font-mono" id="app-user-label">
+                <div class="text-[9px] text-black mt-2 font-mono" id="app-user-label">
                     USER: GUEST
                 </div>
             </div>
@@ -3076,7 +3076,35 @@ function decryptData(keyString) {
             document.getElementById(tabId + '-view').classList.add('active-view');
             
             // Trigger load states for specific views
-            // (Auto-fill logic removed to preserve the Gatekeeper educational flow)
+            if(tabId === 'legacy' && appState.ch3_passed) {
+                const legacyInput = document.getElementById('legacy-master-key-input');
+                if(legacyInput) {
+                    const payload = {
+                        n: appState.userName,
+                        c1: [appState.ch1_pre, appState.ch1_post],
+                        c2: [appState.ch2_pre, appState.ch2_post],
+                        c3: [appState.ch3_pre, appState.ch3_post],
+                        rank: appState.rank,
+                        t: appState.timestamp || Date.now()
+                    };
+                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
+                    legacyInput.value = obfuscated.match(/.{1,4}/g).join('-');
+                }}
+            if(tabId === 'warranty') {
+                const warrantyInput = document.getElementById('warranty-verify-input');
+                if(warrantyInput && appState.ch3_passed) {
+                    const payload = {
+                        n: appState.userName,
+                        c1: [appState.ch1_pre, appState.ch1_post],
+                        c2: [appState.ch2_pre, appState.ch2_post],
+                        c3: [appState.ch3_pre, appState.ch3_post],
+                        rank: appState.rank,
+                        t: appState.timestamp || Date.now()
+                    };
+                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
+                    warrantyInput.value = obfuscated.match(/.{1,4}/g).join('-');
+                }
+            }
         }
 
         // ==========================================
@@ -3767,9 +3795,14 @@ function decryptData(keyString) {
             }
         }
         
-        // Auto-unlock removed. The user MUST manually paste the Genesis Key.
+        // Auto-unlock gate for Ch2 if already completed Ch1 in state
         const original_ch2_unlockGate = ch2_unlockGate;
         ch2_unlockGate = function() {
+            if(appState.ch1_passed && !document.getElementById('ch2-genesis-key-input').value) {
+                const payload = { n: appState.userName, s1: appState.ch1_pre, s2: appState.ch1_post, t: appState.timestamp };
+                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
+                document.getElementById('ch2-genesis-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
+            }
             original_ch2_unlockGate();
         };
         
@@ -4102,9 +4135,20 @@ function decryptData(keyString) {
             `;
         }
         
-        // Auto-unlock removed. The user MUST manually paste the Exodus Key.
+        // Auto-unlock gate for Ch3
         const original_ch3_unlockGate = ch3_unlockGate;
         ch3_unlockGate = function() {
+            if(appState.ch2_passed && !document.getElementById('ch3-exodus-key-input').value) {
+                const payload = {
+                    n: appState.userName,
+                    c1: [appState.ch1_pre, appState.ch1_post],
+                    c2: [appState.ch2_pre, appState.ch2_post],
+                    rank: 'ALCHEMIST_L2',
+                    t: appState.timestamp
+                };
+                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
+                document.getElementById('ch3-exodus-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
+            }
             original_ch3_unlockGate();
         };
         
@@ -4404,7 +4448,16 @@ function decryptData(keyString) {
         function init() {
             loadAppState();
             
-            // Auto bypass gates removed to enforce manual key insertion metaphor.
+            // Auto bypass gates for tabs if state is loaded
+            if(appState.ch1_passed) {
+                ch2_unlockGate();
+            }
+            if(appState.ch2_passed) {
+                ch3_unlockGate();
+            }
+            if(appState.ch3_passed) {
+                legacy_unlockTranscript();
+            }
         }
 
         // Intercept form submissions or window onload
