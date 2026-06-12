@@ -429,7 +429,6 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             box-shadow: var(--shadow-flat);
-            height: 250px;
             position: relative;
         }
 
@@ -557,9 +556,85 @@
             20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
         }
 
+        /* NEW FEATURES CSS */
+        /* Decryption Terminal */
+        #decryption-terminal {
+            background-color: var(--fg);
+            color: var(--accent-success);
+            font-family: var(--font-body);
+            padding: 2rem;
+            border-radius: 2px;
+            height: 300px;
+            overflow-y: hidden;
+            position: relative;
+            box-shadow: var(--shadow-flat);
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .terminal-line { margin: 0.2rem 0; font-size: 0.85rem; }
+        .terminal-cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent-success); animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Redacted UI */
+        .redacted {
+            background-color: var(--fg);
+            color: var(--fg);
+            cursor: crosshair;
+            transition: color 0.2s, background-color 0.2s;
+            user-select: none;
+            display: inline-block;
+            padding: 0 0.2rem;
+        }
+        .redacted:hover {
+            color: var(--accent-success);
+            background-color: transparent;
+            text-shadow: 0 0 5px var(--accent-success);
+        }
+
+        /* Skill Tree */
+        .skill-tree-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border: 1px solid var(--fg);
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow-flat);
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+        .skill-node {
+            border: 2px solid var(--fg);
+            padding: 1rem;
+            background-color: var(--bg);
+            text-align: center;
+            position: relative;
+            font-weight: bold;
+            min-width: 120px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .skill-node:hover {
+            background-color: var(--fg);
+            color: var(--bg);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-flat);
+        }
+        .skill-node.active {
+            border-color: var(--accent-success);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+        .skill-connector {
+            height: 2px;
+            width: 40px;
+            background-color: var(--fg);
+        }
+
         @media (max-width: 600px) {
             h1 { font-size: 2rem; }
             .id-card-row { grid-template-columns: 1fr; gap: 1rem; }
+            .skill-tree-container { flex-direction: column; gap: 1rem; }
+            .skill-connector { width: 2px; height: 40px; }
         }
     </style>
 </head>
@@ -573,7 +648,7 @@
                 alchemist4real
             </div>
             <div class="system-version">
-                System v1.0
+                System v1.1
             </div>
         </div>
     </header>
@@ -608,6 +683,15 @@
                 <div id="verify-error" class="error-message">Error: Invalid Data Integrity.</div>
             </div>
         </section>
+
+        <!-- DECRYPTION TERMINAL -->
+        <div id="decryption-section" class="hidden">
+            <h2 class="section-title">Terminal Decryption Sequence</h2>
+            <div id="decryption-terminal">
+                <div id="terminal-content"></div>
+                <span class="terminal-cursor"></span>
+            </div>
+        </div>
 
         <!-- RESULT: DASHBOARD (HIDDEN) -->
         <div id="dashboard-section" class="hidden">
@@ -653,6 +737,18 @@
                         </div>
                     </div>
 
+                    <!-- Redacted Fields -->
+                    <div class="id-card-row">
+                        <div class="id-card-field">
+                            <div class="id-card-label">Clearance Level</div>
+                            <div class="id-card-val"><span class="redacted">TOP SECRET - OMEGA</span></div>
+                        </div>
+                        <div class="id-card-field">
+                            <div class="id-card-label">Origin IP</div>
+                            <div class="id-card-val"><span class="redacted">192.168.x.x (ENCRYPTED)</span></div>
+                        </div>
+                    </div>
+
                     <div class="id-card-footer">
                         <div class="id-card-disclaimer">
                             Kredensial ini diverifikasi secara kriptografis melalui Protokol Alchemist.
@@ -665,14 +761,27 @@
                 </div>
             </div>
 
+            <!-- Skill Tree -->
+            <div style="margin: 2.5rem 0;">
+                <h2 class="section-title">Cognitive Evolution Skill Tree</h2>
+                <div class="skill-tree-container">
+                    <div class="skill-node active" id="node-html">STRUCTURE<br><span style="font-size:0.7em; font-weight:normal;">HTML5 / CSS3</span></div>
+                    <div class="skill-connector"></div>
+                    <div class="skill-node" id="node-js">LOGIC<br><span style="font-size:0.7em; font-weight:normal;">JavaScript (ES6+)</span></div>
+                    <div class="skill-connector"></div>
+                    <div class="skill-node" id="node-react">ASCENSION<br><span style="font-size:0.7em; font-weight:normal;">React / SPA</span></div>
+                </div>
+                <p class="chart-caption">"Sirkuit neuronal kognitif yang telah dibangkitkan."</p>
+            </div>
+
             <!-- Evolution Chart -->
             <div style="margin: 2.5rem 0;">
-                <h2 class="section-title">Analisis Evolusi</h2>
-                <div class="chart-box">
+                <h2 class="section-title">Advanced Multi-Axis Analysis</h2>
+                <div class="chart-box" style="height: 350px;">
                     <canvas id="evolutionChart"></canvas>
                 </div>
                 <p class="chart-caption">
-                    "Grafik ini menunjukkan perjalanan kognitif lo dari seorang turis menjadi arsitek."
+                    "Spektrum multidimensional kompetensi lo."
                 </p>
             </div>
 
@@ -721,8 +830,6 @@
             
             // Note: The Key format in Cert was Base64 + "-TIMEHASH". 
             // We need to handle both raw Base64 and formatted key.
-            // Let's try a robust approach: extract the Base64 part.
-            
             let payloadPart = rawInput;
             if (rawInput.includes('-')) {
                 const chunks = rawInput.split('-');
@@ -756,16 +863,57 @@
 
                 if (!data.n || !data.rank) return false;
 
-                renderDashboard(data);
+                startDecryptionSequence(data);
                 return true;
             } catch (e) {
                 return false;
             }
         }
 
-        function renderDashboard(data) {
-            // Hide Scanner
+        function startDecryptionSequence(data) {
             document.getElementById('scanner-section').classList.add('hidden');
+            document.getElementById('decryption-section').classList.remove('hidden');
+            
+            const terminal = document.getElementById('terminal-content');
+            terminal.innerHTML = '';
+            
+            const lines = [
+                "INITIATING SECURE HANDSHAKE...",
+                "ESTABLISHING CONNECTION TO ALCHEMIST PROTOCOL...",
+                "BYPASSING MAINFRAME FIREWALL...",
+                "ACCESS GRANTED.",
+                "DECRYPTING PAYLOAD..."
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < lines.length) {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    line.innerText = `> ${lines[i]}`;
+                    terminal.appendChild(line);
+                    
+                    // Hex garbage
+                    for (let j = 0; j < 2; j++) {
+                        const hex = document.createElement('div');
+                        hex.className = 'terminal-line';
+                        hex.style.opacity = '0.5';
+                        hex.innerText = Array.from({length: 32}, () => Math.floor(Math.random()*16).toString(16)).join('').toUpperCase();
+                        terminal.appendChild(hex);
+                    }
+                    terminal.parentElement.scrollTop = terminal.parentElement.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('decryption-section').classList.add('hidden');
+                        renderDashboard(data);
+                    }, 600);
+                }
+            }, 300);
+        }
+
+        function renderDashboard(data) {
             document.getElementById('dashboard-section').classList.remove('hidden');
 
             // Populate Data
@@ -780,78 +928,66 @@
 
             // Chart Data
             // Calc Averages for Chart Points
-            const s1 = Math.round((data.c1[1]/3)*100); 
-            const s2 = Math.round((data.c2[1]/3)*100); 
-            const s3 = Math.round((data.c3[1]/3)*100); 
+            const s1 = data.c1 ? Math.round((data.c1[1]/3)*100) : 50; 
+            const s2 = data.c2 ? Math.round((data.c2[1]/3)*100) : 0; 
+            const s3 = data.c3 ? Math.round((data.c3[1]/3)*100) : 0; 
 
-            // Render Chart
+            const logicScore = s2;
+            const uiScore = s1;
+            const archScore = s3;
+            const syncScore = Math.round((s1+s2+s3)/3);
+            const debugScore = Math.min(100, s2 + 30);
+
+            // Render Radar Chart
             const ctx = document.getElementById('evolutionChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
+            if(window.evolutionChartInstance) {
+                window.evolutionChartInstance.destroy();
+            }
+
+            window.evolutionChartInstance = new Chart(ctx, {
+                type: 'radar',
                 data: {
-                    labels: ['Start (0%)', 'Chapter 1 (Structure)', 'Chapter 2 (Logic)', 'Chapter 3 (Ascension)'],
+                    labels: ['Structure (UI)', 'Logic (JS)', 'Architecture', 'Synchronization', 'Debugging'],
                     datasets: [{
-                        label: 'Tingkat Kompetensi (%)',
-                        data: [0, s1, s2, s3],
-                        borderColor: '#0D0D0D',
-                        backgroundColor: 'rgba(13, 13, 13, 0.08)',
+                        label: 'Competency Matrix',
+                        data: [uiScore, logicScore, archScore, syncScore, debugScore],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
                         borderWidth: 2,
-                        pointBackgroundColor: '#10B981',
-                        pointBorderColor: '#0D0D0D',
-                        pointBorderWidth: 1.5,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        fill: true,
-                        tension: 0.1
+                        pointBackgroundColor: '#0D0D0D',
+                        pointBorderColor: '#10B981',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            display: true,
-                            labels: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(13, 13, 13, 0.2)' },
+                            grid: { color: 'rgba(13, 13, 13, 0.2)' },
+                            pointLabels: {
                                 color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 11
-                                }
+                                font: { family: 'DM Mono', size: 11, weight: 'bold' }
+                            },
+                            ticks: {
+                                display: false,
+                                min: 0,
+                                max: 100
                             }
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: { 
-                                color: 'rgba(13, 13, 13, 0.15)',
-                                drawTicks: false
-                            },
-                            ticks: { 
-                                color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 10
-                                }
-                            }
-                        },
-                        x: {
-                            grid: { 
-                                color: 'rgba(13, 13, 13, 0.15)',
-                                drawTicks: false
-                            },
-                            ticks: { 
-                                color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 10
-                                }
-                            }
-                        }
+                    plugins: {
+                        legend: { display: false }
                     }
                 }
             });
+
+            // Update Skill Tree nodes based on data
+            if(s2 > 0) document.getElementById('node-js').classList.add('active');
+            if(s3 > 0) document.getElementById('node-react').classList.add('active');
         }
     </script>
 </body>

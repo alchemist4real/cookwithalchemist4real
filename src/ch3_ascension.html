@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     
     <style>
         /* BRANDING VARIABLES - Neo-Brutalist Light Mode */
@@ -522,6 +523,162 @@
             text-align: center;
             margin-top: 80px;
         }
+
+        /* DRAG AND DROP / PROMPT BUILDER */
+        .prompt-node {
+            background-color: var(--card-bg);
+            border: 2px solid var(--fg);
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 2px 2px 0 var(--fg);
+            border-radius: var(--radius);
+            font-family: 'DM Mono', monospace;
+        }
+        .prompt-node:active {
+            cursor: grabbing;
+        }
+        .prompt-node-title {
+            font-weight: bold;
+        }
+        .prompt-chain-container {
+            border: 2px dashed var(--fg-faint);
+            padding: 20px;
+            min-height: 200px;
+            background-color: #F9FAFB;
+        }
+        
+        /* TERMINAL SIMULATOR */
+        .terminal-sim {
+            background-color: #000;
+            color: #22C55E;
+            font-family: 'DM Mono', monospace;
+            padding: 20px;
+            border-radius: var(--radius);
+            min-height: 300px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+            overflow-y: auto;
+            position: relative;
+        }
+        .terminal-header {
+            border-bottom: 1px solid #22C55E;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .terminal-output {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+        }
+        .terminal-prompt {
+            margin-right: 10px;
+        }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #22C55E;
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem;
+            flex-grow: 1;
+            outline: none;
+            box-shadow: none;
+        }
+        .terminal-input:focus {
+            border: none;
+            box-shadow: none;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #22C55E;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* TOKEN VISUALIZER */
+        .visualizer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid var(--fg);
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'DM Mono', monospace;
+            font-weight: bold;
+        }
+        .slider-input-element {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+        .slider-input-element::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 0;
+            background: var(--accent-dark);
+            cursor: pointer;
+            margin-top: -6px;
+            border: 1px solid var(--fg);
+        }
+        .slider-input-element::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--fg);
+            border: none;
+        }
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            height: 150px;
+            gap: 10px;
+            border-bottom: 2px solid var(--fg);
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        .chart-bar {
+            flex-grow: 1;
+            background-color: var(--accent-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            color: var(--bg);
+            font-size: 0.7rem;
+            transition: height 0.3s ease, background-color 0.3s ease;
+            position: relative;
+        }
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            color: var(--fg);
+            font-weight: bold;
+            font-family: 'DM Mono', monospace;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -726,6 +883,123 @@
                             <li>Beri nama berkas dengan akhiran <code>.html</code> (misal: <code>my_app.html</code>).</li>
                             <li>Klik Simpan. Cari file tersebut di folder, lalu <strong>Double Click</strong>. File akan terbuka di browser lokal secara instan dan siap beroperasi secara mandiri.</li>
                         </ol>
+                    </div>
+                </div>
+
+                <!-- Subchapter 7: Tokenization & BPE -->
+                <div class="content-section">
+                    <h2>7. Anatomi Kata: Tokenization & Byte-Pair Encoding (BPE)</h2>
+                    <p>
+                        Lo pikir AI membaca teks huruf demi huruf atau kata demi kata? Salah besar. Mesin tidak mengerti "kata". Mereka mengonsumsi angka. Di sinilah <strong>Tokenization</strong> masuk, memotong kalimat lo menjadi potongan-potongan kecil yang disebut token.
+                    </p>
+                    <p>
+                        Sebagian besar model bahasa raksasa menggunakan algoritma kompresi yang disebut <strong>Byte-Pair Encoding (BPE)</strong>. BPE mencari kombinasi karakter yang paling sering muncul dan menggabungkannya menjadi satu token. Kata "belajar" mungkin utuh 1 token, tapi kata "mengoptimalkan" mungkin dipecah menjadi "meng" - "optimalkan".
+                    </p>
+                    <div class="tips-box">
+                        <p><strong>Kenapa ini penting?</strong> Kalau lo bikin prompt panjang pakai bahasa yang jarang dipakai (seperti bahasa daerah), AI akan memecah satu kata jadi banyak token. Semakin banyak token, semakin mahal biaya API lo, dan semakin lambat responnya. Pahami bahwa 1 token kira-kira sama dengan 0.75 kata bahasa Inggris.</p>
+                    </div>
+                </div>
+
+                <!-- Subchapter 8: Embedding Space -->
+                <div class="content-section">
+                    <h2>8. Dimensi Makna: Embedding Space</h2>
+                    <p>
+                        Setelah teks diubah jadi token, bagaimana AI memahami "makna"-nya? Jawabannya ada di <strong>Embedding Space</strong>.
+                    </p>
+                    <p>
+                        Bayangkan sebuah ruang 3D yang sangat luas (nyatanya, ruang ini memiliki ribuan dimensi). Setiap token dilempar ke dalam ruang ini. Token yang memiliki makna mirip akan berada berdekatan. "Raja" dan "Ratu" akan dekat. "Apel" dan "Jeruk" juga dekat. 
+                    </p>
+                    <p>
+                        Saat lo nge-prompt, lo seakan-akan sedang menembakkan koordinat ke dalam dimensi tersebut, mengarahkan otak AI menuju kluster konsep tertentu. Kalau prompt lo ambigu, lo menembak ke ruang hampa dan hasilnya tidak sesuai ekspektasi.
+                    </p>
+                </div>
+
+                <!-- Subchapter 9: Attention Logic -->
+                <div class="content-section">
+                    <h2>9. Mekanisme Fokus: Attention Logic</h2>
+                    <p>
+                        Inilah inti dari revolusi Transformer. <strong>Self-Attention Mechanism</strong>.
+                    </p>
+                    <p>
+                        Sebelum Transformer, AI mudah lupa konteks kalimat di awal paragraf saat ia membaca bagian akhir. Dengan Attention, setiap token secara aktif "melihat" ke semua token lain dalam kalimat untuk menentukan seberapa relevan mereka satu sama lain. Kata "bank" bisa berarti bank uang atau bank sungai, dan AI tahu perbedaannya karena ia memberi <em>attention weight</em> yang tinggi pada kata-kata di sekitarnya.
+                    </p>
+                    <div class="warning-box">
+                        <p><strong>Dampak pada Prompting:</strong> Jangan selipkan informasi rongsokan di prompt lo. Semakin banyak "noise" (kalimat basa-basi), semakin pecah fokus (attention) dari AI. Langsung to the point. Less is more ketika berbicara dengan mesin.</p>
+                    </div>
+                </div>
+
+                <!-- Subchapter 10: Nucleus Sampling -->
+                <div class="content-section">
+                    <h2>10. Seni Halusinasi: Nucleus Sampling (Top-K & Top-P)</h2>
+                    <p>
+                        Saat AI ingin membalas, ia memiliki daftar ribuan token yang diurutkan berdasarkan probabilitas. Bagaimana ia memilih token mana yang dikeluarkan? Di sinilah parameter kontrol lo bermain.
+                    </p>
+                    <ul>
+                        <li><strong>Temperature:</strong> Mengatur tingkat keacakan. Semakin tinggi (misal: 0.9), probabilitas token diratakan, sehingga AI akan memilih kata-kata "aneh" dan kreatif. Semakin rendah (0.1), AI menjadi robot kaku yang cuma memilih kata paling mungkin.</li>
+                        <li><strong>Top-K:</strong> AI hanya akan mempertimbangkan K token dengan probabilitas tertinggi. Kalau K=10, token ke-11 dan seterusnya dibuang.</li>
+                        <li><strong>Top-P (Nucleus):</strong> AI mempertimbangkan token-token teratas yang jumlah probabilitasnya mencapai persentase P (misal: 0.9 berarti 90%).</li>
+                    </ul>
+                    
+                    <div class="visualizer-container">
+                        <h3 style="margin-top:0;">Interactive: Token Sampling Visualizer</h3>
+                        <p style="font-size: 0.85rem;">Geser slider di bawah ini untuk melihat bagaimana probabilitas pengambilan kata (token) berikutnya berubah. Anggap AI sedang memprediksi kata setelah "Ibu pergi ke..."</p>
+                        
+                        <div class="slider-group">
+                            <label><span>Temperature:</span> <span id="temp-val">0.7</span></label>
+                            <input type="range" id="temp-slider" class="slider-input-element" min="0.1" max="2.0" step="0.1" value="0.7">
+                        </div>
+                        
+                        <div class="chart-container" id="token-chart">
+                            <!-- Bars generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subchapter 11: Prompt Chain Builder -->
+                <div class="content-section">
+                    <h2>11. Merangkai Mantra: Prompt Chain Builder</h2>
+                    <p>
+                        Jangan menumpuk semua beban pada satu prompt raksasa. Pecah tugas menjadi modul-modul kecil. Ini disebut <strong>Prompt Chaining</strong>. Susun aliran kerja (workflow) dengan menyeret blok-blok di bawah ini. Lo bisa merancang arsitektur output model untuk tugas rumit.
+                    </p>
+                    
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="font-size:1rem;">Available Nodes</h3>
+                            <div id="available-nodes" class="prompt-chain-container">
+                                <div class="prompt-node" data-id="1"><span class="prompt-node-title">System Role Definition</span></div>
+                                <div class="prompt-node" data-id="2"><span class="prompt-node-title">Context / Backstory</span></div>
+                                <div class="prompt-node" data-id="3"><span class="prompt-node-title">Few-shot Examples</span></div>
+                                <div class="prompt-node" data-id="4"><span class="prompt-node-title">Task Instruction</span></div>
+                                <div class="prompt-node" data-id="5"><span class="prompt-node-title">Output Constraint (JSON)</span></div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="font-size:1rem;">Your Active Chain</h3>
+                            <div id="active-nodes" class="prompt-chain-container" style="background-color: var(--accent-light);">
+                                <!-- Drop here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subchapter 12: Hacker Terminal Simulator -->
+                <div class="content-section">
+                    <h2>12. Sandbox Simulasi LLM (Hacker Terminal)</h2>
+                    <p>
+                        Saatnya praktek langsung. Terminal retro di bawah ini terhubung ke simulasi <em>pseudo-LLM</em> lokal. Lo bisa mengubah parameter system seperti <code>set temp 0.1</code> atau langsung mengirim prompt dengan <code>prompt [pesan]</code>.
+                    </p>
+                    
+                    <div class="terminal-sim" id="terminal-screen" onclick="document.getElementById('term-input').focus()">
+                        <div class="terminal-header">
+                            <span>ALCHEMIST OS v3.0 - NEURAL LINK ESTABLISHED</span>
+                            <span>STATUS: ONLINE</span>
+                        </div>
+                        <div class="terminal-output" id="term-output">System initialized. Type 'help' for commands.</div>
+                        <div class="terminal-input-line">
+                            <span class="terminal-prompt">root@alchemist:~#</span>
+                            <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false">
+                            <span class="terminal-cursor"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -1090,6 +1364,141 @@
                     </p>
                 </div>
             `;
+        }
+
+        // --- INTERACTIVE FEATURES LOGIC ---
+        
+        // 1. Token Visualizer
+        const tempSlider = document.getElementById('temp-slider');
+        const tempVal = document.getElementById('temp-val');
+        const chartContainer = document.getElementById('token-chart');
+        
+        // Base unnormalized probabilities for words: [pasar, sekolah, rumah, kerja, bulan]
+        const baseLogits = [2.5, 2.0, 1.5, 1.0, -1.0];
+        const labels = ['pasar', 'sekolah', 'rumah', 'kerja', 'bulan'];
+        
+        function updateChart() {
+            if (!tempSlider) return;
+            const T = parseFloat(tempSlider.value);
+            tempVal.innerText = T.toFixed(1);
+            
+            // Softmax with temperature
+            const maxLogit = Math.max(...baseLogits);
+            const exps = baseLogits.map(l => Math.exp((l - maxLogit) / T));
+            const sumExps = exps.reduce((a, b) => a + b, 0);
+            const probs = exps.map(e => e / sumExps);
+            
+            chartContainer.innerHTML = '';
+            probs.forEach((p, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = Math.max((p * 100), 5) + '%';
+                
+                // Color change based on prob
+                if (p > 0.4) bar.style.backgroundColor = '#22c55e'; // green
+                else if (p > 0.1) bar.style.backgroundColor = '#3b82f6'; // blue
+                else bar.style.backgroundColor = '#ef4444'; // red
+                
+                bar.innerHTML = `<span style="margin-bottom: 5px;">${(p*100).toFixed(1)}%</span>
+                                 <span class="chart-label">${labels[i]}</span>`;
+                chartContainer.appendChild(bar);
+            });
+        }
+        if (tempSlider) {
+            tempSlider.addEventListener('input', updateChart);
+            updateChart(); // init
+        }
+
+        // 2. Prompt Chain Builder
+        if (typeof Sortable !== 'undefined') {
+            const availableNodes = document.getElementById('available-nodes');
+            const activeNodes = document.getElementById('active-nodes');
+            if (availableNodes && activeNodes) {
+                new Sortable(availableNodes, {
+                    group: 'shared',
+                    animation: 150,
+                    sort: false // Don't sort available nodes
+                });
+                new Sortable(activeNodes, {
+                    group: 'shared',
+                    animation: 150
+                });
+            }
+        }
+
+        // 3. Hacker Terminal Simulator
+        const termInput = document.getElementById('term-input');
+        const termOutput = document.getElementById('term-output');
+        let termState = { temp: 0.7 };
+        let isTyping = false;
+
+        function typeOutput(text, callback) {
+            isTyping = true;
+            let i = 0;
+            const line = document.createElement('div');
+            termOutput.appendChild(line);
+            
+            function typeChar() {
+                if (i < text.length) {
+                    line.textContent += text.charAt(i);
+                    i++;
+                    termOutput.parentElement.scrollTop = termOutput.parentElement.scrollHeight;
+                    setTimeout(typeChar, 20);
+                } else {
+                    isTyping = false;
+                    if (callback) callback();
+                }
+            }
+            typeChar();
+        }
+
+        if (termInput) {
+            termInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !isTyping) {
+                    const cmd = this.value.trim();
+                    this.value = '';
+                    
+                    if (!cmd) return;
+                    
+                    const echo = document.createElement('div');
+                    echo.style.color = '#fff';
+                    echo.textContent = `root@alchemist:~# ${cmd}`;
+                    termOutput.appendChild(echo);
+                    
+                    const parts = cmd.split(' ');
+                    const base = parts[0].toLowerCase();
+                    
+                    if (base === 'help') {
+                        typeOutput("Commands:\n  help        - Show this message\n  set temp <v>- Set model temperature (0.1 - 2.0)\n  prompt <msg>- Send prompt to simulated LLM");
+                    } else if (base === 'set' && parts[1] === 'temp') {
+                        const v = parseFloat(parts[2]);
+                        if (!isNaN(v)) {
+                            termState.temp = v;
+                            typeOutput(`System temperature set to ${v.toFixed(1)}`);
+                        } else {
+                            typeOutput("Error: Invalid temperature value.");
+                        }
+                    } else if (base === 'prompt') {
+                        const promptMsg = parts.slice(1).join(' ');
+                        if (!promptMsg) {
+                            typeOutput("Error: Prompt cannot be empty.");
+                            return;
+                        }
+                        
+                        let response = "Processing...\n";
+                        if (termState.temp > 1.5) {
+                            response += "W4kTu AdAlah I1usi. K0d3 aDalAh K4caU. Zzz...";
+                        } else if (termState.temp < 0.3) {
+                            response += "Pesan diterima. Melaksanakan instruksi secara kaku.";
+                        } else {
+                            response += "Sintesis berhasil. Pola bahasa terdeteksi. Merespons secara optimal.";
+                        }
+                        typeOutput(`[LLM Response (Temp: ${termState.temp.toFixed(1)})]: ${response}`);
+                    } else {
+                        typeOutput(`Command not found: ${base}`);
+                    }
+                }
+            });
         }
     </script>
 </body>

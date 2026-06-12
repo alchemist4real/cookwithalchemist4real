@@ -984,6 +984,34 @@
                 flex-direction: row;
             }
         }
+        
+        /* --- DOM TREE EXPLORER CSS --- */
+        .dte-container { border: 1px solid var(--fg-faint); border-radius: 2px; background-color: #FFFFFF; display: flex; flex-direction: column; md-flex-direction: row; margin-top: 24px; }
+        .dte-tree { flex: 1; padding: 24px; border-right: 1px solid var(--fg-faint); overflow-x: auto; font-size: 12px; }
+        .dte-props { width: 300px; padding: 24px; background-color: var(--bg); font-family: 'DM Mono', monospace; font-size: 11px; }
+        .dte-node { cursor: pointer; padding: 4px 8px; border: 1px solid transparent; border-radius: 2px; transition: all 0.15s; margin-left: 16px; position: relative; }
+        .dte-node::before { content: ''; position: absolute; left: -10px; top: 12px; width: 10px; border-top: 1px dashed var(--fg-faint); }
+        .dte-node::after { content: ''; position: absolute; left: -10px; top: -4px; height: 16px; border-left: 1px dashed var(--fg-faint); }
+        .dte-node:hover { border-color: var(--fg); background-color: rgba(13,13,13,0.05); }
+        .dte-node.selected { background-color: var(--fg); color: var(--bg); border-color: var(--fg); }
+        
+        /* --- SEMANTIC ARCHITECT CSS --- */
+        .sa-container { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+        .sa-pool { width: 250px; background-color: var(--bg); border: 1px solid var(--fg-faint); padding: 16px; border-radius: 2px; }
+        .sa-canvas { flex: 1; min-width: 300px; border: 2px dashed var(--fg-faint); background-color: #FFFFFF; padding: 24px; border-radius: 2px; position: relative; }
+        .sa-item { padding: 12px; background-color: var(--card-bg); border: 1px solid var(--fg); margin-bottom: 8px; cursor: grab; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; text-align: center; border-radius: 2px; box-shadow: 2px 2px 0 var(--fg); }
+        .sa-item:active { cursor: grabbing; box-shadow: 0 0 0 var(--fg); transform: translate(2px, 2px); }
+        .sa-canvas.drag-over { border-color: var(--fg); background-color: rgba(16,185,129,0.05); }
+        
+        /* --- BLINDFOLD TEST CSS --- */
+        .bt-container { border: 1px solid var(--fg); background-color: var(--card-bg); border-radius: 2px; margin-top: 24px; overflow: hidden; position: relative; }
+        .bt-toolbar { padding: 16px; background-color: var(--fg); color: var(--bg); display: flex; justify-content: space-between; align-items: center; }
+        .bt-viewport { padding: 40px; transition: filter 0.5s; position: relative; }
+        .bt-viewport.blurred { filter: blur(12px) grayscale(100%); pointer-events: none; }
+        .bt-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.8); color: #FFF; opacity: 0; pointer-events: none; transition: opacity 0.5s; z-index: 10; padding: 24px; text-align: center; }
+        .bt-overlay.active { opacity: 1; pointer-events: auto; }
+        .sr-log { background: #000; color: #0F0; font-family: monospace; font-size: 12px; padding: 16px; height: 150px; overflow-y: auto; border-top: 1px solid #333; }
+        .sr-log-entry { margin-bottom: 8px; border-left: 2px solid #0F0; padding-left: 8px; }
 :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
@@ -1134,6 +1162,61 @@
         .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: var(--radius); border: 1px solid var(--fg-faint); }
         .card-back { background-color: #a7f3d0; color: var(--fg); transform: rotateY(180deg); }
         .card-front { background-color: #FFFFFF; color: var(--fg); }
+
+        /* Custom Interactive Sliders & Animation */
+        input[type=range].neo-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range].neo-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            background: var(--accent-live);
+            border: 2px solid var(--fg);
+            cursor: pointer;
+            margin-top: -8px;
+            border-radius: 0;
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+        input[type=range].neo-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--fg);
+            border: 1px solid var(--fg);
+        }
+        .conveyor-belt {
+            display: flex;
+            gap: 6px;
+            overflow: hidden;
+            border: 2px solid var(--fg);
+            background: #FAFAFA;
+            padding: 8px;
+        }
+        .belt-item {
+            min-width: 40px;
+            height: 40px;
+            border: 1px solid var(--fg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: monospace;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        .belt-item.active {
+            background: var(--accent-live);
+            color: white;
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+        .belt-item.processed {
+            background: var(--fg);
+            color: white;
+        }
 /* BRANDING VARIABLES - Neo-Brutalist Light Mode */
         :root {
             --bg: #FAFAFA;
@@ -1646,6 +1729,162 @@
             text-align: center;
             margin-top: 80px;
         }
+
+        /* DRAG AND DROP / PROMPT BUILDER */
+        .prompt-node {
+            background-color: var(--card-bg);
+            border: 2px solid var(--fg);
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 2px 2px 0 var(--fg);
+            border-radius: var(--radius);
+            font-family: 'DM Mono', monospace;
+        }
+        .prompt-node:active {
+            cursor: grabbing;
+        }
+        .prompt-node-title {
+            font-weight: bold;
+        }
+        .prompt-chain-container {
+            border: 2px dashed var(--fg-faint);
+            padding: 20px;
+            min-height: 200px;
+            background-color: #F9FAFB;
+        }
+        
+        /* TERMINAL SIMULATOR */
+        .terminal-sim {
+            background-color: #000;
+            color: #22C55E;
+            font-family: 'DM Mono', monospace;
+            padding: 20px;
+            border-radius: var(--radius);
+            min-height: 300px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+            overflow-y: auto;
+            position: relative;
+        }
+        .terminal-header {
+            border-bottom: 1px solid #22C55E;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .terminal-output {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+        }
+        .terminal-prompt {
+            margin-right: 10px;
+        }
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #22C55E;
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem;
+            flex-grow: 1;
+            outline: none;
+            box-shadow: none;
+        }
+        .terminal-input:focus {
+            border: none;
+            box-shadow: none;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #22C55E;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* TOKEN VISUALIZER */
+        .visualizer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid var(--fg);
+            padding: 20px;
+            background: var(--card-bg);
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'DM Mono', monospace;
+            font-weight: bold;
+        }
+        .slider-input-element {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+        .slider-input-element::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 0;
+            background: var(--accent-dark);
+            cursor: pointer;
+            margin-top: -6px;
+            border: 1px solid var(--fg);
+        }
+        .slider-input-element::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--fg);
+            border: none;
+        }
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            height: 150px;
+            gap: 10px;
+            border-bottom: 2px solid var(--fg);
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        .chart-bar {
+            flex-grow: 1;
+            background-color: var(--accent-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            color: var(--bg);
+            font-size: 0.7rem;
+            transition: height 0.3s ease, background-color 0.3s ease;
+            position: relative;
+        }
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            color: var(--fg);
+            font-weight: bold;
+            font-family: 'DM Mono', monospace;
+        }
         
         /* Reset absolute margins on nested mains */
         main {
@@ -1887,6 +2126,141 @@
                     <p>
                         Bayangkan lo punya ide: <em>"Gue mau bikin kalkulator simulasi KPR buat klien gue."</em> Lo minta AI buatkan single file HTML-nya. Selesai. Lo punya software sendiri tanpa modal sepeserpun. Itu namanya <strong>Leverage</strong>.
                     </p>
+                </div>
+
+                <!-- TAMBAHAN MATERI 3: DOM RENDERING PIPELINE -->
+                <div style="margin-top: 56px;" class="reveal stagger-1">
+                    <h2 class="section-title">The Rendering Pipeline: Dari Byte Menjadi Piksel</h2>
+                    <div class="prose">
+                        <p>
+                            Pernah berpikir bagaimana teks statis di HTML berubah menjadi halaman interaktif yang indah di layar lo? Ini bukan sihir, ini <strong>Rendering Pipeline</strong>.
+                        </p>
+                        <p>
+                            Setiap kali lo buka web, browser bekerja layaknya pabrik perakitan super cepat:
+                        </p>
+                        <ol style="margin-left: 20px; font-size: 15px; color: rgba(13, 13, 13, 0.85); margin-bottom: 24px; list-style-type: decimal; padding-left: 16px;">
+                            <li style="margin-bottom: 12px;"><strong>Parsing HTML (Membangun DOM):</strong> Browser membaca raw bytes, merubahnya jadi karakter, lalu token (seperti tag &lt;html&gt;, &lt;body&gt;), dan akhirnya menyusunnya jadi pohon <em>Document Object Model (DOM)</em>.</li>
+                            <li style="margin-bottom: 12px;"><strong>Parsing CSS (Membangun CSSOM):</strong> Di waktu yang sama, browser membaca CSS dan membuat pohon terpisah: <em>CSS Object Model (CSSOM)</em>. DOM adalah tulang, CSSOM adalah kulit.</li>
+                            <li style="margin-bottom: 12px;"><strong>Render Tree:</strong> Browser menggabungkan DOM dan CSSOM. Elemen yang disembunyikan (<code>display: none</code>) dicoret dari daftar ini karena gak perlu digambar.</li>
+                            <li style="margin-bottom: 12px;"><strong>Layout (Reflow):</strong> Mesin menghitung geometri yang presisi. "Tombol ini lebarnya 200px, ditaruh di kordinat X:50, Y:100".</li>
+                            <li style="margin-bottom: 12px;"><strong>Paint:</strong> Browser mewarnai pixel demi pixel di memori berdasarkan hasil layout tadi.</li>
+                            <li style="margin-bottom: 12px;"><strong>Composite:</strong> Kadang web punya layer tumpuk-menumpuk (z-index, fixed nav). Browser menyatukan layer-layer ini jadi satu gambar utuh di layar.</li>
+                        </ol>
+                        
+                        <p>
+                            <strong>Kenapa lo harus peduli?</strong> Karena web yang lambat biasanya gara-gara developer yang merusak pipeline ini dengan Javascript yang berantakan atau memaksa browser melakukan <em>Layout</em> (Reflow) berulang kali setiap detik.
+                        </p>
+                    </div>
+
+                    <!-- INTERACTIVE: DOM TREE EXPLORER -->
+                    <div class="dte-container">
+                        <div class="dte-tree" id="dte-tree">
+                            <div style="font-weight: 700; margin-bottom: 12px;">INTERACTIVE DOM MAP</div>
+                            <!-- Injected by JS -->
+                        </div>
+                        <div class="dte-props" id="dte-props">
+                            <div style="color: rgba(13,13,13,0.5); font-style: italic;">Klik salah satu node di samping untuk melihat properti objeknya secara rinci.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAMBAHAN MATERI 4: ACCESSIBILITY (A11Y) & ARIA -->
+                <div style="margin-top: 56px;" class="reveal stagger-2">
+                    <h2 class="section-title">A11y & ARIA: Mendesain untuk Seluruh Umat Manusia</h2>
+                    <div class="prose">
+                        <p>
+                            <strong>A11y</strong> adalah singkatan dari Accessibility (A + 11 huruf + y). Banyak yang mikir: <em>"Web gue buat orang normal aja, gak usah mikirin yang buta atau difabel."</em>
+                        </p>
+                        <p>
+                            Itu mindset amatir. Lo lupa bahwa difabel gak selalu permanen. Lo bisa kena sinar matahari terik di jalan (situasional difabel) dan ga bisa liat layar. Lo bisa patah tangan (temporary difabel) dan cuma bisa browsing pake tab keyboard.
+                        </p>
+                        <p>
+                            Mesin (seperti Googlebot) juga "buta". Kalau web lo bagus buat <em>Screen Reader</em> (pembaca layar untuk tuna netra), SEO web lo otomatis bakal melesat karena Googlebot bisa memahaminya dengan sempurna.
+                        </p>
+                        
+                        <h3 style="font-size: 1.5rem; margin: 32px 0 16px 0;">Aturan Emas ARIA</h3>
+                        <p>
+                            <strong>WAI-ARIA</strong> (Web Accessibility Initiative - Accessible Rich Internet Applications) adalah atribut tambahan di HTML buat ngasih tau screen reader konteks elemen tersebut. Misalnya: elemen ini <code>role="button"</code>, statusnya <code>aria-expanded="false"</code>.
+                        </p>
+                        <blockquote style="margin-top: 16px;">
+                            "Aturan pertama penggunaan ARIA adalah: Jangan gunakan ARIA jika lo bisa menggunakan elemen HTML Semantik bawaan."
+                        </blockquote>
+                        <p>
+                            Lebih baik pakai <code>&lt;button&gt;</code> asli, ketimbang pakai <code>&lt;div class="tombol" role="button" aria-pressed="false"&gt;</code>. Yang asli udah punya fungsionalitas keyboard (Enter/Space) secara bawaan!
+                        </p>
+                    </div>
+
+                    <!-- INTERACTIVE: SEMANTIC ARCHITECT -->
+                    <div style="margin-top: 48px; border: 1px solid var(--fg); padding: 24px; border-radius: 2px; background-color: #FAFAFA;">
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">Semantic Architect (Drag & Drop)</h3>
+                        <p style="font-size: 13px; color: rgba(13,13,13,0.7); margin-bottom: 24px;">
+                            Susun layout sebuah halaman artikel yang baik. Tarik elemen dari kiri ke dalam Canvas di kanan. Urutannya harus masuk akal secara semantik. (Misal: header di atas, dilanjut main yang isinya article, lalu footer).
+                        </p>
+                        <div class="sa-container">
+                            <div class="sa-pool" id="sa-pool">
+                                <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 16px; font-weight: 700; color: rgba(13,13,13,0.5);">Gudang Tag</div>
+                                <div class="sa-item" data-tag="footer">&lt;footer&gt;</div>
+                                <div class="sa-item" data-tag="main">&lt;main&gt;</div>
+                                <div class="sa-item" data-tag="header">&lt;header&gt;</div>
+                                <div class="sa-item" data-tag="nav">&lt;nav&gt;</div>
+                                <div class="sa-item" data-tag="article">&lt;article&gt;</div>
+                            </div>
+                            <div class="sa-canvas" id="sa-canvas">
+                                <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 16px; font-weight: 700; color: rgba(13,13,13,0.5);">Canvas Konstruksi</div>
+                                <!-- Drop zone -->
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top: 24px;" onclick="validateSemantics()">Validasi Arsitektur</button>
+                        <div id="sa-feedback" style="margin-top: 16px; font-size: 13px; font-weight: 700;"></div>
+                    </div>
+
+                    <!-- INTERACTIVE: BLINDFOLD TEST -->
+                    <div style="margin-top: 56px;">
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;">The Blindfold Test</h3>
+                        <p style="font-size: 13px; color: rgba(13,13,13,0.7); margin-bottom: 24px;">
+                            Kita akan buktikan kenapa struktur yang jelek itu menyiksa. Klik tombol di bawah. Penglihatan lo akan direnggut. Lo hanya bisa mengandalkan Screen Reader (Teks Simulator). Coba temukan tombol "Checkout".
+                        </p>
+                        
+                        <div class="bt-container">
+                            <div class="bt-toolbar">
+                                <span style="font-family: 'DM Mono'; font-weight: 700; font-size: 12px;">UI MOCKUP</span>
+                                <button class="btn" style="background-color: var(--bg); color: var(--fg);" onclick="startBlindfold()">Mulai Simulasi Kebutaan</button>
+                            </div>
+                            
+                            <div class="bt-viewport" id="bt-viewport">
+                                <h1 style="font-size: 24px; margin-bottom: 16px;">Toko Kelontong Digital</h1>
+                                <p style="margin-bottom: 24px;">Silakan pilih barang dan bayar di kasir.</p>
+                                
+                                <div style="display: flex; gap: 16px; margin-bottom: 32px;">
+                                    <div style="border: 1px solid var(--fg-faint); padding: 16px;">
+                                        <h3>Kopi Robusta</h3>
+                                        <p>Rp 50.000</p>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px;">Tambah</button>
+                                    </div>
+                                    <div style="border: 1px solid var(--fg-faint); padding: 16px;">
+                                        <h3>Susu Oat</h3>
+                                        <p>Rp 35.000</p>
+                                        <button class="btn btn-secondary" style="padding: 4px 8px;">Tambah</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Tombol checkout jelek secara struktur, tapi tampilannya seperti tombol -->
+                                <div onclick="finishBlindfold()" tabindex="0" style="background-color: var(--accent-success); color: #FFF; padding: 16px; text-align: center; cursor: pointer; font-weight: bold; width: 200px;">
+                                    Bayar Sekarang (Checkout)
+                                </div>
+                            </div>
+                            
+                            <div class="bt-overlay" id="bt-overlay">
+                                <h2 style="font-family: 'Cormorant Garamond'; font-size: 2rem; margin-bottom: 16px;">Penglihatan Dinonaktifkan.</h2>
+                                <p style="font-family: 'DM Mono'; font-size: 12px; margin-bottom: 24px; max-width: 400px;">
+                                    Gunakan tombol [TAB] di keyboard lo untuk navigasi antar elemen, dan tekan [ENTER] saat menemukan Checkout. Perhatikan log Screen Reader di bawah.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="sr-log" id="sr-log">
+                            <div style="color: #666;">// Screen Reader Simulator diaktifkan...</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SECTION 3: THE X-RAY (Interactive) -->
@@ -2239,167 +2613,228 @@
                         </div>
                     </div>
 
-                    <!-- MATERI 3: THE API & ASYNC -->
+                    <!-- MATERI 3: THE EVENT LOOP, ASYNC, AND API -->
                     <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700">
-                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 border-b border-[#0d0d0d] pb-2 glitch-effect">3. The API & Asynchronous Programming</h2>
+                        <h2 class="text-[#0D0D0D] font-serif font-bold text-3xl mb-4 border-b border-[#0d0d0d] pb-2 glitch-effect">3. Mesin Waktu: Event Loop, Asinkron, & API</h2>
                         
-                        <!-- 3A. Konsep API -->
-                        <div class="mb-8">
-                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3A. Menghubungkan Diri dengan Dunia Luar (API)</h3>
-                            <p class="my-2">
-                                Fitur lokal seperti Kuis, Game, dan Waktu berjalan di browser secara tertutup. Namun, bagaimana jika website lo membutuhkan data cuaca real-time, grafik saham terbaru, atau respons cerdas dari AI?
+                        <!-- 3A. Event Loop & Task Queue -->
+                        <div class="mb-12">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-2xl">3A. Konkurensi Satu Jalur: Event Loop & Task Queue</h3>
+                            <p class="my-4">
+                                JavaScript lahir sebagai bahasa <strong>Single-Threaded</strong>. Artinya, dia cuma punya satu tangan (satu <strong>Call Stack</strong>) untuk mengerjakan tugas. Dia mengeksekusi kode baris demi baris, dari atas ke bawah. Kalau ada tugas berat (misalnya menghitung angka miliaran, atau menunggu download file besar), tangan ini akan "nyangkut" dan seluruh halaman web akan nge-<em>freeze</em> (blocking).
                             </p>
-                            <p class="my-2">
-                                Di sinilah kita menggunakan <strong>API (Application Programming Interface)</strong>. API layaknya seorang pelayan restoran:
+                            <p class="my-4">
+                                Lantas, bagaimana browser modern bisa mendownload gambar, menjalankan animasi, dan merespons klik mouse lo secara bersamaan tanpa freeze? Rahasianya ada pada <strong>Event Loop</strong> dan <strong>Web APIs</strong>.
                             </p>
-                            <ul class="list-none pl-0 space-y-3 text-xs bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
-                                <li class="flex gap-4 items-start">
-                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Lo (Client)</span>
-                                    <span>Browser / Perangkat pengguna yang meminta data.</span>
+                            <div class="bg-white border border-[#0D0D0D] p-6 rounded-[2px] shadow-[4px_4px_0_#0d0d0d] my-6 text-sm">
+                                <h4 class="text-lg font-bold text-[#10b981] mb-2 uppercase">Anatomi Mesin Waktu JS:</h4>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li><strong>Call Stack:</strong> Tempat tugas sinkron (langsung) dieksekusi. "LIFO" (Last In, First Out). Tugas yang masuk terakhir diselesaikan pertama.</li>
+                                    <li><strong>Web APIs:</strong> Tangan tambahan yang disediakan browser (seperti <code>setTimeout</code>, <code>fetch</code>, DOM events). Kalau JavaScript ketemu tugas asinkron, dia bakal "lempar" tugas itu ke Web API, lalu Call Stack lanjut ngerjain baris kode berikutnya.</li>
+                                    <li><strong>Task Queue (Macrotask) & Microtask Queue:</strong> Ruang tunggu. Saat Web API selesai ngerjain tugas, dia gak langsung nyela Call Stack. Dia masukin <em>callback</em>-nya ke ruang tunggu. <em>Microtask</em> (seperti Promise) punya prioritas lebih tinggi daripada <em>Macrotask</em> (seperti setTimeout).</li>
+                                    <li><strong>Event Loop:</strong> Penjaga pintu yang terus muter-muter mengecek: <em>"Apakah Call Stack udah kosong?"</em> Kalau kosong, dia ambil tugas dari antrean Microtask dulu, baru kemudian Task Queue, untuk dimasukkan ke Call Stack.</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- INTERACTIVE: TIME MACHINE PROMISES -->
+                            <div class="not-prose my-10 neo-card p-6 bg-white relative overflow-hidden shadow-[4px_4px_0_#0d0d0d]">
+                                <div class="absolute top-0 left-0 bg-[#0d0d0d] text-xs text-[#FAFAFA] px-3 py-1 font-mono uppercase tracking-widest border-r border-b border-[#0d0d0d]">TIME MACHINE: EVENT LOOP VISUALIZER</div>
+                                <div class="mt-8 mb-4 text-xs text-gray-600">Simulasikan bagaimana Call Stack dan Web API bekerja. Geser slider untuk menggerakkan waktu maju/mundur.</div>
+                                
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex gap-4 items-stretch h-64">
+                                        <!-- Call Stack -->
+                                        <div class="w-1/3 border border-[#0D0D0D] flex flex-col justify-end bg-gray-50 p-2 relative">
+                                            <div class="absolute top-0 w-full text-center text-[10px] bg-[#0D0D0D] text-white py-1 -mx-2">CALL STACK</div>
+                                            <div id="tm-callstack" class="flex flex-col gap-1 w-full justify-end"></div>
+                                        </div>
+                                        <!-- Web API -->
+                                        <div class="w-1/3 border border-[#0D0D0D] flex flex-col bg-gray-50 p-2 relative">
+                                            <div class="absolute top-0 w-full text-center text-[10px] bg-[#0D0D0D] text-white py-1 -mx-2">WEB APIs</div>
+                                            <div id="tm-webapi" class="mt-6 flex flex-col gap-1 w-full"></div>
+                                        </div>
+                                        <!-- Task Queue -->
+                                        <div class="w-1/3 border border-[#0D0D0D] flex flex-col bg-gray-50 p-2 relative">
+                                            <div class="absolute top-0 w-full text-center text-[10px] bg-[#0D0D0D] text-white py-1 -mx-2">QUEUE (Micro/Macro)</div>
+                                            <div id="tm-queue" class="mt-6 flex flex-col gap-1 w-full"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <label class="text-xs font-bold uppercase tracking-widest text-[#0D0D0D]">Timeline Control</label>
+                                        <input type="range" id="tm-slider" min="0" max="6" value="0" step="1" class="neo-slider mt-2" oninput="updateTimeMachine(this.value)">
+                                        <div class="flex justify-between text-[10px] font-bold mt-1 text-gray-500" id="tm-steps-label">
+                                            <span>Start</span>
+                                            <span>log(1)</span>
+                                            <span>timeout</span>
+                                            <span>Promise</span>
+                                            <span>log(4)</span>
+                                            <span>Micro</span>
+                                            <span>Macro</span>
+                                        </div>
+                                        <div id="tm-explanation" class="mt-4 p-3 bg-green-50 border border-[#10b981] text-xs font-mono text-[#0D0D0D]">
+                                            Tarik slider untuk melihat urutan eksekusi.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3B. Callback Hell vs Promises -->
+                        <div class="mb-12">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-2xl">3B. Evolusi Asinkron: Callback Hell ke Promises</h3>
+                            <p class="my-4">
+                                Dulu, satu-satunya cara JavaScript menangani tugas yang belum selesai adalah dengan <strong>Callback</strong>. Lo menitipkan sebuah fungsi ke fungsi lain untuk dijalankan "nanti". Masalahnya, kalau lo punya banyak tugas berurutan, kodenya akan menjorok ke kanan membentuk "Pyramid of Doom" atau <strong>Callback Hell</strong>.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                                <div class="bg-gray-100 p-4 border border-red-500 rounded-[2px] shadow-[2px_2px_0_#ef4444]">
+                                    <h4 class="text-red-600 font-bold mb-2 text-sm uppercase">Era Kuno (Callback Hell)</h4>
+                                    <pre class="text-[10px] overflow-x-auto text-gray-800"><code>getData(function(a){
+    getMoreData(a, function(b){
+        getMoreData(b, function(c){
+            getMoreData(c, function(d){
+                console.log("Welcome to hell", d);
+            });
+        });
+    });
+});</code></pre>
+                                </div>
+                                <div class="bg-gray-100 p-4 border border-[#10b981] rounded-[2px] shadow-[2px_2px_0_#10b981]">
+                                    <h4 class="text-[#10b981] font-bold mb-2 text-sm uppercase">Era Modern (Async / Await)</h4>
+                                    <pre class="text-[10px] overflow-x-auto text-gray-800"><code>async function fetchAll() {
+    try {
+        const a = await getData();
+        const b = await getMoreData(a);
+        const c = await getMoreData(b);
+        const d = await getMoreData(c);
+        console.log("Heaven", d);
+    } catch(err) {
+        console.error(err);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                            
+                            <p class="my-4">
+                                <strong>Promise</strong> adalah objek yang merepresentasikan keberhasilan (resolve) atau kegagalan (reject) dari operasi asinkron. Dengan sintaks <code>async/await</code>, kode asinkron lo terlihat linear dan sinkron, sehingga sangat mudah dibaca.
+                            </p>
+                        </div>
+
+                        <!-- 3C. HTTP Request Anatomy & API Control Room -->
+                        <div class="mb-12">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-2xl">3C. Anatomi Komunikasi Internet (HTTP)</h3>
+                            <p class="my-4">
+                                Saat JavaScript memanggil <code>fetch('https://api.com/data')</code>, dia mengirimkan <strong>HTTP Request</strong>. Ini adalah standar format amplop pos di dunia internet. Amplop ini berisi:
+                            </p>
+                            <ul class="list-none space-y-3 pl-0 mb-6">
+                                <li class="flex gap-4 items-center bg-white border border-gray-300 p-3 shadow-[1px_1px_0_#0D0D0D]">
+                                    <span class="bg-[#0D0D0D] text-white px-2 py-1 text-xs font-bold">METHOD</span>
+                                    <span class="text-sm">Tindakan apa? GET (minta), POST (kirim), PUT/PATCH (ubah), DELETE (hapus).</span>
                                 </li>
-                                <li class="flex gap-4 items-start">
-                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Pelayan (API)</span>
-                                    <span>Media transmisi yang menerima pesanan lo dan membawanya ke server, lalu mengembalikan data hasil olahan ke browser.</span>
+                                <li class="flex gap-4 items-center bg-white border border-gray-300 p-3 shadow-[1px_1px_0_#0D0D0D]">
+                                    <span class="bg-[#0D0D0D] text-white px-2 py-1 text-xs font-bold">HEADERS</span>
+                                    <span class="text-sm">Informasi meta. Misalnya jenis data <code>Content-Type: application/json</code>.</span>
                                 </li>
-                                <li class="flex gap-4 items-start">
-                                    <span class="bg-[#a7f3d0] text-[#0D0D0D] font-mono font-bold px-2 border border-[#0D0D0D] rounded-[2px]">Dapur (Server)</span>
-                                    <span>Sistem backend terpusat yang mengolah data rahasia atau database besar. Lo tidak boleh langsung masuk ke dapur.</span>
+                                <li class="flex gap-4 items-center bg-white border border-gray-300 p-3 shadow-[1px_1px_0_#0D0D0D]">
+                                    <span class="bg-[#0D0D0D] text-white px-2 py-1 text-xs font-bold">BODY</span>
+                                    <span class="text-sm">Isi surat. Hanya ada di POST/PUT. Biasanya format JSON yang dikirim ke server.</span>
                                 </li>
                             </ul>
-                        </div>
-
-                        <!-- 3B. Pemrograman Asinkron -->
-                        <div class="mb-8">
-                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3B. Pemrograman Asinkron (Async/Await, Promise, & fetch)</h3>
-                            <p class="my-2">
-                                Mengambil data dari internet membutuhkan waktu (transmisi jaringan). Jika JavaScript memprosesnya secara sinkron (blocking), browser akan membeku (*freeze*) selama menunggu server merespons. Oleh karena itu, kita wajib menggunakan <strong>Asynchronous JavaScript</strong>.
-                            </p>
                             
-                            <div class="space-y-4 my-4">
-                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
-                                    <span class="font-bold text-[#10b981] block mb-1">1. Promise (Janji Data)</span>
-                                    <p class="text-xs text-gray-600">Sebuah wadah penampung nilai yang belum selesai diproses. Promise memiliki status: <code class="text-black bg-gray-100 px-1 font-bold">Pending</code> (berjalan), <code class="text-black bg-gray-100 px-1 font-bold">Fulfilled</code> (sukses/selesai), dan <code class="text-black bg-gray-100 px-1 font-bold">Rejected</code> (gagal/error).</p>
-                                </div>
-
-                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
-                                    <span class="font-bold text-[#10b981] block mb-1">2. fetch() (Pengirim HTTP Request)</span>
-                                    <p class="text-xs text-gray-600">Web API bawaan browser untuk menembak endpoint URL server secara asinkron. Fungsi ini secara default mengembalikan sebuah objek Promise.</p>
-                                </div>
-
-                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
-                                    <span class="font-bold text-[#10b981] block mb-1">3. Async/Await (Sintaks Linear Modern)</span>
-                                    <p class="text-xs text-gray-600">Modifikasi penulisan asinkron agar menyerupai kode sinkron yang mudah dibaca. Penambahan kata kunci <code class="text-black bg-gray-100 px-1 font-bold">async</code> di depan deklarasi fungsi memungkinkan kita memakai kata kunci <code class="text-black bg-gray-100 px-1 font-bold">await</code> untuk menunda eksekusi baris berikutnya hingga Promise terselesaikan.</p>
-                                </div>
-
-                                <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
-                                    <span class="font-bold text-[#10b981] block mb-1">4. Error Handling: Try/Catch</span>
-                                    <p class="text-xs text-gray-600">Saat request API gagal (misalnya internet putus atau server down), aplikasi bisa mengalami crash. Kita membungkus instruksi asinkron di dalam blok <code class="text-black bg-gray-100 px-1 font-bold">try</code> dan mengantisipasi kegagalannya pada blok <code class="text-black bg-gray-100 px-1 font-bold">catch</code> agar program tetap dapat berjalan lancar.</p>
-                                </div>
-                            </div>
-
-                            <!-- Code Block Async -->
-                            <div class="my-4">
-                                <span class="text-xs font-bold text-gray-500 block mb-1">Struktur Kode Asinkron (fetch & try-catch):</span>
-<pre class="bg-[#0D0D0D] text-[#FAFAFA] border border-[#0d0d0d] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-xs overflow-x-auto font-mono">
-<code><span class="text-gray-500">// Fungsi asinkron mengambil resep Alchemist</span>
-async function fetchRecipeData() {
-    try {
-        <span class="text-[#10b981]">const</span> response = <span class="text-[#10b981]">await</span> fetch('https://api.alchemist.com/recipes');
-        
-        <span class="text-gray-500">// Cek apakah respons HTTP sukses (status 200-299)</span>
-        if (!response.ok) {
-            throw new Error(`Koneksi Dapur Gagal! Status: ${response.status}`);
-        }
-        
-        <span class="text-[#10b981]">const</span> data = <span class="text-[#10b981]">await</span> response.json();
-        console.log('Recipe Transmuted:', data);
-    } catch (error) {
-        console.error('Transmutation Error:', error.message);
-    }
-}</code>
-</pre>
-                            </div>
-                        </div>
-
-                        <!-- 3C. Caesar Cipher -->
-                        <div class="mb-8">
-                            <h3 class="text-[#0D0D0D] font-serif font-bold text-xl">3C. Caesar Cipher (Shift +1) & Obfuscation Data</h3>
-                            <p class="my-2">
-                                Dalam aplikasi Single-File HTML, menyimpan rahasia atau membatasi akses antar bab membutuhkan penyandian data sederhana (obfuscation). Salah satu bentuk sandi tertua dan paling dasar adalah <strong>Caesar Cipher</strong> (Sandi Geser).
-                            </p>
-                            <p class="my-2">
-                                Sandi ini bekerja dengan memanipulasi kode karakter (ASCII/Unicode) dari string teks. Di halaman kuis *The Alchemist* ini, lo menggunakan **Shift +1** untuk penguncian data (enkripsi) dan **Shift -1** untuk pembacaan data (dekripsi).
-                            </p>
-
-                            <div class="bg-white border border-[#0D0D0D] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] my-4 text-xs space-y-2">
-                                <p><strong>1. Serialisasi Data:</strong> Objek JavaScript diubah menjadi string JSON datar: <code class="text-black bg-gray-100 px-1 font-bold">JSON.stringify(state)</code>.</p>
-                                <p><strong>2. Enkripsi (Shift +1):</strong> Setiap karakter dalam teks dibaca nilai ASCII-nya, lalu dinaikkan sebesar +1. Karakter <code class="text-black bg-gray-100 px-1 font-bold">'A'</code> (ASCII 65) digeser menjadi <code class="text-black bg-gray-100 px-1 font-bold">'B'</code> (ASCII 66): <code class="text-black bg-gray-100 px-1 font-bold">String.fromCharCode(char.charCodeAt(0) + 1)</code>.</p>
-                                <p><strong>3. Base64 Obfuscation:</strong> Teks hasil pergeseran di-encode ke Base64 menggunakan fungsi <code class="text-black bg-gray-100 px-1 font-bold">btoa()</code> agar menjadi string alfanumerik yang rapi (seperti **Exodus Key** lo).</p>
-                                <p><strong>4. Dekripsi (Shift -1):</strong> Kebalikannya, saat lo memasukkan kunci, program akan men-decode Base64 dengan <code class="text-black bg-gray-100 px-1 font-bold">atob()</code>, lalu menggeser balik setiap karakter sebesar -1 agar kembali menjadi format JSON string yang bisa dibaca.</p>
-                            </div>
-
-                            <!-- Code Block Caesar Cipher -->
-                            <div class="my-4">
-                                <span class="text-xs font-bold text-gray-500 block mb-1">Implementasi Caesar Cipher (Shift +1):</span>
-<pre class="bg-[#0D0D0D] text-[#FAFAFA] border border-[#0d0d0d] p-4 rounded-[2px] shadow-[2px_2px_0_#0d0d0d] text-xs overflow-x-auto font-mono">
-<code><span class="text-gray-500">// Enkripsi data JSON dengan Shift +1 & Base64</span>
-function encryptData(dataObject) {
-    const jsonStr = JSON.stringify(dataObject);
-    let obfuscated = "";
-    for (let i = 0; i < jsonStr.length; i++) {
-        obfuscated += String.fromCharCode(jsonStr.charCodeAt(i) + 1);
-    }
-    return btoa(obfuscated).replace(/=/g, '');
-}
-
-<span class="text-gray-500">// Dekripsi data (Shift -1)</span>
-function decryptData(keyString) {
-    const decodedStr = atob(keyString);
-    let decrypted = "";
-    for (let i = 0; i < decodedStr.length; i++) {
-        decrypted += String.fromCharCode(decodedStr.charCodeAt(i) - 1);
-    }
-    return JSON.parse(decrypted);
-}</code>
-</pre>
-                            </div>
-                        </div>
-
-                        <!-- API Simulator (Neo-Brutalist Light Mode) -->
-                        <div class="not-prose my-8 neo-card p-6 bg-white relative overflow-hidden shadow-[4px_4px_0_#0d0d0d]">
-                            <div class="absolute top-0 left-0 bg-[#0d0d0d] text-xs text-[#FAFAFA] px-3 py-1 font-mono uppercase tracking-widest border-r border-b border-[#0d0d0d]">API SIMULATOR v2.0</div>
-                            
-                            <div class="flex flex-col md:flex-row gap-6 items-stretch justify-between mt-8">
-                                <!-- CLIENT CARD -->
-                                <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
-                                    <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">CLIENT</div>
-                                    <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-4">Web Browser</div>
-                                    <button onclick="fetchSimulatedData()" id="api-btn" class="btn-ghost px-4 py-2 text-xs uppercase tracking-wider font-mono">
-                                        Send fetch()
-                                    </button>
-                                </div>
-
-                                <!-- API BRIDGE -->
-                                <div class="flex-grow flex flex-col items-center justify-center relative min-h-[80px] w-full md:w-1/3">
-                                    <div class="text-[9px] font-mono text-gray-400 mb-1 uppercase tracking-widest absolute top-0">API Bridge (HTTP Request)</div>
-                                    <div id="api-flow" class="h-[2px] w-full bg-[#0D0D0D] relative">
-                                        <!-- Packet: Neo-Brutalist Square -->
-                                        <div id="api-packet" class="absolute top-1/2 -translate-y-1/2 left-0 w-4 h-4 bg-[#10b981] border border-[#0D0D0D] shadow-[1px_1px_0_#0D0D0D] hidden"></div>
+                            <!-- INTERACTIVE: API CONTROL ROOM -->
+                            <div class="not-prose my-10 neo-card p-6 bg-white relative overflow-hidden shadow-[4px_4px_0_#0d0d0d]">
+                                <div class="absolute top-0 right-0 bg-[#10b981] text-[#0d0d0d] px-3 py-1 text-xs font-mono font-bold uppercase border-l border-b border-[#0d0d0d]">API CONTROL ROOM</div>
+                                <h4 class="font-serif text-xl font-bold mt-4 mb-2">Simulasi Kegagalan Jaringan</h4>
+                                <p class="text-xs text-gray-600 mb-6">Di dunia nyata, API tidak selalu instan dan sukses. Atur delay jaringan dan probabilitas error, lalu tembak request untuk melihat bagaimana JavaScript menanganinya via Try/Catch.</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="space-y-6">
+                                        <!-- Controls -->
+                                        <div class="bg-gray-50 p-4 border border-gray-300">
+                                            <div class="flex justify-between text-xs font-bold mb-2">
+                                                <span>Network Delay (Latency)</span>
+                                                <span id="api-delay-val">500ms</span>
+                                            </div>
+                                            <input type="range" id="api-delay" min="100" max="3000" step="100" value="500" class="neo-slider" oninput="document.getElementById('api-delay-val').innerText = this.value + 'ms'">
+                                        </div>
+                                        <div class="bg-gray-50 p-4 border border-gray-300">
+                                            <div class="flex justify-between text-xs font-bold mb-2">
+                                                <span>Error Probability</span>
+                                                <span id="api-error-val">20%</span>
+                                            </div>
+                                            <input type="range" id="api-error" min="0" max="100" step="10" value="20" class="neo-slider" oninput="document.getElementById('api-error-val').innerText = this.value + '%'">
+                                        </div>
+                                        <button id="api-btn-simulate" onclick="runSimulatedNetworkFetch()" class="btn-ghost w-full py-3 text-sm uppercase tracking-wider font-bold">
+                                            KIRIM HTTP REQUEST
+                                        </button>
                                     </div>
-                                    <div class="text-[9px] font-mono text-[#10b981] mt-2 font-bold tracking-wider" id="api-status-text">IDLE / READY</div>
+                                    
+                                    <!-- Result Terminal -->
+                                    <div class="bg-[#0D0D0D] border border-gray-500 p-4 text-[#10b981] font-mono text-[10px] leading-relaxed relative flex flex-col h-full min-h-[200px]">
+                                        <div class="flex justify-between border-b border-gray-700 pb-2 mb-2 text-gray-500 text-[8px] uppercase tracking-widest">
+                                            <span>Terminal</span>
+                                            <span>Status: <span id="api-term-status" class="text-yellow-500">Idle</span></span>
+                                        </div>
+                                        <div id="api-term-log" class="flex-grow overflow-y-auto whitespace-pre-wrap flex flex-col justify-end">
+> Awaiting command...
+                                        </div>
+                                        <!-- Progress Bar -->
+                                        <div class="h-1 w-full bg-gray-800 mt-2">
+                                            <div id="api-term-progress" class="h-full bg-[#10b981] w-0 transition-all duration-75"></div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <!-- SERVER CARD -->
-                                <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
-                                    <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">SERVER</div>
-                                    <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-3">Dapur API</div>
-                                    <div id="api-result" class="bg-white border border-[#0D0D0D] p-3 rounded-none text-xs font-mono text-[#0D0D0D] h-24 flex items-center justify-center w-full overflow-hidden break-all">
-                                        // Menunggu Request...
+                        <!-- 3D. Modulo Cryptography & Caesar Cipher -->
+                        <div class="mb-12">
+                            <h3 class="text-[#0D0D0D] font-serif font-bold text-2xl">3D. Kriptografi Modulo: Menyembunyikan Rahasia di Klien</h3>
+                            <p class="my-4">
+                                Saat lo mendesain website tanpa server backend (hanya HTML statis), data rahasia seperti "kunci jawaban kuis" atau "skor sementara" mudah diintip user dengan fitur <em>Inspect Element</em>. Di situlah kita membutuhkan teknik <strong>Obfuscation</strong> atau penyandian ringan.
+                            </p>
+                            <p class="my-4">
+                                Salah satu teknik tertua adalah <strong>Caesar Cipher</strong>. Penggeseran dilakukan lewat operasi penambahan dan <strong>Modulo (Sisa Bagi)</strong> agar saat mencapai huruf 'Z', dia kembali memutar ke huruf 'A'.
+                            </p>
+
+                            <!-- INTERACTIVE: ENIGMA CONVEYOR BELT -->
+                            <div class="not-prose my-10 neo-card p-6 bg-white relative overflow-hidden shadow-[4px_4px_0_#0d0d0d]">
+                                <div class="absolute top-0 left-0 bg-[#0d0d0d] text-white px-3 py-1 text-xs font-mono font-bold uppercase border-r border-b border-[#0d0d0d]">ENIGMA CONVEYOR BELT</div>
+                                <h4 class="font-serif text-xl font-bold mt-8 mb-2">Simulasi Enkripsi Geser (Shift Cipher)</h4>
+                                <p class="text-xs text-gray-600 mb-6">Pilih teks, atur nilai pergeseran (shift keys), dan lihat animasi bagaimana tiap karakter ditransformasikan melalui mesin Enigma Mini.</p>
+                                
+                                <div class="bg-gray-50 border border-[#0D0D0D] p-4 flex flex-col gap-4">
+                                    <div class="flex gap-4 items-end">
+                                        <div class="flex-grow">
+                                            <label class="text-[10px] uppercase font-bold text-gray-500 block mb-1">Plaintext:</label>
+                                            <input type="text" id="enigma-input" value="ALCHEMIST" maxlength="12" class="neo-input w-full p-2 uppercase font-mono text-sm tracking-widest text-center">
+                                        </div>
+                                        <div class="w-24">
+                                            <label class="text-[10px] uppercase font-bold text-gray-500 block mb-1">Shift:</label>
+                                            <input type="number" id="enigma-shift" value="3" min="-10" max="10" class="neo-input w-full p-2 font-mono text-sm text-center">
+                                        </div>
+                                        <button onclick="runEnigma()" class="btn-ghost px-4 py-2 text-sm uppercase font-bold h-[42px]">Proses</button>
+                                    </div>
+                                    
+                                    <div class="mt-4 border-t border-gray-300 pt-4">
+                                        <div class="text-[10px] font-bold text-gray-500 uppercase mb-2">Mesin Prosesor Karakter:</div>
+                                        <div class="flex flex-col items-center gap-4 py-4">
+                                            <!-- Input Row -->
+                                            <div id="enigma-in-belt" class="conveyor-belt min-h-[50px] w-full justify-center"></div>
+                                            <!-- Processor Node -->
+                                            <div class="w-12 h-12 bg-[#0D0D0D] text-white flex items-center justify-center font-bold relative animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                                                <span id="enigma-op-node">f(x)</span>
+                                            </div>
+                                            <!-- Output Row -->
+                                            <div id="enigma-out-belt" class="conveyor-belt min-h-[50px] w-full justify-center border-[#10b981] bg-[#a7f3d0]/10"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- MATERI 4: AI & DESIGN RELEVANSI -->
                     <div class="prose prose-lg max-w-none font-mono text-sm text-gray-700 border-t border-[#0d0d0d] pt-8">
@@ -2678,6 +3113,123 @@ function decryptData(keyString) {
                     </div>
                 </div>
 
+                <!-- Subchapter 7: Tokenization & BPE -->
+                <div class="content-section">
+                    <h2>7. Anatomi Kata: Tokenization & Byte-Pair Encoding (BPE)</h2>
+                    <p>
+                        Lo pikir AI membaca teks huruf demi huruf atau kata demi kata? Salah besar. Mesin tidak mengerti "kata". Mereka mengonsumsi angka. Di sinilah <strong>Tokenization</strong> masuk, memotong kalimat lo menjadi potongan-potongan kecil yang disebut token.
+                    </p>
+                    <p>
+                        Sebagian besar model bahasa raksasa menggunakan algoritma kompresi yang disebut <strong>Byte-Pair Encoding (BPE)</strong>. BPE mencari kombinasi karakter yang paling sering muncul dan menggabungkannya menjadi satu token. Kata "belajar" mungkin utuh 1 token, tapi kata "mengoptimalkan" mungkin dipecah menjadi "meng" - "optimalkan".
+                    </p>
+                    <div class="tips-box">
+                        <p><strong>Kenapa ini penting?</strong> Kalau lo bikin prompt panjang pakai bahasa yang jarang dipakai (seperti bahasa daerah), AI akan memecah satu kata jadi banyak token. Semakin banyak token, semakin mahal biaya API lo, dan semakin lambat responnya. Pahami bahwa 1 token kira-kira sama dengan 0.75 kata bahasa Inggris.</p>
+                    </div>
+                </div>
+
+                <!-- Subchapter 8: Embedding Space -->
+                <div class="content-section">
+                    <h2>8. Dimensi Makna: Embedding Space</h2>
+                    <p>
+                        Setelah teks diubah jadi token, bagaimana AI memahami "makna"-nya? Jawabannya ada di <strong>Embedding Space</strong>.
+                    </p>
+                    <p>
+                        Bayangkan sebuah ruang 3D yang sangat luas (nyatanya, ruang ini memiliki ribuan dimensi). Setiap token dilempar ke dalam ruang ini. Token yang memiliki makna mirip akan berada berdekatan. "Raja" dan "Ratu" akan dekat. "Apel" dan "Jeruk" juga dekat. 
+                    </p>
+                    <p>
+                        Saat lo nge-prompt, lo seakan-akan sedang menembakkan koordinat ke dalam dimensi tersebut, mengarahkan otak AI menuju kluster konsep tertentu. Kalau prompt lo ambigu, lo menembak ke ruang hampa dan hasilnya tidak sesuai ekspektasi.
+                    </p>
+                </div>
+
+                <!-- Subchapter 9: Attention Logic -->
+                <div class="content-section">
+                    <h2>9. Mekanisme Fokus: Attention Logic</h2>
+                    <p>
+                        Inilah inti dari revolusi Transformer. <strong>Self-Attention Mechanism</strong>.
+                    </p>
+                    <p>
+                        Sebelum Transformer, AI mudah lupa konteks kalimat di awal paragraf saat ia membaca bagian akhir. Dengan Attention, setiap token secara aktif "melihat" ke semua token lain dalam kalimat untuk menentukan seberapa relevan mereka satu sama lain. Kata "bank" bisa berarti bank uang atau bank sungai, dan AI tahu perbedaannya karena ia memberi <em>attention weight</em> yang tinggi pada kata-kata di sekitarnya.
+                    </p>
+                    <div class="warning-box">
+                        <p><strong>Dampak pada Prompting:</strong> Jangan selipkan informasi rongsokan di prompt lo. Semakin banyak "noise" (kalimat basa-basi), semakin pecah fokus (attention) dari AI. Langsung to the point. Less is more ketika berbicara dengan mesin.</p>
+                    </div>
+                </div>
+
+                <!-- Subchapter 10: Nucleus Sampling -->
+                <div class="content-section">
+                    <h2>10. Seni Halusinasi: Nucleus Sampling (Top-K & Top-P)</h2>
+                    <p>
+                        Saat AI ingin membalas, ia memiliki daftar ribuan token yang diurutkan berdasarkan probabilitas. Bagaimana ia memilih token mana yang dikeluarkan? Di sinilah parameter kontrol lo bermain.
+                    </p>
+                    <ul>
+                        <li><strong>Temperature:</strong> Mengatur tingkat keacakan. Semakin tinggi (misal: 0.9), probabilitas token diratakan, sehingga AI akan memilih kata-kata "aneh" dan kreatif. Semakin rendah (0.1), AI menjadi robot kaku yang cuma memilih kata paling mungkin.</li>
+                        <li><strong>Top-K:</strong> AI hanya akan mempertimbangkan K token dengan probabilitas tertinggi. Kalau K=10, token ke-11 dan seterusnya dibuang.</li>
+                        <li><strong>Top-P (Nucleus):</strong> AI mempertimbangkan token-token teratas yang jumlah probabilitasnya mencapai persentase P (misal: 0.9 berarti 90%).</li>
+                    </ul>
+                    
+                    <div class="visualizer-container">
+                        <h3 style="margin-top:0;">Interactive: Token Sampling Visualizer</h3>
+                        <p style="font-size: 0.85rem;">Geser slider di bawah ini untuk melihat bagaimana probabilitas pengambilan kata (token) berikutnya berubah. Anggap AI sedang memprediksi kata setelah "Ibu pergi ke..."</p>
+                        
+                        <div class="slider-group">
+                            <label><span>Temperature:</span> <span id="temp-val">0.7</span></label>
+                            <input type="range" id="temp-slider" class="slider-input-element" min="0.1" max="2.0" step="0.1" value="0.7">
+                        </div>
+                        
+                        <div class="chart-container" id="token-chart">
+                            <!-- Bars generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subchapter 11: Prompt Chain Builder -->
+                <div class="content-section">
+                    <h2>11. Merangkai Mantra: Prompt Chain Builder</h2>
+                    <p>
+                        Jangan menumpuk semua beban pada satu prompt raksasa. Pecah tugas menjadi modul-modul kecil. Ini disebut <strong>Prompt Chaining</strong>. Susun aliran kerja (workflow) dengan menyeret blok-blok di bawah ini. Lo bisa merancang arsitektur output model untuk tugas rumit.
+                    </p>
+                    
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="font-size:1rem;">Available Nodes</h3>
+                            <div id="available-nodes" class="prompt-chain-container">
+                                <div class="prompt-node" data-id="1"><span class="prompt-node-title">System Role Definition</span></div>
+                                <div class="prompt-node" data-id="2"><span class="prompt-node-title">Context / Backstory</span></div>
+                                <div class="prompt-node" data-id="3"><span class="prompt-node-title">Few-shot Examples</span></div>
+                                <div class="prompt-node" data-id="4"><span class="prompt-node-title">Task Instruction</span></div>
+                                <div class="prompt-node" data-id="5"><span class="prompt-node-title">Output Constraint (JSON)</span></div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="font-size:1rem;">Your Active Chain</h3>
+                            <div id="active-nodes" class="prompt-chain-container" style="background-color: var(--accent-light);">
+                                <!-- Drop here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subchapter 12: Hacker Terminal Simulator -->
+                <div class="content-section">
+                    <h2>12. Sandbox Simulasi LLM (Hacker Terminal)</h2>
+                    <p>
+                        Saatnya praktek langsung. Terminal retro di bawah ini terhubung ke simulasi <em>pseudo-LLM</em> lokal. Lo bisa mengubah parameter system seperti <code>set temp 0.1</code> atau langsung mengirim prompt dengan <code>prompt [pesan]</code>.
+                    </p>
+                    
+                    <div class="terminal-sim" id="terminal-screen" onclick="document.getElementById('term-input').focus()">
+                        <div class="terminal-header">
+                            <span>ALCHEMIST OS v3.0 - NEURAL LINK ESTABLISHED</span>
+                            <span>STATUS: ONLINE</span>
+                        </div>
+                        <div class="terminal-output" id="term-output">System initialized. Type 'help' for commands.</div>
+                        <div class="terminal-input-line">
+                            <span class="terminal-prompt">root@alchemist:~#</span>
+                            <input type="text" class="terminal-input" id="term-input" autocomplete="off" spellcheck="false">
+                            <span class="terminal-cursor"></span>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
             <!-- POST-TEST SECTION (Initially Hidden) -->
@@ -2723,7 +3275,13 @@ function decryptData(keyString) {
     
 
     <!-- LOGICAL SCRIPT --></div>
-        <div id="legacy-view" class="tab-view hidden-view"><!-- GATE / ACCELERATOR INPUT -->
+        <div id="legacy-view" class="tab-view hidden-view"><!-- MINTING ANIMATION OVERLAY -->
+    <div id="minting-overlay">
+        <div id="terminal-content"></div>
+        <div class="terminal-cursor"></div>
+    </div>
+
+    <!-- GATE / ACCELERATOR INPUT -->
     <div id="legacy-gate-section">
         <h1 class="gate-title anim-glitch">OFFICIAL TRANSCRIPT</h1>
         <p class="gate-subtitle">Access Restricted • Enter Verification Key</p>
@@ -2788,54 +3346,86 @@ function decryptData(keyString) {
                         </div>
                     </div>
 
-                    <!-- GRADES TABLE -->
-                    <table class="grades-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 18%">CODE</th>
-                                <th style="width: 62%">SUBJECT MODULE</th>
-                                <th style="width: 20%; text-align: right;">SCORE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="grade-code">ARC-101</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Structural Architecture</div>
-                                    <span class="grade-subject-desc">Single File HTML Philosophy, DOM Structure</span>
-                                </td>
-                                <td class="grade-score" id="legacy-score-1">0%</td>
-                            </tr>
-                            <tr>
-                                <td class="grade-code">LOG-202</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Digital Logic Systems</div>
-                                    <span class="grade-subject-desc">State Management, API Integration (No-DB)</span>
-                                </td>
-                                <td class="grade-score" id="legacy-score-2">0%</td>
-                            </tr>
-                            <tr>
-                                <td class="grade-code">PRM-303</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Advanced Prompt Engineering</div>
-                                    <span class="grade-subject-desc">Reasoning Models, Meta-Prompting, Context Optimization</span>
-                                </td>
-                                <td class="grade-score" id="legacy-score-3">0%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- FINAL VERDICT -->
-                    <div class="verdict-box">
-                        <div class="verdict-title">Final Classification Rank</div>
-                        <div class="verdict-rank" id="legacy-final-rank">VERIFIED HUMAN</div>
+                    <!-- GRADES & RADAR SECTION -->
+                    <div class="performance-section">
+                        <table class="grades-table" style="margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 18%">CODE</th>
+                                    <th style="width: 62%">SUBJECT MODULE</th>
+                                    <th style="width: 20%; text-align: right;">SCORE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="grade-code">ARC-101</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Structural Architecture</div>
+                                        <span class="grade-subject-desc">Single File HTML Philosophy, DOM Structure</span>
+                                    </td>
+                                    <td class="grade-score" id="legacy-score-1">0%</td>
+                                </tr>
+                                <tr>
+                                    <td class="grade-code">LOG-202</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Digital Logic Systems</div>
+                                        <span class="grade-subject-desc">State Management, API Integration (No-DB)</span>
+                                    </td>
+                                    <td class="grade-score" id="legacy-score-2">0%</td>
+                                </tr>
+                                <tr>
+                                    <td class="grade-code">PRM-303</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Advanced Prompt Engineering</div>
+                                        <span class="grade-subject-desc">Reasoning Models, Meta-Prompting, Context Optimization</span>
+                                    </td>
+                                    <td class="grade-score" id="legacy-score-3">0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="chart-container">
+                            <canvas id="skills-radar"></canvas>
+                        </div>
                     </div>
 
-                    <!-- KEY SECTION -->
-                    <div class="key-section">
-                        <div class="key-title">ENCRYPTED RECOVERY KEY (PHILOSOPHER'S STONE)</div>
-                        <div class="key-code" id="legacy-key-display">XXXX-XXXX-XXXX-XXXX</div>
-                        <div class="key-hash">TIMESTAMP HASH: <span id="legacy-time-hash">---</span></div>
+                    <!-- ALCHEMICAL PROGRESSION -->
+                    <div class="ranks-container">
+                        <div class="rank-step" id="rank-nigredo">NIGREDO<br><span style="font-size:5pt; font-weight:400;">Decomposition</span></div>
+                        <div class="rank-step" id="rank-albedo">ALBEDO<br><span style="font-size:5pt; font-weight:400;">Purification</span></div>
+                        <div class="rank-step" id="rank-citrinitas">CITRINITAS<br><span style="font-size:5pt; font-weight:400;">Awakening</span></div>
+                        <div class="rank-step" id="rank-rubedo">RUBEDO<br><span style="font-size:5pt; font-weight:400;">Realization</span></div>
+                    </div>
+
+                    <div style="display: flex; gap: 8mm; margin-bottom: 8mm;">
+                        <!-- FINAL VERDICT -->
+                        <div class="verdict-box" style="flex: 1; margin-bottom: 0;">
+                            <div class="verdict-title">Final Classification Rank</div>
+                            <div class="verdict-rank" id="legacy-final-rank">VERIFIED HUMAN</div>
+                        </div>
+
+                        <!-- KEY SECTION -->
+                        <div class="key-section" style="flex: 1; margin-bottom: 0;">
+                            <div class="key-title">ENCRYPTED RECOVERY KEY</div>
+                            <div class="key-code" id="legacy-key-display">XXXX-XXXX-XXXX-XXXX</div>
+                            <div class="key-hash">TIMESTAMP HASH: <span id="legacy-time-hash">---</span></div>
+                        </div>
+                    </div>
+
+                    <!-- CRYPTOGRAPHIC LEDGER -->
+                    <div class="ledger-container">
+                        <div class="ledger-title">Cryptographic Proof of Work Ledger</div>
+                        <table class="ledger-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">BLOCK HEIGHT</th>
+                                    <th style="width: 50%">SHA-256 CHECKSUM (TRUNCATED)</th>
+                                    <th style="width: 25%">CONSENSUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-tbody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- FOOTER -->
@@ -2876,7 +3466,7 @@ function decryptData(keyString) {
                 alchemist4real
             </div>
             <div class="system-version">
-                System v1.0
+                System v1.1
             </div>
         </div>
     </header>
@@ -2911,6 +3501,15 @@ function decryptData(keyString) {
                 <div id="verify-error" class="error-message">Error: Invalid Data Integrity.</div>
             </div>
         </section>
+
+        <!-- DECRYPTION TERMINAL -->
+        <div id="decryption-section" class="hidden">
+            <h2 class="section-title">Terminal Decryption Sequence</h2>
+            <div id="decryption-terminal">
+                <div id="terminal-content"></div>
+                <span class="terminal-cursor"></span>
+            </div>
+        </div>
 
         <!-- RESULT: DASHBOARD (HIDDEN) -->
         <div id="dashboard-section" class="hidden">
@@ -2956,6 +3555,18 @@ function decryptData(keyString) {
                         </div>
                     </div>
 
+                    <!-- Redacted Fields -->
+                    <div class="id-card-row">
+                        <div class="id-card-field">
+                            <div class="id-card-label">Clearance Level</div>
+                            <div class="id-card-val"><span class="redacted">TOP SECRET - OMEGA</span></div>
+                        </div>
+                        <div class="id-card-field">
+                            <div class="id-card-label">Origin IP</div>
+                            <div class="id-card-val"><span class="redacted">192.168.x.x (ENCRYPTED)</span></div>
+                        </div>
+                    </div>
+
                     <div class="id-card-footer">
                         <div class="id-card-disclaimer">
                             Kredensial ini diverifikasi secara kriptografis melalui Protokol Alchemist.
@@ -2968,14 +3579,27 @@ function decryptData(keyString) {
                 </div>
             </div>
 
+            <!-- Skill Tree -->
+            <div style="margin: 2.5rem 0;">
+                <h2 class="section-title">Cognitive Evolution Skill Tree</h2>
+                <div class="skill-tree-container">
+                    <div class="skill-node active" id="node-html">STRUCTURE<br><span style="font-size:0.7em; font-weight:normal;">HTML5 / CSS3</span></div>
+                    <div class="skill-connector"></div>
+                    <div class="skill-node" id="node-js">LOGIC<br><span style="font-size:0.7em; font-weight:normal;">JavaScript (ES6+)</span></div>
+                    <div class="skill-connector"></div>
+                    <div class="skill-node" id="node-react">ASCENSION<br><span style="font-size:0.7em; font-weight:normal;">React / SPA</span></div>
+                </div>
+                <p class="chart-caption">"Sirkuit neuronal kognitif yang telah dibangkitkan."</p>
+            </div>
+
             <!-- Evolution Chart -->
             <div style="margin: 2.5rem 0;">
-                <h2 class="section-title">Analisis Evolusi</h2>
-                <div class="chart-box">
+                <h2 class="section-title">Advanced Multi-Axis Analysis</h2>
+                <div class="chart-box" style="height: 350px;">
                     <canvas id="evolutionChart"></canvas>
                 </div>
                 <p class="chart-caption">
-                    "Grafik ini menunjukkan perjalanan kognitif lo dari seorang turis menjadi arsitek."
+                    "Spektrum multidimensional kompetensi lo."
                 </p>
             </div>
 
@@ -3463,6 +4087,181 @@ function decryptData(keyString) {
             });
         });
 
+        // --- DOM TREE EXPLORER LOGIC ---
+        const domData = {
+            tag: "html", 
+            props: { lang: "id" },
+            children: [
+                { tag: "head", props: {}, children: [{ tag: "title", props: { text: "Cooking with Alchemist" } }] },
+                { 
+                    tag: "body", 
+                    props: { class: "selection:bg-accent" },
+                    children: [
+                        { tag: "nav", props: { class: "nav-container" }, children: [{ tag: "div", props: { class: "nav-logo" }, children: [] }] },
+                        { tag: "main", props: {}, children: [
+                            { tag: "header", props: { id: "hero" }, children: [{ tag: "h1", props: { class: "hero-title glitch-text" } }] },
+                            { tag: "section", props: { id: "materi-section" }, children: [{ tag: "div", props: { class: "prose" } }] }
+                        ]},
+                        { tag: "footer", props: {}, children: [] }
+                    ]
+                }
+            ]
+        };
+
+        function renderDOMTree(node, container, level = 0) {
+            const el = document.createElement('div');
+            el.className = 'dte-node';
+            el.innerHTML = `<span style="color: #F472B6;">&lt;${node.tag}&gt;</span>`;
+            
+            el.onclick = (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.dte-node').forEach(n => n.classList.remove('selected'));
+                el.classList.add('selected');
+                showDOMProps(node);
+            };
+
+            container.appendChild(el);
+
+            if (node.children && node.children.length > 0) {
+                const childContainer = document.createElement('div');
+                childContainer.style.marginLeft = '16px';
+                node.children.forEach(child => renderDOMTree(child, childContainer, level + 1));
+                container.appendChild(childContainer);
+            }
+        }
+
+        function showDOMProps(node) {
+            const propsBox = document.getElementById('dte-props');
+            let html = `<div style="font-weight: 700; margin-bottom: 12px; color: var(--fg); font-size: 14px;">Node: ${node.tag.toUpperCase()}</div>`;
+            html += `<div style="margin-bottom: 16px;"><strong>Type:</strong> HTMLElement</div>`;
+            
+            if (Object.keys(node.props).length > 0) {
+                html += `<div><strong>Attributes:</strong></div>`;
+                html += `<ul style="margin-left: 16px; margin-top: 8px;">`;
+                for (const [key, value] of Object.entries(node.props)) {
+                    html += `<li style="margin-bottom: 4px;"><span style="color: #10B981;">${key}</span>: "${value}"</li>`;
+                }
+                html += `</ul>`;
+            } else {
+                html += `<div style="color: rgba(13,13,13,0.5);">No attributes.</div>`;
+            }
+            propsBox.innerHTML = html;
+        }
+
+        // Initialize DOM Tree
+        setTimeout(() => {
+            const treeContainer = document.getElementById('dte-tree');
+            if (treeContainer) {
+                treeContainer.innerHTML = '<div style="font-weight: 700; margin-bottom: 12px;">INTERACTIVE DOM MAP</div>';
+                renderDOMTree(domData, treeContainer);
+            }
+            
+            // Initialize Sortable
+            if (typeof Sortable !== 'undefined') {
+                new Sortable(document.getElementById('sa-pool'), {
+                    group: 'shared',
+                    animation: 150
+                });
+                new Sortable(document.getElementById('sa-canvas'), {
+                    group: 'shared',
+                    animation: 150
+                });
+            }
+        }, 1000);
+
+        // --- SEMANTIC ARCHITECT LOGIC ---
+        function validateSemantics() {
+            const canvas = document.getElementById('sa-canvas');
+            const items = canvas.querySelectorAll('.sa-item');
+            const order = Array.from(items).map(item => item.getAttribute('data-tag'));
+            
+            const feedback = document.getElementById('sa-feedback');
+            
+            if (order.length === 0) {
+                feedback.innerText = "Canvas masih kosong. Tarik elemen ke sini.";
+                feedback.style.color = "#ff0055";
+                return;
+            }
+
+            const hasHeader = order.indexOf('header') !== -1;
+            const hasMain = order.indexOf('main') !== -1;
+            const hasFooter = order.indexOf('footer') !== -1;
+            
+            let isValid = true;
+            let msg = "";
+
+            if (hasHeader && hasFooter && order.indexOf('header') > order.indexOf('footer')) {
+                isValid = false;
+                msg = "Header tidak mungkin berada di bawah Footer!";
+            } else if (hasMain && hasHeader && order.indexOf('main') < order.indexOf('header')) {
+                isValid = false;
+                msg = "Main content sebaiknya berada di bawah Header.";
+            } else if (!hasMain) {
+                isValid = false;
+                msg = "Halaman lo butuh <main> sebagai wadah konten utama.";
+            } else {
+                msg = "Arsitektur Semantik Valid! Struktur yang rapi akan disukai oleh Screen Reader dan Googlebot.";
+            }
+
+            feedback.innerText = msg;
+            feedback.style.color = isValid ? "var(--accent-success)" : "#ff0055";
+        }
+
+        // --- BLINDFOLD TEST LOGIC ---
+        let blindfoldActive = false;
+        function startBlindfold() {
+            if(blindfoldActive) return;
+            blindfoldActive = true;
+            
+            document.getElementById('bt-viewport').classList.add('blurred');
+            document.getElementById('bt-overlay').classList.add('active');
+            logSR("SIMULATOR AKTIF. Penglihatan dimatikan. Mengandalkan navigasi TAB keyboard.");
+            
+            document.addEventListener('keydown', handleBlindfoldTab);
+        }
+
+        function finishBlindfold() {
+            if(!blindfoldActive) return;
+            blindfoldActive = false;
+            
+            document.getElementById('bt-viewport').classList.remove('blurred');
+            document.getElementById('bt-overlay').classList.remove('active');
+            document.removeEventListener('keydown', handleBlindfoldTab);
+            
+            logSR(">>> SELAMAT! Lo berhasil menemukan tombol checkout. Checkout tereksekusi. <<<");
+            alert("Checkout Berhasil! Lo menyadari kan kalau elemen DIV yang dijadikan tombol itu miskin interaktivitas? Screen reader cuma bilang 'group' atau mengabaikannya.");
+        }
+
+        function handleBlindfoldTab(e) {
+            if (e.key === 'Tab' && blindfoldActive) {
+                setTimeout(() => {
+                    const active = document.activeElement;
+                    if (active.tagName.toLowerCase() === 'button') {
+                        logSR(`Fokus pada Button: ${active.innerText}`);
+                    } else if (active.tagName.toLowerCase() === 'div' && active.hasAttribute('tabindex')) {
+                        logSR(`Fokus pada Elemen Tak Dikenal (Div). Teks: ${active.innerText}`);
+                    }
+                }, 10);
+            }
+            if (e.key === 'Enter' && blindfoldActive) {
+                const active = document.activeElement;
+                if (active.tagName.toLowerCase() === 'div' && active.hasAttribute('tabindex')) {
+                    finishBlindfold();
+                } else if (active.tagName.toLowerCase() === 'button') {
+                    logSR(`Klik Button: ${active.innerText}`);
+                }
+            }
+        }
+
+        function logSR(msg) {
+            const log = document.getElementById('sr-log');
+            const entry = document.createElement('div');
+            entry.className = 'sr-log-entry';
+            entry.innerText = `[SCREEN READER] ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
         // Intercept Ch1 finish to trigger progression
         const original_ch1_renderResult = ch1_renderResult;
         ch1_renderResult = function() {
@@ -3761,6 +4560,156 @@ function decryptData(keyString) {
                 statusText.className = "text-[9px] font-mono text-[#10b981] mt-2 font-bold tracking-wider";
                 packet.classList.add('hidden');
             }, 3400);
+        }
+
+        // --- TIME MACHINE PROMISES LOGIC ---
+        function updateTimeMachine(step) {
+            const cs = document.getElementById('tm-callstack');
+            const api = document.getElementById('tm-webapi');
+            const queue = document.getElementById('tm-queue');
+            const exp = document.getElementById('tm-explanation');
+            
+            if(!cs || !api || !queue || !exp) return;
+
+            cs.innerHTML = '';
+            api.innerHTML = '';
+            queue.innerHTML = '';
+            
+            let htmlStack = '';
+            let htmlApi = '';
+            let htmlQueue = '';
+            let textExp = '';
+            
+            const createBox = (text, color) => `<div class="bg-${color}-100 border border-[#0D0D0D] p-1 text-center text-[10px] font-bold">${text}</div>`;
+            const createBoxDark = (text) => `<div class="bg-[#0D0D0D] text-[#10b981] border border-[#0D0D0D] p-1 text-center text-[10px] font-bold">${text}</div>`;
+            
+            step = parseInt(step);
+            
+            if (step === 0) {
+                textExp = "0. Skrip mulai dieksekusi dari baris pertama.";
+            } else if (step === 1) {
+                htmlStack = createBox("console.log('1')", "white");
+                textExp = "1. Tugas sinkron console.log('1') dieksekusi di Call Stack. Output: 1.";
+            } else if (step === 2) {
+                htmlStack = createBox("setTimeout(..., 0)", "white");
+                htmlApi = createBox("Timer: 0ms", "yellow");
+                textExp = "2. setTimeout masuk Call Stack, tapi karena asinkron, ia langsung diserahkan ke Web API untuk menghitung waktu (timer).";
+            } else if (step === 3) {
+                htmlApi = createBox("Timer: 0ms", "yellow");
+                htmlStack = createBox("Promise.then", "white");
+                textExp = "3. Promise diselesaikan, callback dari `.then()` tidak langsung jalan, melainkan dilempar ke Microtask Queue.";
+                htmlQueue = createBoxDark("Microtask: log('3')");
+            } else if (step === 4) {
+                htmlApi = createBox("Timer Done", "gray");
+                htmlStack = createBox("console.log('4')", "white");
+                htmlQueue = createBoxDark("Microtask: log('3')") + createBox("Macrotask: log('2')", "yellow");
+                textExp = "4. Timer Web API selesai dan melempar callback ke Macrotask Queue. Sementara itu Call Stack mengeksekusi console.log('4'). Output: 4.";
+            } else if (step === 5) {
+                htmlQueue = createBox("Macrotask: log('2')", "yellow");
+                htmlStack = createBoxDark("console.log('3')");
+                textExp = "5. Call Stack kosong! Event Loop mengecek Microtask Queue duluan. log('3') masuk Call Stack dan dieksekusi. Output: 3.";
+            } else if (step === 6) {
+                htmlStack = createBox("console.log('2')", "yellow");
+                textExp = "6. Microtask kosong. Event Loop mengambil tugas dari Macrotask Queue. log('2') masuk Call Stack dan dieksekusi. Output: 2. Selesai.";
+            }
+            
+            cs.innerHTML = htmlStack;
+            api.innerHTML = htmlApi;
+            queue.innerHTML = htmlQueue;
+            exp.innerHTML = "<strong>Penjelasan:</strong> <br>" + textExp;
+        }
+        
+        setTimeout(() => updateTimeMachine(0), 100); // init later
+
+        // --- API CONTROL ROOM LOGIC ---
+        async function runSimulatedNetworkFetch() {
+            const btn = document.getElementById('api-btn-simulate');
+            const delay = parseInt(document.getElementById('api-delay').value);
+            const errProb = parseInt(document.getElementById('api-error').value);
+            const logBox = document.getElementById('api-term-log');
+            const statusLabel = document.getElementById('api-term-status');
+            const progBar = document.getElementById('api-term-progress');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            logBox.innerHTML = "> Fetching data from https://api.alchemist.com/secret...\n";
+            statusLabel.innerText = "Connecting...";
+            statusLabel.className = "text-yellow-500 animate-pulse";
+            progBar.style.transitionDuration = delay + "ms";
+            progBar.style.width = "100%";
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, delay));
+                
+                const rand = Math.random() * 100;
+                if (rand < errProb) {
+                    throw new Error("500 Internal Server Error / Network Timeout");
+                }
+                
+                logBox.innerHTML += `<span class="text-[#10b981]">> 200 OK</span>\n> Payload: { "status": "success", "data": "Tembaga menjadi Emas" }\n> Operation Completed.`;
+                statusLabel.innerText = "Success";
+                statusLabel.className = "text-[#10b981]";
+                
+            } catch (error) {
+                logBox.innerHTML += `<span class="text-red-500">> ERR: ${error.message}</span>\n> Catch block executed.\n> Retrying is recommended.`;
+                statusLabel.innerText = "Failed";
+                statusLabel.className = "text-red-500";
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+                setTimeout(() => {
+                    progBar.style.transitionDuration = "0ms";
+                    progBar.style.width = "0%";
+                }, 500);
+            }
+        }
+
+        // --- ENIGMA CONVEYOR BELT LOGIC ---
+        async function runEnigma() {
+            const inputTxt = document.getElementById('enigma-input').value.toUpperCase();
+            const shiftVal = parseInt(document.getElementById('enigma-shift').value);
+            const inBelt = document.getElementById('enigma-in-belt');
+            const outBelt = document.getElementById('enigma-out-belt');
+            const opNode = document.getElementById('enigma-op-node');
+            
+            inBelt.innerHTML = '';
+            outBelt.innerHTML = '';
+            
+            if(!inputTxt) return;
+            
+            inputTxt.split('').forEach(char => {
+                const div = document.createElement('div');
+                div.className = 'belt-item';
+                div.innerText = char;
+                inBelt.appendChild(div);
+            });
+            
+            opNode.innerText = shiftVal >= 0 ? `+${shiftVal}` : shiftVal;
+            
+            const items = inBelt.querySelectorAll('.belt-item');
+            for(let i=0; i<items.length; i++) {
+                items[i].classList.add('active');
+                await new Promise(r => setTimeout(r, 400));
+                
+                const code = items[i].innerText.charCodeAt(0);
+                let newCode = code;
+                if (code >= 65 && code <= 90) {
+                    newCode = ((code - 65 + shiftVal) % 26);
+                    if (newCode < 0) newCode += 26;
+                    newCode += 65;
+                }
+                const newChar = String.fromCharCode(newCode);
+                
+                items[i].classList.remove('active');
+                items[i].classList.add('processed');
+                
+                const outDiv = document.createElement('div');
+                outDiv.className = 'belt-item processed';
+                outDiv.innerText = newChar;
+                outBelt.appendChild(outDiv);
+                
+                await new Promise(r => setTimeout(r, 100));
+            }
         }
 
         // --- POST-TEST START ---
@@ -4175,6 +5124,141 @@ function decryptData(keyString) {
                 </div>
             `;
         }
+
+        // --- INTERACTIVE FEATURES LOGIC ---
+        
+        // 1. Token Visualizer
+        const tempSlider = document.getElementById('temp-slider');
+        const tempVal = document.getElementById('temp-val');
+        const chartContainer = document.getElementById('token-chart');
+        
+        // Base unnormalized probabilities for words: [pasar, sekolah, rumah, kerja, bulan]
+        const baseLogits = [2.5, 2.0, 1.5, 1.0, -1.0];
+        const labels = ['pasar', 'sekolah', 'rumah', 'kerja', 'bulan'];
+        
+        function updateChart() {
+            if (!tempSlider) return;
+            const T = parseFloat(tempSlider.value);
+            tempVal.innerText = T.toFixed(1);
+            
+            // Softmax with temperature
+            const maxLogit = Math.max(...baseLogits);
+            const exps = baseLogits.map(l => Math.exp((l - maxLogit) / T));
+            const sumExps = exps.reduce((a, b) => a + b, 0);
+            const probs = exps.map(e => e / sumExps);
+            
+            chartContainer.innerHTML = '';
+            probs.forEach((p, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = Math.max((p * 100), 5) + '%';
+                
+                // Color change based on prob
+                if (p > 0.4) bar.style.backgroundColor = '#22c55e'; // green
+                else if (p > 0.1) bar.style.backgroundColor = '#3b82f6'; // blue
+                else bar.style.backgroundColor = '#ef4444'; // red
+                
+                bar.innerHTML = `<span style="margin-bottom: 5px;">${(p*100).toFixed(1)}%</span>
+                                 <span class="chart-label">${labels[i]}</span>`;
+                chartContainer.appendChild(bar);
+            });
+        }
+        if (tempSlider) {
+            tempSlider.addEventListener('input', updateChart);
+            updateChart(); // init
+        }
+
+        // 2. Prompt Chain Builder
+        if (typeof Sortable !== 'undefined') {
+            const availableNodes = document.getElementById('available-nodes');
+            const activeNodes = document.getElementById('active-nodes');
+            if (availableNodes && activeNodes) {
+                new Sortable(availableNodes, {
+                    group: 'shared',
+                    animation: 150,
+                    sort: false // Don't sort available nodes
+                });
+                new Sortable(activeNodes, {
+                    group: 'shared',
+                    animation: 150
+                });
+            }
+        }
+
+        // 3. Hacker Terminal Simulator
+        const termInput = document.getElementById('term-input');
+        const termOutput = document.getElementById('term-output');
+        let termState = { temp: 0.7 };
+        let isTyping = false;
+
+        function typeOutput(text, callback) {
+            isTyping = true;
+            let i = 0;
+            const line = document.createElement('div');
+            termOutput.appendChild(line);
+            
+            function typeChar() {
+                if (i < text.length) {
+                    line.textContent += text.charAt(i);
+                    i++;
+                    termOutput.parentElement.scrollTop = termOutput.parentElement.scrollHeight;
+                    setTimeout(typeChar, 20);
+                } else {
+                    isTyping = false;
+                    if (callback) callback();
+                }
+            }
+            typeChar();
+        }
+
+        if (termInput) {
+            termInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !isTyping) {
+                    const cmd = this.value.trim();
+                    this.value = '';
+                    
+                    if (!cmd) return;
+                    
+                    const echo = document.createElement('div');
+                    echo.style.color = '#fff';
+                    echo.textContent = `root@alchemist:~# ${cmd}`;
+                    termOutput.appendChild(echo);
+                    
+                    const parts = cmd.split(' ');
+                    const base = parts[0].toLowerCase();
+                    
+                    if (base === 'help') {
+                        typeOutput("Commands:\n  help        - Show this message\n  set temp <v>- Set model temperature (0.1 - 2.0)\n  prompt <msg>- Send prompt to simulated LLM");
+                    } else if (base === 'set' && parts[1] === 'temp') {
+                        const v = parseFloat(parts[2]);
+                        if (!isNaN(v)) {
+                            termState.temp = v;
+                            typeOutput(`System temperature set to ${v.toFixed(1)}`);
+                        } else {
+                            typeOutput("Error: Invalid temperature value.");
+                        }
+                    } else if (base === 'prompt') {
+                        const promptMsg = parts.slice(1).join(' ');
+                        if (!promptMsg) {
+                            typeOutput("Error: Prompt cannot be empty.");
+                            return;
+                        }
+                        
+                        let response = "Processing...\n";
+                        if (termState.temp > 1.5) {
+                            response += "W4kTu AdAlah I1usi. K0d3 aDalAh K4caU. Zzz...";
+                        } else if (termState.temp < 0.3) {
+                            response += "Pesan diterima. Melaksanakan instruksi secara kaku.";
+                        } else {
+                            response += "Sintesis berhasil. Pola bahasa terdeteksi. Merespons secara optimal.";
+                        }
+                        typeOutput(`[LLM Response (Temp: ${termState.temp.toFixed(1)})]: ${response}`);
+                    } else {
+                        typeOutput(`Command not found: ${base}`);
+                    }
+                }
+            });
+        }
         
         // Auto-unlock gate for Ch3
         const original_ch3_unlockGate = ch3_unlockGate;
@@ -4220,7 +5304,9 @@ function decryptData(keyString) {
         };
 
         // --- LEGACY JS ---
-        // Set default zoom on page load
+        let radarChart = null;
+        let tiltInstance = null;
+
         window.addEventListener('DOMContentLoaded', () => {
             updateZoom(0.75);
         });
@@ -4232,11 +5318,8 @@ function decryptData(keyString) {
             wrapper.style.transform = `scale(${zoomVal})`;
             document.getElementById('zoom-value').innerText = `${Math.round(zoomVal * 100)}%`;
             
-            // Native A4 dimensions in mm are 210 x 296
-            // In typical standard 96 DPI screen, 1mm is ~3.78px
-            // 296mm = 1118.7px. Let's adjust frame height to follow zoom to prevent scrollbar/empty height issues.
             const a4HeightPx = 1118.7;
-            const containerPadding = 48; // padding of .document-frame (24px * 2)
+            const containerPadding = 48; 
             frame.style.height = `${(a4HeightPx * zoomVal) + containerPadding}px`;
         }
 
@@ -4263,35 +5346,158 @@ function decryptData(keyString) {
 
                 // Populate fields
                 document.getElementById('legacy-student-name').innerText = data.n.toUpperCase();
-                document.getElementById('legacy-student-id').innerText = `ID-${data.t.toString(16).toUpperCase()}`;
+                document.getElementById('legacy-student-id').innerText = 'ID-' + data.t.toString().slice(-6);
                 document.getElementById('legacy-final-rank').innerText = data.rank.replace(/_/g, ' ');
                 
                 const dateObj = new Date(data.t);
                 document.getElementById('legacy-doc-date').innerText = dateObj.toLocaleDateString('en-GB').toUpperCase();
                 
-                // Key Display & Hash
                 const timeHex = Math.floor(dateObj.getTime() / 1000).toString(16).toUpperCase();
                 let formattedKey = cleanInput.match(/.{1,4}/g)?.join('-') || cleanInput;
                 document.getElementById('legacy-key-display').innerText = formattedKey;
                 document.getElementById('legacy-time-hash').innerText = timeHex;
 
-                // Scores
                 document.getElementById('legacy-score-1').innerText = Math.round((data.c1[1]/3)*100) + "%";
                 document.getElementById('legacy-score-2').innerText = Math.round((data.c2[1]/3)*100) + "%";
                 document.getElementById('legacy-score-3').innerText = Math.round((data.c3[1]/3)*100) + "%";
 
                 document.getElementById('legacy-gate-section').style.display = 'none';
-                document.getElementById('legacy-cert-section').style.display = 'flex';
+
+                // Terminal Minting Animation
+                const overlay = document.getElementById('minting-overlay');
+                overlay.style.display = 'flex';
+                const terminal = document.getElementById('terminal-content');
+                terminal.innerHTML = "";
                 
-                // Refresh zoom to recalculate height based on the slider value
-                const zoomVal = document.getElementById('zoom-slider').value;
-                updateZoom(zoomVal);
+                const lines = [
+                    "INITIALIZING SECURE CONNECTION...",
+                    "VERIFYING CRYPTOGRAPHIC KEY...",
+                    "DECRYPTING ALCHEMICAL LEDGER...",
+                    "CALCULATING PROOF OF WORK...",
+                    "MINTING RELIC CERTIFICATE..."
+                ];
+                
+                let i = 0;
+                function printLine() {
+                    if (i < lines.length) {
+                        terminal.innerHTML += '<div class="terminal-line">> ' + lines[i] + '</div>';
+                        i++;
+                        setTimeout(printLine, 300 + Math.random() * 400);
+                    } else {
+                        terminal.innerHTML += '<div class="terminal-line">> ACCESS GRANTED.</div>';
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            document.getElementById('legacy-cert-section').style.display = 'flex';
+                            
+                            const zoomVal = document.getElementById('zoom-slider').value;
+                            updateZoom(zoomVal);
+                            
+                            initChart(data);
+                            initRanks(data);
+                            initLedger(timeHex);
+                            initTilt();
+                            
+                        }, 800);
+                    }
+                }
+                printLine();
 
             } catch (e) {
                 console.error(e);
                 errorMsg.innerText = "Error: Key Invalid.";
                 errorMsg.style.display = 'block';
             }
+        }
+
+        function initChart(data) {
+            const ctx = document.getElementById('skills-radar').getContext('2d');
+            if(radarChart) radarChart.destroy();
+
+            const score1 = Math.round((data.c1[1]/3)*100);
+            const score2 = Math.round((data.c2[1]/3)*100);
+            const score3 = Math.round((data.c3[1]/3)*100);
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Architecture', 'Logic', 'Prompting'],
+                    datasets: [{
+                        label: 'Skill Proficiency',
+                        data: [score1, score2, score3],
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        pointBackgroundColor: 'rgba(13, 13, 13, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(13, 13, 13, 1)',
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(13, 13, 13, 0.2)' },
+                            grid: { color: 'rgba(13, 13, 13, 0.1)' },
+                            pointLabels: {
+                                font: { family: "'DM Mono', monospace", size: 9, weight: 'bold' },
+                                color: '#0D0D0D'
+                            },
+                            ticks: { display: false, min: 0, max: 100 }
+                        }
+                    },
+                    plugins: { legend: { display: false } },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function initRanks(data) {
+            const rankStr = (data.rank || '').toUpperCase();
+            let activeIdx = 0;
+            if(rankStr.includes('RUBEDO')) activeIdx = 3;
+            else if(rankStr.includes('CITRINITAS')) activeIdx = 2;
+            else if(rankStr.includes('ALBEDO')) activeIdx = 1;
+            else if(rankStr.includes('NIGREDO')) activeIdx = 0;
+            else {
+                const avg = (data.c1[1] + data.c2[1] + data.c3[1]) / 9;
+                if(avg >= 0.9) activeIdx = 3;
+                else if(avg >= 0.7) activeIdx = 2;
+                else if(avg >= 0.4) activeIdx = 1;
+            }
+
+            const rankIds = ['rank-nigredo', 'rank-albedo', 'rank-citrinitas', 'rank-rubedo'];
+            for(let i=0; i<4; i++) {
+                const el = document.getElementById(rankIds[i]);
+                el.classList.remove('active', 'achieved');
+                if (i < activeIdx) el.classList.add('achieved');
+                if (i === activeIdx) el.classList.add('active');
+            }
+        }
+
+        function initLedger(timeHex) {
+            const tbody = document.getElementById('ledger-tbody');
+            tbody.innerHTML = '';
+            let currentHash = timeHex;
+            for(let j=0; j<4; j++) {
+                currentHash = btoa(currentHash + j * 13).replace(/=/g, '').substring(0, 32).toUpperCase();
+                tbody.innerHTML += `<tr>
+                    <td>BLOCK #${(10134 + j * 7)}</td>
+                    <td>${currentHash}</td>
+                    <td style="color: var(--accent-success); font-weight: bold;">VALID</td>
+                </tr>`;
+            }
+        }
+
+        function initTilt() {
+            const container = document.getElementById('legacy-transcript-container');
+            VanillaTilt.init(container, {
+                max: 2,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2,
+                gyroscope: true
+            });
+            tiltInstance = container.vanillaTilt;
         }
 
         function legacy_downloadPDF() {
@@ -4305,10 +5511,16 @@ function decryptData(keyString) {
             btn.innerText = "GENERATING...";
             btn.disabled = true;
 
+            if (tiltInstance) {
+                tiltInstance.destroy();
+            }
+            element.style.transform = "none";
+            element.style.boxShadow = "none";
+
             setTimeout(() => {
                 const opt = {
                     margin: 0,
-                    filename: `OFFICIAL_TRANSCRIPT_${id}_${name}.pdf`,
+                    filename: OFFICIAL_TRANSCRIPT__.pdf,
                     image: { type: 'jpeg', quality: 1.0 },
                     html2canvas: { 
                         scale: 3, 
@@ -4323,10 +5535,12 @@ function decryptData(keyString) {
                 html2pdf().set(opt).from(element).save().then(() => {
                     btn.innerText = originalText;
                     btn.disabled = false;
+                    initTilt();
                 }).catch(err => {
                     console.error(err);
                     btn.innerText = originalText;
                     btn.disabled = false;
+                    initTilt();
                 });
             }, 500);
         }
@@ -4352,8 +5566,6 @@ function decryptData(keyString) {
             
             // Note: The Key format in Cert was Base64 + "-TIMEHASH". 
             // We need to handle both raw Base64 and formatted key.
-            // Let's try a robust approach: extract the Base64 part.
-            
             let payloadPart = rawInput;
             if (rawInput.includes('-')) {
                 const chunks = rawInput.split('-');
@@ -4387,16 +5599,57 @@ function decryptData(keyString) {
 
                 if (!data.n || !data.rank) return false;
 
-                warranty_renderDashboard(data);
+                startDecryptionSequence(data);
                 return true;
             } catch (e) {
                 return false;
             }
         }
 
-        function warranty_renderDashboard(data) {
-            // Hide Scanner
+        function startDecryptionSequence(data) {
             document.getElementById('scanner-section').classList.add('hidden');
+            document.getElementById('decryption-section').classList.remove('hidden');
+            
+            const terminal = document.getElementById('terminal-content');
+            terminal.innerHTML = '';
+            
+            const lines = [
+                "INITIATING SECURE HANDSHAKE...",
+                "ESTABLISHING CONNECTION TO ALCHEMIST PROTOCOL...",
+                "BYPASSING MAINFRAME FIREWALL...",
+                "ACCESS GRANTED.",
+                "DECRYPTING PAYLOAD..."
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < lines.length) {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    line.innerText = `> ${lines[i]}`;
+                    terminal.appendChild(line);
+                    
+                    // Hex garbage
+                    for (let j = 0; j < 2; j++) {
+                        const hex = document.createElement('div');
+                        hex.className = 'terminal-line';
+                        hex.style.opacity = '0.5';
+                        hex.innerText = Array.from({length: 32}, () => Math.floor(Math.random()*16).toString(16)).join('').toUpperCase();
+                        terminal.appendChild(hex);
+                    }
+                    terminal.parentElement.scrollTop = terminal.parentElement.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('decryption-section').classList.add('hidden');
+                        warranty_renderDashboard(data);
+                    }, 600);
+                }
+            }, 300);
+        }
+
+        function warranty_renderDashboard(data) {
             document.getElementById('dashboard-section').classList.remove('hidden');
 
             // Populate Data
@@ -4411,78 +5664,66 @@ function decryptData(keyString) {
 
             // Chart Data
             // Calc Averages for Chart Points
-            const s1 = Math.round((data.c1[1]/3)*100); 
-            const s2 = Math.round((data.c2[1]/3)*100); 
-            const s3 = Math.round((data.c3[1]/3)*100); 
+            const s1 = data.c1 ? Math.round((data.c1[1]/3)*100) : 50; 
+            const s2 = data.c2 ? Math.round((data.c2[1]/3)*100) : 0; 
+            const s3 = data.c3 ? Math.round((data.c3[1]/3)*100) : 0; 
 
-            // Render Chart
+            const logicScore = s2;
+            const uiScore = s1;
+            const archScore = s3;
+            const syncScore = Math.round((s1+s2+s3)/3);
+            const debugScore = Math.min(100, s2 + 30);
+
+            // Render Radar Chart
             const ctx = document.getElementById('evolutionChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
+            if(window.evolutionChartInstance) {
+                window.evolutionChartInstance.destroy();
+            }
+
+            window.evolutionChartInstance = new Chart(ctx, {
+                type: 'radar',
                 data: {
-                    labels: ['Start (0%)', 'Chapter 1 (Structure)', 'Chapter 2 (Logic)', 'Chapter 3 (Ascension)'],
+                    labels: ['Structure (UI)', 'Logic (JS)', 'Architecture', 'Synchronization', 'Debugging'],
                     datasets: [{
-                        label: 'Tingkat Kompetensi (%)',
-                        data: [0, s1, s2, s3],
-                        borderColor: '#0D0D0D',
-                        backgroundColor: 'rgba(13, 13, 13, 0.08)',
+                        label: 'Competency Matrix',
+                        data: [uiScore, logicScore, archScore, syncScore, debugScore],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
                         borderWidth: 2,
-                        pointBackgroundColor: '#10B981',
-                        pointBorderColor: '#0D0D0D',
-                        pointBorderWidth: 1.5,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        fill: true,
-                        tension: 0.1
+                        pointBackgroundColor: '#0D0D0D',
+                        pointBorderColor: '#10B981',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            display: true,
-                            labels: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(13, 13, 13, 0.2)' },
+                            grid: { color: 'rgba(13, 13, 13, 0.2)' },
+                            pointLabels: {
                                 color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 11
-                                }
+                                font: { family: 'DM Mono', size: 11, weight: 'bold' }
+                            },
+                            ticks: {
+                                display: false,
+                                min: 0,
+                                max: 100
                             }
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: { 
-                                color: 'rgba(13, 13, 13, 0.15)',
-                                drawTicks: false
-                            },
-                            ticks: { 
-                                color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 10
-                                }
-                            }
-                        },
-                        x: {
-                            grid: { 
-                                color: 'rgba(13, 13, 13, 0.15)',
-                                drawTicks: false
-                            },
-                            ticks: { 
-                                color: '#0D0D0D',
-                                font: {
-                                    family: 'DM Mono',
-                                    size: 10
-                                }
-                            }
-                        }
+                    plugins: {
+                        legend: { display: false }
                     }
                 }
             });
+
+            // Update Skill Tree nodes based on data
+            if(s2 > 0) document.getElementById('node-js').classList.add('active');
+            if(s3 > 0) document.getElementById('node-react').classList.add('active');
         }
 
         // Global Init

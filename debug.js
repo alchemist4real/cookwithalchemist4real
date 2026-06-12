@@ -9,7 +9,7 @@ const puppeteer = require('puppeteer');
   page.on('requestfailed', request => console.log('REQUEST FAILED:', request.url(), request.failure().errorText));
 
   try {
-    await page.goto('https://cookwithalchemist4real.vercel.app/', { waitUntil: 'networkidle0' });
+    await page.goto('file:///d:/DOWNLOAD/cookwithalchemist4real/index.html', { waitUntil: 'networkidle0' });
     console.log('Page loaded successfully.');
   } catch (err) {
     console.log('Error loading page:', err);

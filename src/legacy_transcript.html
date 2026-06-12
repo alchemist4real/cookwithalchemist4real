@@ -8,6 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- html2pdf -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Vanilla Tilt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     
     <style>
         :root {
@@ -630,9 +634,148 @@
             padding-top: 4mm;
             margin-top: 6mm;
         }
+        /* --- NEW ELEMENTS --- */
+        .performance-section {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 6mm;
+            margin-bottom: 8mm;
+            align-items: stretch;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 100%;
+            min-height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--fg);
+            background-color: var(--bg);
+            padding: 2mm;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+
+        .ranks-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8mm;
+            border: 1px solid var(--fg);
+            background: var(--bg);
+            padding: 4mm;
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        .rank-step {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 8pt;
+            font-weight: 700;
+            color: var(--fg-faint);
+            flex: 1;
+            position: relative;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .rank-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -5px;
+            top: 20%;
+            transform: translateY(-50%);
+            color: var(--fg-faint);
+        }
+
+        .rank-step.active {
+            color: var(--accent-success);
+            text-shadow: 0 0 5px rgba(34, 197, 94, 0.4);
+        }
+
+        .rank-step.achieved {
+            color: var(--fg);
+        }
+
+        .ledger-container {
+            border: 1px solid var(--fg);
+            background-color: var(--bg);
+            padding: 4mm;
+            margin-bottom: 8mm;
+            box-shadow: 2px 2px 0 var(--fg);
+        }
+
+        .ledger-title {
+            font-family: var(--font-mono);
+            font-size: 7.5pt;
+            font-weight: 700;
+            margin-bottom: 3mm;
+            text-transform: uppercase;
+            color: var(--fg);
+            letter-spacing: 1px;
+            border-bottom: 1px dashed var(--fg-faint);
+            padding-bottom: 2mm;
+        }
+
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 6.5pt;
+        }
+
+        .ledger-table th, .ledger-table td {
+            border: 1px dotted var(--fg-faint);
+            padding: 2mm;
+            text-align: left;
+            color: var(--fg);
+        }
+
+        .ledger-table th {
+            background: var(--fg);
+            color: var(--bg-card);
+            font-weight: 700;
+        }
+
+        /* Minting Animation Overlay */
+        #minting-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 13, 13, 0.95);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10%;
+            font-family: var(--font-mono);
+            color: var(--accent-success);
+        }
+
+        .terminal-line {
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-shadow: 0 0 4px rgba(34, 197, 94, 0.6);
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 16px;
+            background: var(--accent-success);
+            animation: blink 1s step-end infinite;
+            box-shadow: 0 0 5px rgba(34, 197, 94, 0.8);
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- MINTING ANIMATION OVERLAY -->
+    <div id="minting-overlay">
+        <div id="terminal-content"></div>
+        <div class="terminal-cursor"></div>
+    </div>
 
     <!-- GATE / ACCELERATOR INPUT -->
     <div id="gate-section">
@@ -699,54 +842,86 @@
                         </div>
                     </div>
 
-                    <!-- GRADES TABLE -->
-                    <table class="grades-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 18%">CODE</th>
-                                <th style="width: 62%">SUBJECT MODULE</th>
-                                <th style="width: 20%; text-align: right;">SCORE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="grade-code">ARC-101</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Structural Architecture</div>
-                                    <span class="grade-subject-desc">Single File HTML Philosophy, DOM Structure</span>
-                                </td>
-                                <td class="grade-score" id="score-1">0%</td>
-                            </tr>
-                            <tr>
-                                <td class="grade-code">LOG-202</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Digital Logic Systems</div>
-                                    <span class="grade-subject-desc">State Management, API Integration (No-DB)</span>
-                                </td>
-                                <td class="grade-score" id="score-2">0%</td>
-                            </tr>
-                            <tr>
-                                <td class="grade-code">PRM-303</td>
-                                <td class="grade-subject">
-                                    <div class="grade-subject-title">Advanced Prompt Engineering</div>
-                                    <span class="grade-subject-desc">Reasoning Models, Meta-Prompting, Context Optimization</span>
-                                </td>
-                                <td class="grade-score" id="score-3">0%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- FINAL VERDICT -->
-                    <div class="verdict-box">
-                        <div class="verdict-title">Final Classification Rank</div>
-                        <div class="verdict-rank" id="final-rank">VERIFIED HUMAN</div>
+                    <!-- GRADES & RADAR SECTION -->
+                    <div class="performance-section">
+                        <table class="grades-table" style="margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 18%">CODE</th>
+                                    <th style="width: 62%">SUBJECT MODULE</th>
+                                    <th style="width: 20%; text-align: right;">SCORE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="grade-code">ARC-101</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Structural Architecture</div>
+                                        <span class="grade-subject-desc">Single File HTML Philosophy, DOM Structure</span>
+                                    </td>
+                                    <td class="grade-score" id="score-1">0%</td>
+                                </tr>
+                                <tr>
+                                    <td class="grade-code">LOG-202</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Digital Logic Systems</div>
+                                        <span class="grade-subject-desc">State Management, API Integration (No-DB)</span>
+                                    </td>
+                                    <td class="grade-score" id="score-2">0%</td>
+                                </tr>
+                                <tr>
+                                    <td class="grade-code">PRM-303</td>
+                                    <td class="grade-subject">
+                                        <div class="grade-subject-title">Advanced Prompt Engineering</div>
+                                        <span class="grade-subject-desc">Reasoning Models, Meta-Prompting, Context Optimization</span>
+                                    </td>
+                                    <td class="grade-score" id="score-3">0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="chart-container">
+                            <canvas id="skills-radar"></canvas>
+                        </div>
                     </div>
 
-                    <!-- KEY SECTION -->
-                    <div class="key-section">
-                        <div class="key-title">ENCRYPTED RECOVERY KEY (PHILOSOPHER'S STONE)</div>
-                        <div class="key-code" id="key-display">XXXX-XXXX-XXXX-XXXX</div>
-                        <div class="key-hash">TIMESTAMP HASH: <span id="time-hash">---</span></div>
+                    <!-- ALCHEMICAL PROGRESSION -->
+                    <div class="ranks-container">
+                        <div class="rank-step" id="rank-nigredo">NIGREDO<br><span style="font-size:5pt; font-weight:400;">Decomposition</span></div>
+                        <div class="rank-step" id="rank-albedo">ALBEDO<br><span style="font-size:5pt; font-weight:400;">Purification</span></div>
+                        <div class="rank-step" id="rank-citrinitas">CITRINITAS<br><span style="font-size:5pt; font-weight:400;">Awakening</span></div>
+                        <div class="rank-step" id="rank-rubedo">RUBEDO<br><span style="font-size:5pt; font-weight:400;">Realization</span></div>
+                    </div>
+
+                    <div style="display: flex; gap: 8mm; margin-bottom: 8mm;">
+                        <!-- FINAL VERDICT -->
+                        <div class="verdict-box" style="flex: 1; margin-bottom: 0;">
+                            <div class="verdict-title">Final Classification Rank</div>
+                            <div class="verdict-rank" id="final-rank">VERIFIED HUMAN</div>
+                        </div>
+
+                        <!-- KEY SECTION -->
+                        <div class="key-section" style="flex: 1; margin-bottom: 0;">
+                            <div class="key-title">ENCRYPTED RECOVERY KEY</div>
+                            <div class="key-code" id="key-display">XXXX-XXXX-XXXX-XXXX</div>
+                            <div class="key-hash">TIMESTAMP HASH: <span id="time-hash">---</span></div>
+                        </div>
+                    </div>
+
+                    <!-- CRYPTOGRAPHIC LEDGER -->
+                    <div class="ledger-container">
+                        <div class="ledger-title">Cryptographic Proof of Work Ledger</div>
+                        <table class="ledger-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">BLOCK HEIGHT</th>
+                                    <th style="width: 50%">SHA-256 CHECKSUM (TRUNCATED)</th>
+                                    <th style="width: 25%">CONSENSUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-tbody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- FOOTER -->
@@ -781,7 +956,10 @@
     </div>
 
     <script>
-        // Set default zoom on page load
+
+        let radarChart = null;
+        let tiltInstance = null;
+
         window.addEventListener('DOMContentLoaded', () => {
             updateZoom(0.75);
         });
@@ -793,11 +971,8 @@
             wrapper.style.transform = `scale(${zoomVal})`;
             document.getElementById('zoom-value').innerText = `${Math.round(zoomVal * 100)}%`;
             
-            // Native A4 dimensions in mm are 210 x 296
-            // In typical standard 96 DPI screen, 1mm is ~3.78px
-            // 296mm = 1118.7px. Let's adjust frame height to follow zoom to prevent scrollbar/empty height issues.
             const a4HeightPx = 1118.7;
-            const containerPadding = 48; // padding of .document-frame (24px * 2)
+            const containerPadding = 48; 
             frame.style.height = `${(a4HeightPx * zoomVal) + containerPadding}px`;
         }
 
@@ -824,35 +999,158 @@
 
                 // Populate fields
                 document.getElementById('student-name').innerText = data.n.toUpperCase();
-                document.getElementById('student-id').innerText = `ID-${data.t.toString(16).toUpperCase()}`;
+                document.getElementById('student-id').innerText = 'ID-' + data.t.toString().slice(-6);
                 document.getElementById('final-rank').innerText = data.rank.replace(/_/g, ' ');
                 
                 const dateObj = new Date(data.t);
                 document.getElementById('doc-date').innerText = dateObj.toLocaleDateString('en-GB').toUpperCase();
                 
-                // Key Display & Hash
                 const timeHex = Math.floor(dateObj.getTime() / 1000).toString(16).toUpperCase();
                 let formattedKey = cleanInput.match(/.{1,4}/g)?.join('-') || cleanInput;
                 document.getElementById('key-display').innerText = formattedKey;
                 document.getElementById('time-hash').innerText = timeHex;
 
-                // Scores
                 document.getElementById('score-1').innerText = Math.round((data.c1[1]/3)*100) + "%";
                 document.getElementById('score-2').innerText = Math.round((data.c2[1]/3)*100) + "%";
                 document.getElementById('score-3').innerText = Math.round((data.c3[1]/3)*100) + "%";
 
                 document.getElementById('gate-section').style.display = 'none';
-                document.getElementById('cert-section').style.display = 'flex';
+
+                // Terminal Minting Animation
+                const overlay = document.getElementById('minting-overlay');
+                overlay.style.display = 'flex';
+                const terminal = document.getElementById('terminal-content');
+                terminal.innerHTML = "";
                 
-                // Refresh zoom to recalculate height based on the slider value
-                const zoomVal = document.getElementById('zoom-slider').value;
-                updateZoom(zoomVal);
+                const lines = [
+                    "INITIALIZING SECURE CONNECTION...",
+                    "VERIFYING CRYPTOGRAPHIC KEY...",
+                    "DECRYPTING ALCHEMICAL LEDGER...",
+                    "CALCULATING PROOF OF WORK...",
+                    "MINTING RELIC CERTIFICATE..."
+                ];
+                
+                let i = 0;
+                function printLine() {
+                    if (i < lines.length) {
+                        terminal.innerHTML += '<div class="terminal-line">> ' + lines[i] + '</div>';
+                        i++;
+                        setTimeout(printLine, 300 + Math.random() * 400);
+                    } else {
+                        terminal.innerHTML += '<div class="terminal-line">> ACCESS GRANTED.</div>';
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            document.getElementById('cert-section').style.display = 'flex';
+                            
+                            const zoomVal = document.getElementById('zoom-slider').value;
+                            updateZoom(zoomVal);
+                            
+                            initChart(data);
+                            initRanks(data);
+                            initLedger(timeHex);
+                            initTilt();
+                            
+                        }, 800);
+                    }
+                }
+                printLine();
 
             } catch (e) {
                 console.error(e);
                 errorMsg.innerText = "Error: Key Invalid.";
                 errorMsg.style.display = 'block';
             }
+        }
+
+        function initChart(data) {
+            const ctx = document.getElementById('skills-radar').getContext('2d');
+            if(radarChart) radarChart.destroy();
+
+            const score1 = Math.round((data.c1[1]/3)*100);
+            const score2 = Math.round((data.c2[1]/3)*100);
+            const score3 = Math.round((data.c3[1]/3)*100);
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Architecture', 'Logic', 'Prompting'],
+                    datasets: [{
+                        label: 'Skill Proficiency',
+                        data: [score1, score2, score3],
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        pointBackgroundColor: 'rgba(13, 13, 13, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(13, 13, 13, 1)',
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(13, 13, 13, 0.2)' },
+                            grid: { color: 'rgba(13, 13, 13, 0.1)' },
+                            pointLabels: {
+                                font: { family: "'DM Mono', monospace", size: 9, weight: 'bold' },
+                                color: '#0D0D0D'
+                            },
+                            ticks: { display: false, min: 0, max: 100 }
+                        }
+                    },
+                    plugins: { legend: { display: false } },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function initRanks(data) {
+            const rankStr = (data.rank || '').toUpperCase();
+            let activeIdx = 0;
+            if(rankStr.includes('RUBEDO')) activeIdx = 3;
+            else if(rankStr.includes('CITRINITAS')) activeIdx = 2;
+            else if(rankStr.includes('ALBEDO')) activeIdx = 1;
+            else if(rankStr.includes('NIGREDO')) activeIdx = 0;
+            else {
+                const avg = (data.c1[1] + data.c2[1] + data.c3[1]) / 9;
+                if(avg >= 0.9) activeIdx = 3;
+                else if(avg >= 0.7) activeIdx = 2;
+                else if(avg >= 0.4) activeIdx = 1;
+            }
+
+            const rankIds = ['rank-nigredo', 'rank-albedo', 'rank-citrinitas', 'rank-rubedo'];
+            for(let i=0; i<4; i++) {
+                const el = document.getElementById(rankIds[i]);
+                el.classList.remove('active', 'achieved');
+                if (i < activeIdx) el.classList.add('achieved');
+                if (i === activeIdx) el.classList.add('active');
+            }
+        }
+
+        function initLedger(timeHex) {
+            const tbody = document.getElementById('ledger-tbody');
+            tbody.innerHTML = '';
+            let currentHash = timeHex;
+            for(let j=0; j<4; j++) {
+                currentHash = btoa(currentHash + j * 13).replace(/=/g, '').substring(0, 32).toUpperCase();
+                tbody.innerHTML += `<tr>
+                    <td>BLOCK #${(10134 + j * 7)}</td>
+                    <td>${currentHash}</td>
+                    <td style="color: var(--accent-success); font-weight: bold;">VALID</td>
+                </tr>`;
+            }
+        }
+
+        function initTilt() {
+            const container = document.getElementById('transcript-container');
+            VanillaTilt.init(container, {
+                max: 2,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2,
+                gyroscope: true
+            });
+            tiltInstance = container.vanillaTilt;
         }
 
         function downloadPDF() {
@@ -866,10 +1164,16 @@
             btn.innerText = "GENERATING...";
             btn.disabled = true;
 
+            if (tiltInstance) {
+                tiltInstance.destroy();
+            }
+            element.style.transform = "none";
+            element.style.boxShadow = "none";
+
             setTimeout(() => {
                 const opt = {
                     margin: 0,
-                    filename: `OFFICIAL_TRANSCRIPT_${id}_${name}.pdf`,
+                    filename: OFFICIAL_TRANSCRIPT__.pdf,
                     image: { type: 'jpeg', quality: 1.0 },
                     html2canvas: { 
                         scale: 3, 
@@ -884,13 +1188,16 @@
                 html2pdf().set(opt).from(element).save().then(() => {
                     btn.innerText = originalText;
                     btn.disabled = false;
+                    initTilt();
                 }).catch(err => {
                     console.error(err);
                     btn.innerText = originalText;
                     btn.disabled = false;
+                    initTilt();
                 });
             }, 500);
         }
+
     </script>
 </body>
 </html>
