@@ -257,16 +257,43 @@ template = """<!DOCTYPE html>
             left: 0; top: 0;
             display: flex;
             flex-direction: column;
-            padding: 32px 24px;
+            padding: 80px 24px 32px 24px;
             z-index: 50;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sidebar.collapsed {
+            transform: translateX(-100%);
         }
         
         .main-content-view {
             margin-left: 260px;
             flex-grow: 1;
-            padding: 40px;
+            padding: 80px 40px 40px 40px;
             max-width: 900px;
             width: 100%;
+            transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .main-content-view.expanded {
+            margin-left: 0;
+            margin: 0 auto;
+        }
+        
+        #sidebar-toggle {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 60;
+            background: var(--bg);
+            border: 2px solid var(--fg);
+            padding: 8px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 var(--fg);
+            border-radius: 4px;
+            transition: transform 0.1s;
+        }
+        #sidebar-toggle:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 transparent;
         }
         
         .nav-item {
@@ -330,6 +357,15 @@ template = """<!DOCTYPE html>
     </style>
 </head>
 <body>
+
+    <!-- Toggle Sidebar Button -->
+    <button onclick="toggleSidebar()" id="sidebar-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
 
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -422,6 +458,11 @@ template = """<!DOCTYPE html>
 
         function saveAppState() {
             localStorage.setItem('cookwithalchemist_state', JSON.stringify(appState));
+        }
+        
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content-view').classList.toggle('expanded');
         }
 
         function loadAppState() {
