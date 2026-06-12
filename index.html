@@ -141,9 +141,9 @@
         :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
-            --fg-faint: rgba(13, 13, 13, 0.15);
-            --accent: #10b981; /* emerald green */
-            --accent-dim: #a7f3d0;
+            --fg-faint: #C4C4C4;
+            --accent: #0D0D0D;
+            --accent-success: #10B981;
             --card-bg: #FFFFFF;
         }
 
@@ -253,8 +253,8 @@
         }
 
         .logo-badge {
-            background-color: var(--accent);
-            color: var(--fg);
+            background-color: var(--fg);
+            color: var(--bg);
             border: 1px solid var(--fg);
             border-radius: 2px;
             padding: 1px 8px;
@@ -348,12 +348,12 @@
         }
 
         /* Buttons styling */
-        .btn {
+        .btn, .btn-ghost {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background-color: var(--accent);
+            background-color: transparent;
             color: var(--fg);
             border: 1px solid var(--fg);
             border-radius: 2px;
@@ -365,16 +365,17 @@
             letter-spacing: 0.1em;
             cursor: pointer;
             box-shadow: 2px 2px 0 var(--fg);
-            transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+            transition: 0s;
         }
 
-        .btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 var(--fg);
-            background-color: #059669;
+        .btn:hover, .btn-ghost:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--fg);
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
-        .btn:active {
+        .btn:active, .btn-ghost:active {
             transform: translate(1px, 1px);
             box-shadow: 1px 1px 0 var(--fg);
         }
@@ -383,7 +384,24 @@
             background-color: var(--bg);
         }
         .btn-secondary:hover {
-            background-color: #EBEBEB;
+            background-color: var(--fg);
+            color: var(--bg);
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 13px;
+            color: var(--fg);
+            background-color: transparent;
+            border: 1px solid var(--fg-faint);
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0s;
+        }
+        .input-text:focus {
+            border-color: var(--fg);
         }
 
         /* Option buttons inside tests */
@@ -415,7 +433,7 @@
         .option-arrow {
             opacity: 0;
             transition: opacity 0.15s, transform 0.15s;
-            color: var(--accent);
+            color: var(--fg);
             font-weight: bold;
         }
 
@@ -443,7 +461,7 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: var(--accent);
+            background-color: var(--accent-success);
             animation: pulse-dot 1.5s infinite;
         }
 
@@ -454,10 +472,10 @@
 
         /* Micro-animations: Glitch */
         @keyframes glitch {
-            0% { text-shadow: 1px 0 var(--accent), -1px 0 #ff0055; }
-            33% { text-shadow: -1px 0 var(--accent), 1px 0 #ff0055; }
-            66% { text-shadow: 1px 1px var(--accent), -1px -1px #ff0055; }
-            100% { text-shadow: -1px -1px var(--accent), 1px 1px #ff0055; }
+            0% { text-shadow: 1px 0 var(--fg), -1px 0 var(--accent-success); }
+            33% { text-shadow: -1px 0 var(--fg), 1px 0 var(--accent-success); }
+            66% { text-shadow: 1px 1px var(--fg), -1px -1px var(--accent-success); }
+            100% { text-shadow: -1px -1px var(--fg), 1px 1px var(--accent-success); }
         }
 
         .glitch-text {
@@ -547,8 +565,8 @@
         }
 
         .xray-toggle-btn.active {
-            background-color: var(--accent);
-            color: var(--fg);
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
         .xray-viewport {
@@ -574,8 +592,8 @@
         .xray-tag {
             display: none;
             position: absolute;
-            background-color: var(--accent);
-            color: var(--fg);
+            background-color: var(--fg);
+            color: var(--bg);
             font-family: 'DM Mono', monospace;
             font-size: 9px;
             font-weight: 700;
@@ -644,12 +662,12 @@
             font-family: 'DM Mono', monospace;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 2px 2px 0 var(--accent);
+            box-shadow: 2px 2px 0 var(--fg-faint);
         }
 
         /* Xray activation outline */
         .xray-active * {
-            outline: 1px dashed var(--accent) !important;
+            outline: 1px dashed var(--accent-success) !important;
             background: rgba(16, 185, 129, 0.04) !important;
             box-shadow: none !important;
         }
@@ -746,7 +764,7 @@
 
         .lab-input-btn-tag {
             font-size: 9px;
-            color: var(--accent);
+            color: var(--fg);
             font-weight: 700;
         }
 
@@ -797,7 +815,7 @@
 
         @keyframes pulse-border {
             from { border-bottom-color: var(--fg-faint); }
-            to { border-bottom-color: var(--accent); }
+            to { border-bottom-color: var(--fg); }
         }
 
         .preview-p {
@@ -817,7 +835,7 @@
             font-family: 'DM Mono', monospace;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 2px 2px 0 var(--accent);
+            box-shadow: 2px 2px 0 var(--fg-faint);
             transition: transform 0.1s, box-shadow 0.1s;
         }
 
@@ -850,8 +868,8 @@
         }
 
         .demo-nav {
-            border-color: var(--accent);
-            background-color: rgba(16, 185, 129, 0.05);
+            border-color: var(--fg);
+            background-color: rgba(13, 13, 13, 0.05);
         }
 
         .demo-main-group {
@@ -942,8 +960,9 @@
 :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
-            --accent: #10b981;
-            --fg-faint: #0D0D0D;
+            --accent: #0D0D0D;
+            --accent-live: #10b981;
+            --fg-faint: #C4C4C4;
             --radius: 2px;
         }
 
@@ -962,7 +981,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            opacity: 0.05;
+            opacity: 0.035;
             pointer-events: none;
             z-index: 9999;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -980,10 +999,10 @@
 
         /* Neo-Brutalist cards, inputs, and buttons */
         .neo-card {
-            background: #FFFFFF;
-            border: 1px solid var(--fg-faint);
+            background: var(--bg-card, #FFFFFF);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: none;
         }
 
         .neo-card-hover:hover {
@@ -991,39 +1010,43 @@
             box-shadow: 2px 2px 0 var(--fg);
         }
 
-        .neo-btn {
-            background: var(--accent);
+        .btn-ghost {
+            background: transparent;
             color: var(--fg);
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             font-weight: 700;
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 2px 2px 0 var(--fg);
+            transition: all 0s;
             cursor: pointer;
+            box-shadow: 2px 2px 0 var(--fg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .neo-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 var(--fg);
-            background: #34d399; /* emerald hover */
+        .btn-ghost:hover {
+            background: var(--fg);
+            color: var(--bg-card, #FFFFFF);
+            box-shadow: 4px 4px 0 var(--fg);
+            transform: translate(-2px, -2px);
         }
-        
-        .neo-btn:active {
+
+        .btn-ghost:active {
             transform: translate(1px, 1px);
             box-shadow: 1px 1px 0 var(--fg);
         }
 
         .neo-input {
-            background: #FFFFFF;
+            background: var(--bg-card, #FFFFFF);
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
             color: var(--fg);
-            transition: all 0.15s ease;
+            transition: all 0s;
         }
 
         .neo-input:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--fg);
             box-shadow: 2px 2px 0 var(--fg);
         }
 
@@ -1088,10 +1111,10 @@
         :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
-            --fg-faint: rgba(13, 13, 13, 0.2);
-            --accent: #fbbf24; /* Emas */
-            --accent-light: #fef3c7; /* Emas pudar */
-            --accent-dark: #b45309;
+            --fg-faint: #C4C4C4;
+            --accent: #0D0D0D;
+            --accent-light: #E5E5E5;
+            --accent-dark: #22C55E;
             --card-bg: #FFFFFF;
             --radius: 2px;
         }
@@ -1132,7 +1155,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.05;
+            opacity: 0.035;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
@@ -1253,12 +1276,12 @@
         /* NEO-BRUTALIST CARD STYLE */
         .card {
             background-color: var(--card-bg);
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             padding: 28px;
             margin-bottom: 35px;
             box-shadow: 2px 2px 0 var(--fg);
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0s, box-shadow 0s;
             position: relative;
         }
 
@@ -1289,39 +1312,39 @@
             font-family: 'DM Mono', monospace;
             font-size: 1rem;
             color: var(--fg);
-            background-color: #FFFFFF;
+            background-color: transparent;
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
-            box-shadow: 2px 2px 0 var(--fg);
+            box-shadow: none;
             outline: none;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: 0s;
         }
 
         input[type="text"]:focus {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 var(--fg);
+            border-color: var(--fg);
         }
 
         button {
             cursor: pointer;
-            background-color: var(--accent);
+            background-color: transparent;
             color: var(--fg);
             font-family: 'DM Mono', monospace;
             font-weight: bold;
             font-size: 0.85rem;
             text-transform: uppercase;
             padding: 12px 24px;
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             box-shadow: 2px 2px 0 var(--fg);
-            transition: all 0.15s ease;
+            transition: 0s;
             display: inline-block;
         }
 
         button:hover {
             transform: translate(-2px, -2px);
             box-shadow: 4px 4px 0 var(--fg);
-            background-color: #fcd34d;
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
         button:active {
@@ -1419,15 +1442,16 @@
             width: 100%;
             text-align: left;
             padding: 14px;
-            background-color: #FFFFFF;
+            background-color: transparent;
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
             box-shadow: 2px 2px 0 var(--fg);
             font-family: 'DM Mono', monospace;
             font-size: 0.85rem;
             font-weight: 500;
+            color: var(--fg);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: 0s;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1437,7 +1461,8 @@
             transform: translate(-2px, -2px);
             box-shadow: 4px 4px 0 var(--fg);
             border-color: var(--fg);
-            background-color: var(--accent-light);
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
         .option-btn span.arrow {
@@ -1530,7 +1555,7 @@
             }
         }
         
-        .glitch-hover:hover {
+        .anim-glitch:hover {
             animation: glitch 0.2s linear infinite;
         }
 
@@ -1543,7 +1568,7 @@
             }
         }
 
-        .flicker-effect {
+        .anim-flicker {
             animation: flicker 4s linear infinite;
         }
 
@@ -1664,7 +1689,7 @@
                 </div>
                 
                 <h1 class="hero-title glitch-text">
-                    Berhenti Menjadi <span style="text-decoration: underline; decoration-color: var(--accent); text-decoration-thickness: 3px; text-underline-offset: 6px;">Konsumen</span>.<br>
+                    Berhenti Menjadi <span style="text-decoration: underline; decoration-color: var(--fg); text-decoration-thickness: 3px; text-underline-offset: 6px;">Konsumen</span>.<br>
                     Mulai Pahami Aturannya.
                 </h1>
                 
@@ -1698,7 +1723,7 @@
                         </p>
                         
                         <div style="margin-bottom: 24px;">
-                            <label style="display: block; font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px;">Identitas Peserta</label>
+                            <label style="display: block; font-size: 10px; text-transform: uppercase; color: var(--fg); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px;">Identitas Peserta</label>
                             <input type="text" id="ch1-user-name" placeholder="Ketik nama panggilan lo..." class="input-text">
                             <p style="font-size: 10px; color: rgba(13, 13, 13, 0.5); font-style: italic; margin-top: 6px;">*Nama ini akan dienkripsi ke dalam Genesis Key lo nanti.</p>
                         </div>
@@ -1711,7 +1736,7 @@
 
                     <div id="pretest-container" style="display: none;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                            <span style="font-size: 11px; font-weight: 700; color: var(--accent);">PERTANYAAN <span id="pre-q-num">1</span>/3</span>
+                            <span style="font-size: 11px; font-weight: 700; color: var(--fg);">PERTANYAAN <span id="pre-q-num">1</span>/3</span>
                             <span style="font-size: 10px; color: rgba(13, 13, 13, 0.5); text-transform: uppercase; font-weight: 700;" id="user-display-name">GUEST</span>
                         </div>
                         <h3 id="pre-q-text" style="font-size: 1.6rem; margin-bottom: 24px;">Question?</h3>
@@ -1735,7 +1760,7 @@
                     </p>
                     
                     <div style="display: flex; flex-direction: column; gap: 20px; margin: 32px 0;">
-                        <div style="border-left: 2px solid var(--accent); padding-left: 16px;">
+                        <div style="border-left: 2px solid var(--fg); padding-left: 16px;">
                             <strong style="display: block; font-size: 16px; background: none; padding: 0; margin-bottom: 4px;">1. HTML (Hypertext Markup Language)</strong>
                             <span style="font-size: 12px; font-weight: bold; color: rgba(13, 13, 13, 0.5); display: block; margin-bottom: 4px;">Ini adalah Beton dan Batanya.</span>
                             Ini strukturnya. Tanpa HTML, temboknya rubuh. HTML mendefinisikan: "Ini adalah Kamar Mandi (Header)", "Ini adalah Ruang Tamu (Body)", "Ini adalah Gudang (Footer)". Dia gak peduli soal keindahan. Dia peduli soal <strong>Fungsi dan Posisi</strong>.
@@ -1831,7 +1856,7 @@
                 <!-- SECTION 3: THE X-RAY (Interactive) -->
                 <div style="margin-top: 56px;">
                     <h2 style="font-size: 1.8rem; margin-bottom: 12px;">
-                        <span style="color: var(--accent); font-weight: 700;">02.</span> Bedah Kasus (X-Ray)
+                        <span style="color: var(--fg); font-weight: 700;">02.</span> Bedah Kasus (X-Ray)
                     </h2>
                     <p style="color: rgba(13, 13, 13, 0.7); font-size: 14px; margin-bottom: 24px;">
                         Gue mau lo lihat buktinya. Di bawah ini ada profil karakter fiktif. Terlihat rapi, kan? Tapi itu ilusi. Gue akan kasih lo kacamata arsitek.
@@ -1887,13 +1912,13 @@
                 <!-- SECTION 4: THE LAB (Construction) -->
                 <div style="margin-top: 56px;">
                     <h2 style="font-size: 1.8rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <span style="color: var(--accent); font-weight: 700;">03.</span> Konstruksi Realita 
-                        <span class="flicker-label" style="background-color: var(--accent); color: var(--fg); font-size: 11px; font-weight: 700; padding: 2px 8px; border: 1px solid var(--fg); border-radius: 2px; margin-left: 8px;">THE LAB</span>
+                        <span style="color: var(--fg); font-weight: 700;">03.</span> Konstruksi Realita 
+                        <span class="flicker-label" style="background-color: var(--accent-success); color: var(--bg); font-size: 11px; font-weight: 700; padding: 2px 8px; border: 1px solid var(--fg); border-radius: 2px; margin-left: 8px;">THE LAB</span>
                     </h2>
                     <p style="color: rgba(13, 13, 13, 0.7); font-size: 14px; margin-bottom: 16px;">
                         Sekarang saatnya lo pegang kendali. Jangan cuma nonton. Di bawah ini adalah simulasi komunikasi lo dengan AI. Lo kasih instruksi (klik tombol kiri), AI akan menulis kodenya (tengah), dan Browser akan merendernya (kanan).
                     </p>
-                    <p style="background-color: rgba(16, 185, 129, 0.05); border: 1px solid var(--accent); border-radius: 2px; padding: 16px; font-size: 13px; margin-bottom: 24px; color: rgba(13, 13, 13, 0.85);">
+                    <p style="background-color: rgba(13, 13, 13, 0.05); border: 1px solid var(--fg); border-radius: 2px; padding: 16px; font-size: 13px; margin-bottom: 24px; color: rgba(13, 13, 13, 0.85);">
                         <strong>Perhatikan:</strong> Setiap elemen punya "tag" (label). H1 untuk judul utama. P untuk paragraf. Button untuk aksi. Ingat pola ini.
                     </p>
 
@@ -1963,7 +1988,7 @@
                         </div>
                         <div id="posttest-container" style="display: none;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                                <span style="font-size: 11px; font-weight: 700; color: var(--accent);">PERTANYAAN AKHIR <span id="post-q-num">1</span>/3</span>
+                                <span style="font-size: 11px; font-weight: 700; color: var(--fg);">PERTANYAAN AKHIR <span id="post-q-num">1</span>/3</span>
                             </div>
                             <h3 id="post-q-text" style="font-size: 1.6rem; margin-bottom: 24px;">Question?</h3>
                             <div id="post-options"></div>
@@ -1982,9 +2007,9 @@
                             <div id="final-pre-score" style="font-size: 2.5rem; font-weight: 700; color: rgba(13, 13, 13, 0.4);">0%</div>
                         </div>
                         <div style="text-align: center; position: relative;">
-                            <div style="font-size: 11px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.05em;">Sesudah</div>
-                            <div id="final-post-score" style="font-size: 2.5rem; font-weight: 700; color: var(--accent);">0%</div>
-                            <div style="position: absolute; right: -24px; top: 0; color: var(--accent); animation: pulse-dot 1.2s infinite; font-size: 14px;">▲</div>
+                            <div style="font-size: 11px; color: var(--fg); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.05em;">Sesudah</div>
+                            <div id="final-post-score" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-success);">0%</div>
+                            <div style="position: absolute; right: -24px; top: 0; color: var(--accent-success); animation: pulse-dot 1.2s infinite; font-size: 14px;">▲</div>
                         </div>
                     </div>
 
@@ -2028,8 +2053,8 @@
                 </div>
 
                 <div class="w-full max-w-md space-y-4">
-                    <input type="text" id="genesis-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-white border border-[#0D0D0D] p-4 text-center text-[#0D0D0D] rounded-[2px] transition-all font-mono text-lg uppercase tracking-widest focus:outline-none focus:border-[#10b981] focus:shadow-[2px_2px_0_#0D0D0D]">
-                    <button onclick="unlockGate()" class="w-full bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-8 py-4 font-bold text-sm uppercase tracking-wider rounded-[2px]">
+                    <input type="text" id="genesis-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" class="neo-input w-full p-4 text-center text-lg uppercase tracking-widest font-mono">
+                    <button onclick="unlockGate()" class="btn-ghost w-full px-8 py-4 text-sm uppercase tracking-wider font-mono">
                         DEKRIPSI & MASUK
                     </button>
                     <div id="ch2-gate-error" class="bg-red-100 border border-red-500 text-red-700 text-xs font-mono p-3 rounded-[2px] hidden">
@@ -2067,7 +2092,7 @@
                         <p class="text-gray-600 mb-6 text-sm font-mono">
                             Sebelum kita bicara soal API dan Logic, gue perlu cek asumsi lo tentang bagaimana internet bekerja di ranah asinkron dan logika pertukaran data.
                         </p>
-                        <button onclick="startPreTest()" class="bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-6 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                        <button onclick="startPreTest()" class="btn-ghost px-6 py-3 text-sm uppercase tracking-wider w-full md:w-auto font-mono">
                             MULAI DIAGNOSA LEVEL 2
                         </button>
                     </div>
@@ -2137,8 +2162,8 @@
                                 <div id="mini-quiz-ui" class="space-y-3">
                                     <p class="text-[#0D0D0D] text-sm font-bold font-mono">Soal: 1 + 1 = ?</p>
                                     <div class="grid grid-cols-2 gap-2 font-mono">
-                                        <button onclick="miniQuiz(false)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-red-100 transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">11</button>
-                                        <button onclick="miniQuiz(true)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-[#a7f3d0] transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">2</button>
+                                        <button onclick="miniQuiz(false)" class="btn-ghost p-2 text-xs font-mono w-full">11</button>
+                                        <button onclick="miniQuiz(true)" class="btn-ghost p-2 text-xs font-mono w-full">2</button>
                                     </div>
                                     <p id="mini-quiz-result" class="text-xs text-gray-500 h-4 italic font-mono">Status: Menunggu jawaban...</p>
                                 </div>
@@ -2155,9 +2180,9 @@
                             <div class="not-prose my-6 p-4 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
                                 <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Demo: Logic Random Number (Tebak 1-3)</h4>
                                 <div class="flex gap-4 justify-center mb-3">
-                                    <button onclick="miniGame(1)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">1</button>
-                                    <button onclick="miniGame(2)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">2</button>
-                                    <button onclick="miniGame(3)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">3</button>
+                                    <button onclick="miniGame(1)" class="btn-ghost w-10 h-10 font-mono">1</button>
+                                    <button onclick="miniGame(2)" class="btn-ghost w-10 h-10 font-mono">2</button>
+                                    <button onclick="miniGame(3)" class="btn-ghost w-10 h-10 font-mono">3</button>
                                 </div>
                                 <p id="mini-game-result" class="text-center text-xs text-gray-500 h-4 font-mono">Komputer menyembunyikan angka...</p>
                             </div>
@@ -2313,7 +2338,7 @@ function decryptData(keyString) {
                                 <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
                                     <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">CLIENT</div>
                                     <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-4">Web Browser</div>
-                                    <button onclick="fetchSimulatedData()" id="api-btn" class="neo-btn px-4 py-2 text-xs uppercase tracking-wider bg-[#10b981] text-[#0D0D0D] font-mono font-bold rounded-[2px] shadow-[2px_2px_0_#0D0D0D]">
+                                    <button onclick="fetchSimulatedData()" id="api-btn" class="btn-ghost px-4 py-2 text-xs uppercase tracking-wider font-mono">
                                         Send fetch()
                                     </button>
                                 </div>
@@ -2392,7 +2417,7 @@ function decryptData(keyString) {
                         <p class="text-gray-600 mb-6 text-sm font-mono">
                             Lo udah paham konsepnya secara teori. Sekarang buktikan bahwa lo layak mendapatkan <strong>Exodus Key</strong>.
                         </p>
-                        <button onclick="startPostTest()" class="bg-[#0D0D0D] text-white border border-[#0d0d0d] shadow-[2px_2px_0_#10b981] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#10b981] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#10b981] transition-all px-8 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                        <button onclick="startPostTest()" class="btn-ghost px-8 py-3 text-sm uppercase tracking-wider w-full md:w-auto font-mono">
                             UJI PEMAHAMAN FINAL
                         </button>
                     </div>
@@ -2416,7 +2441,7 @@ function decryptData(keyString) {
                         <div>CH.2 SCORE: <span id="final-s2" class="text-[#10b981] font-bold">0</span></div>
                     </div>
 
-                    <div id="final-analysis" class="bg-white border border-[#0d0d0d] p-6 rounded-[2px] max-w-xl mx-auto text-left shadow-[4px_4px_0_#0d0d0d]">
+                    <div id="final-analysis" class="neo-card p-6 max-w-xl mx-auto text-left">
                         <!-- JS Analysis -->
                     </div>
                 </div>
@@ -2433,7 +2458,7 @@ function decryptData(keyString) {
         <section id="ch3-gate-section" class="gate-section">
             <div class="card text-center" style="max-width: 520px;">
                 <span class="badge float-effect" style="background-color: var(--accent-light);">Gatekeeper Protocol</span>
-                <h1 class="glitch-hover">Kunci Eksodus Diperlukan.</h1>
+                <h1 class="anim-glitch">Kunci Eksodus Diperlukan.</h1>
                 <p style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">
                     Ini adalah gerbang terakhir perjalanan. Tempelkan <span style="font-weight: bold; color: var(--accent-dark);">Exodus Key</span> yang lo peroleh setelah menyelesaikan Ujian Chapter 2.
                 </p>
@@ -2454,10 +2479,10 @@ function decryptData(keyString) {
             <!-- Welcome Header -->
             <header class="card">
                 <div class="float-effect" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px;">
-                    <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent); border: 1px solid var(--fg); border-radius: 50%;"></span>
+                    <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent); border: 1px solid var(--fg); border-radius: 0;"></span>
                     STATUS: GRANDMASTER INITIATE
                 </div>
-                <h1 class="glitch-hover" style="font-size: 3rem;">Saatnya Naik Kelas, <span id="user-display-name" style="background: var(--accent-light); padding: 0 8px;">Alchemist</span>.</h1>
+                <h1 class="anim-glitch" style="font-size: 3rem;">Saatnya Naik Kelas, <span id="user-display-name" style="background: var(--accent-light); padding: 0 8px;">Alchemist</span>.</h1>
                 <p style="font-size: 1.05rem; margin-top: 15px;">
                     Di Chapter 1 dan 2 lo udah kelar belajar struktur dasar HTML dan logika interaktif Javascript. Keren. Tapi kalau lo cuma nulis kode baris-per-baris manual di zaman sekarang, lo bakal ketinggalan jauh. 
                 </p>
@@ -2664,7 +2689,7 @@ function decryptData(keyString) {
     <!-- LOGICAL SCRIPT --></div>
         <div id="legacy-view" class="tab-view hidden-view"><!-- GATE / ACCELERATOR INPUT -->
     <div id="legacy-gate-section">
-        <h1 class="gate-title">OFFICIAL TRANSCRIPT</h1>
+        <h1 class="gate-title anim-glitch">OFFICIAL TRANSCRIPT</h1>
         <p class="gate-subtitle">Access Restricted • Enter Verification Key</p>
         
         <div class="input-group">
@@ -2672,7 +2697,7 @@ function decryptData(keyString) {
             <input type="text" id="legacy-master-key-input" placeholder="PASTE KEY..." class="key-input" autofocus>
         </div>
         
-        <button onclick="unlockTranscript()" class="btn-action">Access Records</button>
+        <button onclick="unlockTranscript()" class="btn-ghost">Access Records</button>
         <p id="legacy-gate-error" class="error-message">Error: Invalid Verification Key.</p>
     </div>
 
@@ -2680,7 +2705,7 @@ function decryptData(keyString) {
     <div id="legacy-cert-section">
         <div class="preview-toolbar">
             <div class="status-badge">
-                <span class="status-dot"></span>
+                <span class="status-dot anim-flicker"></span>
                 <span>Verification Successful. Document Loaded.</span>
             </div>
             <div class="toolbar-actions">
@@ -2689,7 +2714,7 @@ function decryptData(keyString) {
                     <input type="range" id="zoom-slider" class="zoom-slider" min="0.4" max="1.2" step="0.05" value="0.75" oninput="updateZoom(this.value)">
                     <span id="zoom-value" style="min-width: 38px;">75%</span>
                 </div>
-                <button onclick="downloadPDF()" class="btn-action btn-small">Download Official PDF</button>
+                <button onclick="downloadPDF()" class="btn-ghost btn-small">Download Official PDF</button>
                 <button onclick="location.reload()" class="btn-logout">[ LOGOUT ]</button>
             </div>
         </div>
@@ -2703,7 +2728,7 @@ function decryptData(keyString) {
                     
                     <!-- HEADER -->
                     <div class="doc-header">
-                        <div class="doc-title">COOKING WITH THE ALCHEMIST</div>
+                        <div class="doc-title anim-glitch">COOKING WITH THE ALCHEMIST</div>
                         <div class="doc-subtitle">Holiday School 2025 • Official Transcript</div>
                     </div>
 
@@ -2788,11 +2813,11 @@ function decryptData(keyString) {
                             <div class="official-stamp">
                                 <div class="stamp-inner">
                                     <div>ALCHEMIST</div>
-                                    <div style="font-size: 7.5pt; margin: 0.8mm 0; border-top: 1px solid #D97706; border-bottom: 1px solid #D97706; padding: 0.3mm 1mm; font-weight: 800;">SEAL</div>
+                                    <div style="font-size: 7.5pt; margin: 0.8mm 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); padding: 0.3mm 1mm; font-weight: 700;">SEAL</div>
                                     <div style="font-size: 4.5pt; font-weight: 700;">HIGH COUNCIL</div>
                                 </div>
                             </div>
-                            <div class="signature-img">Been</div>
+                            <div class="signature-img">BEEN</div>
                             <div class="signature-line">HEADMASTER</div>
                         </div>
                     </div>
@@ -2834,16 +2859,16 @@ function decryptData(keyString) {
             </div>
             
             <div>
-                <h1>Verifikasi Identitas</h1>
+                <h1 class="anim-glitch" data-text="Verifikasi Identitas">Verifikasi Identitas</h1>
                 <p class="subtitle">
-                    Masukkan <span style="background-color: var(--accent); padding: 0.1rem 0.3rem; font-weight: bold; border: 1px solid var(--fg); border-radius: 2px;">Philosopher's Stone Key</span> dari sertifikat Anda untuk membuka arsip data lengkap.
+                    Masukkan <span style="background-color: var(--fg); color: var(--bg); padding: 0.1rem 0.3rem; font-weight: bold; border: 1px solid var(--fg); border-radius: 2px;">Philosopher's Stone Key</span> dari sertifikat Anda untuk membuka arsip data lengkap.
                 </p>
             </div>
 
             <div class="brutalist-card" style="max-width: 460px; margin: 0 auto;">
                 <div class="input-group">
                     <input type="text" id="warranty-verify-input" placeholder="Paste Key (Contoh: A1B2-C3D4...)" class="brutalist-input">
-                    <button onclick="verifyKey()" class="brutalist-btn">
+                    <button onclick="verifyKey()" class="btn-ghost">
                         DECODE & VERIFY
                     </button>
                 </div>
@@ -2860,7 +2885,7 @@ function decryptData(keyString) {
                     <div class="status-label">Status Verifikasi</div>
                     <div class="status-badge">
                         <span class="status-dot"></span>
-                        AUTHENTIC
+                        <span class="anim-flicker">AUTHENTIC</span>
                     </div>
                 </div>
                 <div style="text-align: right;">
@@ -3051,35 +3076,7 @@ function decryptData(keyString) {
             document.getElementById(tabId + '-view').classList.add('active-view');
             
             // Trigger load states for specific views
-            if(tabId === 'legacy' && appState.ch3_passed) {
-                const legacyInput = document.getElementById('legacy-master-key-input');
-                if(legacyInput) {
-                    const payload = {
-                        n: appState.userName,
-                        c1: [appState.ch1_pre, appState.ch1_post],
-                        c2: [appState.ch2_pre, appState.ch2_post],
-                        c3: [appState.ch3_pre, appState.ch3_post],
-                        rank: appState.rank,
-                        t: appState.timestamp || Date.now()
-                    };
-                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                    legacyInput.value = obfuscated.match(/.{1,4}/g).join('-');
-                }}
-            if(tabId === 'warranty') {
-                const warrantyInput = document.getElementById('warranty-verify-input');
-                if(warrantyInput && appState.ch3_passed) {
-                    const payload = {
-                        n: appState.userName,
-                        c1: [appState.ch1_pre, appState.ch1_post],
-                        c2: [appState.ch2_pre, appState.ch2_post],
-                        c3: [appState.ch3_pre, appState.ch3_post],
-                        rank: appState.rank,
-                        t: appState.timestamp || Date.now()
-                    };
-                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                    warrantyInput.value = obfuscated.match(/.{1,4}/g).join('-');
-                }
-            }
+            // (Auto-fill logic removed to preserve the Gatekeeper educational flow)
         }
 
         // ==========================================
@@ -3187,7 +3184,7 @@ function decryptData(keyString) {
             if (ch1_state.isPre) {
                 // Unlock Content
                 document.getElementById('ch1-pretest-section').innerHTML = `
-                    <div style="padding: 24px; text-align: center; border: 1px solid var(--fg); background-color: rgba(16, 185, 129, 0.05); border-radius: 2px; box-shadow: 2px 2px 0 var(--fg);">
+                    <div style="padding: 24px; text-align: center; border: 1px solid var(--fg); background-color: rgba(13, 13, 13, 0.05); border-radius: 2px; box-shadow: 2px 2px 0 var(--fg);">
                         <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Data Awal Tercatat: ${state.userName}</h3>
                         <p style="font-size: 13px; color: rgba(13, 13, 13, 0.7);">Sekarang, mari kita bongkar ilusi yang selama ini lo percaya.</p>
                     </div>
@@ -3217,7 +3214,7 @@ function decryptData(keyString) {
 
             if (isActive) {
                 viewport.classList.add('xray-active');
-                descText.innerHTML = '<span style="color: var(--accent); font-weight: bold;">// Mode Arsitek:</span> Lo gak lagi melihat gambar/teks biasa. Lo melihat blok-blok tag HTML penyusunnya. Inilah yang dibaca oleh mesin web browser.';
+                descText.innerHTML = '<span style="color: var(--fg); font-weight: bold;">// Mode Arsitek:</span> Lo gak lagi melihat gambar/teks biasa. Lo melihat blok-blok tag HTML penyusunnya. Inilah yang dibaca oleh mesin web browser.';
                 btnNormal.classList.remove('active');
                 btnXray.classList.add('active');
             } else {
@@ -3329,15 +3326,37 @@ function decryptData(keyString) {
                         <p style="font-size: 13px; color: rgba(13, 13, 13, 0.7); line-height: 1.5;">Lo masuk dengan asumsi, lo keluar dengan pemahaman. Ini yang membedakan lo dari 90% pengguna internet lainnya.</p>
                     </div>
                     
-                    <div style="background-color: #FFFFFF; border: 1px solid var(--fg); padding: 24px; border-radius: 2px; position: relative; box-shadow: 2px 2px 0 var(--fg); margin-top: 24px; word-break: break-all;">
-                        <div style="position: absolute; top: -12px; right: 16px; background-color: var(--accent); color: var(--fg); border: 1px solid var(--fg); border-radius: 2px; padding: 2px 10px; font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">GENESIS KEY ACQUIRED</div>
+                    <div style="background-color: #FFFFFF; border: 1px solid var(--fg); padding: 24px; border-radius: 2px; position: relative; box-shadow: 2px 2px 0 var(--fg); margin-top: 24px;">
+                        <div class="flicker-label" style="position: absolute; top: -12px; right: 16px; background-color: var(--accent-success); color: var(--bg); border: 1px solid var(--fg); border-radius: 2px; padding: 2px 10px; font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">GENESIS KEY ACQUIRED</div>
                         
-                        <p style="font-size: 10px; color: rgba(13, 13, 13, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold;">Akses Token Unik:</p>
-                        <div style="font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; letter-spacing: 0.05em; color: var(--fg); border: 1px dashed var(--fg-faint); padding: 12px; background-color: var(--bg); margin-bottom: 16px; word-wrap: break-word; user-select: all;" id="access-code">${key}</div>
+                        <div style="font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--fg); margin-bottom: 16px; text-align: left;">
+                            <div style="border-bottom: 1px dashed var(--fg); padding-bottom: 8px; margin-bottom: 8px;">
+                                > SYSTEM DIAGNOSTICS: COMPLETE<br>
+                                > CANDIDATE: ${state.userName}
+                            </div>
+                            <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                                <tr>
+                                    <th style="border-bottom: 1px solid var(--fg-faint); padding: 4px 0;">METRIC</th>
+                                    <th style="border-bottom: 1px solid var(--fg-faint); padding: 4px 0; text-align: right;">SCORE</th>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 4px 0;">INITIAL LOGIC (PRE)</td>
+                                    <td style="padding: 4px 0; text-align: right;">${Math.round((ch1_state.preScore / 3) * 100)}%</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 4px 0;">REVISED LOGIC (POST)</td>
+                                    <td style="padding: 4px 0; text-align: right; color: var(--accent-success);">> ${Math.round((ch1_state.postScore / 3) * 100)}%</td>
+                                </tr>
+                            </table>
+                        </div>
                         
-                        <p style="font-size: 10px; color: rgba(13, 13, 13, 0.5); border-top: 1px dashed var(--fg-faint); padding-top: 12px; font-style: italic; line-height: 1.4;">
-                            Salin token di atas. Data lo (Nama: ${state.userName}, Pre: ${state.preScore}, Post: ${state.postScore}) tersimpan secara kriptografis di dalamnya. Gunakan ini untuk membuka <span style="color: var(--fg); font-weight: bold; text-decoration: underline;">"Chapter 2"</span> nanti.
-                        </p>
+                        <p style="font-size: 10px; color: rgba(13, 13, 13, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; text-align: left;">Akses Token Unik:</p>
+                        <div style="font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; letter-spacing: 0.05em; color: var(--fg); border: 1px dashed var(--fg-faint); padding: 12px; background-color: var(--bg); margin-bottom: 24px; word-wrap: break-word; user-select: all; text-align: left;" id="access-code">${key}</div>
+                        
+                        <div style="text-align: right; margin-top: 32px; border-top: 1px dashed var(--fg-faint); padding-top: 16px;">
+                            <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic; font-weight: 700; text-transform: uppercase;">THE ALCHEMIST</div>
+                            <div style="font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(13,13,13,0.5);">AUTHORIZED DIGITAL HASH</div>
+                        </div>
                     </div>
                 `;
             } else {
@@ -3573,8 +3592,8 @@ function decryptData(keyString) {
             
             q.options.forEach((opt, i) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-[2px] bg-white border border-[#0d0d0d] hover:bg-[#a7f3d0]/30 hover:shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] text-[#0d0d0d] transition-all text-xs font-mono font-bold group flex justify-between items-center";
-                btn.innerHTML = `<span>${opt}</span> <span class="opacity-0 group-hover:opacity-100 text-[#10b981] font-bold transition-opacity">→</span>`;
+                btn.className = "btn-ghost w-full text-left p-4 text-xs font-mono group flex justify-between items-center";
+                btn.innerHTML = `<span>${opt}</span> <span class="opacity-0 group-hover:opacity-100 text-inherit font-bold transition-opacity">→</span>`;
                 btn.onclick = () => ch2_answer(i);
                 opts.appendChild(btn);
             });
@@ -3722,39 +3741,35 @@ function decryptData(keyString) {
             if (passed) {
                 key = generateExodusKey();
                 analysis.innerHTML = `
-                    <p class="text-[#0d0d0d] font-serif font-bold text-xl mb-2">Akses Level 3 Terbuka.</p>
-                    <p class="mb-6 text-sm text-gray-700 leading-relaxed font-mono">Lo sekarang paham bahwa HTML bisa 'berpikir' (Logic), 'berbicara' (API) secara asinkron, dan menyandikan datanya (Caesar Cipher). Lo bukan lagi sekadar menyusun bata, lo sedang merakit mesin digital.</p>
+                    <p class="text-[var(--fg)] font-serif font-bold text-xl mb-2">AKSES LEVEL 3 TERBUKA.</p>
+                    <p class="mb-6 text-sm text-[var(--fg)] leading-relaxed font-mono">Lo sekarang paham bahwa HTML bisa 'berpikir' (Logic), 'berbicara' (API) secara asinkron, dan menyandikan datanya (Caesar Cipher). Lo bukan lagi sekadar menyusun bata, lo sedang merakit mesin digital.</p>
                     
-                    <div class="bg-[#FAFAFA] border border-[#0d0d0d] p-6 rounded-[2px] relative group mt-6 break-words shadow-[2px_2px_0_#0d0d0d]">
-                        <div class="absolute top-0 right-0 bg-[#10b981] text-[#0d0d0d] px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-wider border-l border-b border-[#0d0d0d]">EXODUS KEY</div>
+                    <div class="neo-card bg-[#FAFAFA] p-6 relative group mt-6 break-words">
+                        <div class="absolute top-0 right-0 bg-[var(--fg)] text-[var(--bg-card, #FFFFFF)] px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-wider border-l border-b border-[var(--fg)]">EXODUS KEY</div>
                         
-                        <p class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-widest">Simpan Kunci Ini:</p>
-                        <div class="font-mono text-lg tracking-widest text-[#0d0d0d] select-all cursor-text mb-4 break-all hover:text-[#10b981] transition-colors border border-dashed border-[#0d0d0d] p-4 bg-white">${key}</div>
+                        <p class="text-xs text-[var(--fg)] font-mono mb-2 uppercase tracking-widest">SIMPAN KUNCI INI:</p>
+                        <div class="font-mono text-lg tracking-widest text-[var(--fg)] select-all cursor-text mb-4 break-all border border-dashed border-[var(--fg-faint)] p-4 bg-[#FFFFFF] hover:bg-[var(--fg)] hover:text-[#FFFFFF] transition-all duration-0">${key}</div>
                         
-                        <p class="text-[10px] text-gray-500 border-t border-gray-200 pt-3 italic font-mono">
-                            Kunci ini berisi data gabungan Chapter 1 & 2. Gunakan untuk proyek selanjutnya.
-                        </p>
+                        <div class="border-t border-[var(--fg-faint)] pt-3 mt-4 text-[10px] font-mono text-[var(--fg)] flex justify-between uppercase items-center">
+                            <span>Hash Code Verified</span>
+                            <span class="font-serif italic font-bold text-sm">The Architect</span>
+                        </div>
                     </div>
                 `;
             } else {
                 analysis.innerHTML = `
-                    <p class="text-red-600 font-serif font-bold text-xl mb-2">Logic Error.</p>
-                    <p class="mb-4 text-sm text-gray-700 font-mono">Pemahaman lo tentang API, State, atau Sandi Caesar masih kabur. Jangan memaksa lanjut jika pondasi retak.</p>
-                    <button onclick="location.reload()" class="neo-btn bg-red-100 hover:bg-red-200 text-[#0d0d0d] text-xs px-4 py-2 font-bold font-mono">
-                        Reset Protokol Chapter 2
+                    <p class="text-[var(--fg)] font-serif font-bold text-xl mb-2">LOGIC ERROR.</p>
+                    <p class="mb-4 text-sm text-[var(--fg)] font-mono">Pemahaman lo tentang API, State, atau Sandi Caesar masih kabur. Jangan memaksa lanjut jika pondasi retak.</p>
+                    <button onclick="location.reload()" class="btn-ghost text-xs px-4 py-2 font-mono mt-2">
+                        RESET PROTOKOL CHAPTER 2
                     </button>
                 `;
             }
         }
         
-        // Auto-unlock gate for Ch2 if already completed Ch1 in state
+        // Auto-unlock removed. The user MUST manually paste the Genesis Key.
         const original_ch2_unlockGate = ch2_unlockGate;
         ch2_unlockGate = function() {
-            if(appState.ch1_passed && !document.getElementById('ch2-genesis-key-input').value) {
-                const payload = { n: appState.userName, s1: appState.ch1_pre, s2: appState.ch1_post, t: appState.timestamp };
-                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                document.getElementById('ch2-genesis-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
-            }
             original_ch2_unlockGate();
         };
         
@@ -4087,19 +4102,9 @@ function decryptData(keyString) {
             `;
         }
         
+        // Auto-unlock removed. The user MUST manually paste the Exodus Key.
         const original_ch3_unlockGate = ch3_unlockGate;
         ch3_unlockGate = function() {
-            if(appState.ch2_passed && !document.getElementById('ch3-exodus-key-input').value) {
-                const payload = {
-                    n: appState.userName,
-                    c1: [appState.ch1_pre, appState.ch1_post],
-                    c2: [appState.ch2_pre, appState.ch2_post],
-                    rank: 'ALCHEMIST_L2',
-                    t: appState.timestamp
-                };
-                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                document.getElementById('ch3-exodus-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
-            }
             original_ch3_unlockGate();
         };
         
@@ -4337,7 +4342,7 @@ function decryptData(keyString) {
                         borderColor: '#0D0D0D',
                         backgroundColor: 'rgba(13, 13, 13, 0.08)',
                         borderWidth: 2,
-                        pointBackgroundColor: '#fbbf24',
+                        pointBackgroundColor: '#10B981',
                         pointBorderColor: '#0D0D0D',
                         pointBorderWidth: 1.5,
                         pointRadius: 5,
@@ -4399,16 +4404,7 @@ function decryptData(keyString) {
         function init() {
             loadAppState();
             
-            // Auto bypass gates for tabs if state is loaded
-            if(appState.ch1_passed) {
-                ch2_unlockGate();
-            }
-            if(appState.ch2_passed) {
-                ch3_unlockGate();
-            }
-            if(appState.ch3_passed) {
-                legacy_unlockTranscript();
-            }
+            // Auto bypass gates removed to enforce manual key insertion metaphor.
         }
 
         // Intercept form submissions or window onload

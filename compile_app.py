@@ -485,35 +485,7 @@ template = """<!DOCTYPE html>
             document.getElementById(tabId + '-view').classList.add('active-view');
             
             // Trigger load states for specific views
-            if(tabId === 'legacy' && appState.ch3_passed) {
-                const legacyInput = document.getElementById('legacy-master-key-input');
-                if(legacyInput) {
-                    const payload = {
-                        n: appState.userName,
-                        c1: [appState.ch1_pre, appState.ch1_post],
-                        c2: [appState.ch2_pre, appState.ch2_post],
-                        c3: [appState.ch3_pre, appState.ch3_post],
-                        rank: appState.rank,
-                        t: appState.timestamp || Date.now()
-                    };
-                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                    legacyInput.value = obfuscated.match(/.{1,4}/g).join('-');
-                }}
-            if(tabId === 'warranty') {
-                const warrantyInput = document.getElementById('warranty-verify-input');
-                if(warrantyInput && appState.ch3_passed) {
-                    const payload = {
-                        n: appState.userName,
-                        c1: [appState.ch1_pre, appState.ch1_post],
-                        c2: [appState.ch2_pre, appState.ch2_post],
-                        c3: [appState.ch3_pre, appState.ch3_post],
-                        rank: appState.rank,
-                        t: appState.timestamp || Date.now()
-                    };
-                    const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                    warrantyInput.value = obfuscated.match(/.{1,4}/g).join('-');
-                }
-            }
+            // (Auto-fill logic removed to preserve the Gatekeeper educational flow)
         }
 
         // ==========================================
@@ -548,14 +520,9 @@ template = """<!DOCTYPE html>
         // --- CHAPTER 2 JS ---
         __CH2_JS__
         
-        // Auto-unlock gate for Ch2 if already completed Ch1 in state
+        // Auto-unlock removed. The user MUST manually paste the Genesis Key.
         const original_ch2_unlockGate = ch2_unlockGate;
         ch2_unlockGate = function() {
-            if(appState.ch1_passed && !document.getElementById('ch2-genesis-key-input').value) {
-                const payload = { n: appState.userName, s1: appState.ch1_pre, s2: appState.ch1_post, t: appState.timestamp };
-                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                document.getElementById('ch2-genesis-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
-            }
             original_ch2_unlockGate();
         };
         
@@ -578,19 +545,9 @@ template = """<!DOCTYPE html>
         // --- CHAPTER 3 JS ---
         __CH3_JS__
         
+        // Auto-unlock removed. The user MUST manually paste the Exodus Key.
         const original_ch3_unlockGate = ch3_unlockGate;
         ch3_unlockGate = function() {
-            if(appState.ch2_passed && !document.getElementById('ch3-exodus-key-input').value) {
-                const payload = {
-                    n: appState.userName,
-                    c1: [appState.ch1_pre, appState.ch1_post],
-                    c2: [appState.ch2_pre, appState.ch2_post],
-                    rank: 'ALCHEMIST_L2',
-                    t: appState.timestamp
-                };
-                const obfuscated = btoa(JSON.stringify(payload).split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')).replace(/=/g, '');
-                document.getElementById('ch3-exodus-key-input').value = obfuscated.match(/.{1,4}/g).join('-');
-            }
             original_ch3_unlockGate();
         };
         
@@ -630,16 +587,7 @@ template = """<!DOCTYPE html>
         function init() {
             loadAppState();
             
-            // Auto bypass gates for tabs if state is loaded
-            if(appState.ch1_passed) {
-                ch2_unlockGate();
-            }
-            if(appState.ch2_passed) {
-                ch3_unlockGate();
-            }
-            if(appState.ch3_passed) {
-                legacy_unlockTranscript();
-            }
+            // Auto bypass gates removed to enforce manual key insertion metaphor.
         }
 
         // Intercept form submissions or window onload

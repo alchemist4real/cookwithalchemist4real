@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE ALCHEMIST: FINAL TRANSCRIPT</title>
-    <!-- Fonts: Serif for headers, Mono for data, Script for signature, Sans for UI -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=JetBrains+Mono:wght@400;700&family=Pinyon+Script&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Fonts: Cormorant Garamond for display, DM Mono for data/UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- html2pdf -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
+        :root {
+            --bg: #FAFAFA;
+            --bg-card: #FFFFFF;
+            --fg: #0D0D0D;
+            --fg-faint: #C4C4C4;
+            --accent: #0D0D0D;
+            --accent-success: #22C55E;
+            --font-display: 'Cormorant Garamond', serif;
+            --font-mono: 'DM Mono', monospace;
+        }
+
         /* --- NEO-BRUTALIST BASE RESET & STYLES --- */
         * {
             box-sizing: border-box;
@@ -18,46 +29,81 @@
         }
 
         body {
-            background-color: #FAFAFA; /* Cement Paper */
-            color: #0D0D0D;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: var(--font-mono);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Animations */
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 1px) }
+            40% { transform: translate(-1px, -1px) }
+            60% { transform: translate(2px, 1px) }
+            80% { transform: translate(1px, -1px) }
+            100% { transform: translate(0) }
+        }
+
+        .anim-glitch:hover {
+            animation: glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
+        }
+
+        .anim-flicker {
+            animation: flicker 3s linear infinite;
         }
 
         /* --- GATE / LOGIN SECTION --- */
         #gate-section {
             width: 100%;
             max-width: 480px;
-            background: #FFFFFF;
-            border: 4px solid #0D0D0D;
-            box-shadow: 10px 10px 0px #0D0D0D;
+            background: var(--bg-card);
+            border: 1px solid var(--fg);
+            box-shadow: 2px 2px 0 var(--fg);
             padding: 45px 35px;
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 2px;
+            transition: transform 0s, box-shadow 0s;
         }
 
         .gate-title {
-            font-family: 'Cinzel', serif;
-            font-size: 26px;
-            font-weight: 900;
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 8px;
-            color: #0D0D0D;
+            color: var(--fg);
         }
 
         .gate-subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: #666666;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--fg);
             margin-bottom: 35px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
         }
 
         .input-group {
@@ -66,7 +112,7 @@
         }
 
         .input-label {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 11px;
             font-weight: 700;
             display: block;
@@ -78,54 +124,60 @@
         .key-input {
             width: 100%;
             padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 14px;
-            border: 3px solid #0D0D0D;
-            background: #FFFFFF;
+            border: 1px solid var(--fg-faint);
+            background: var(--bg-card);
             outline: none;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.2s;
+            transition: border-color 0s, box-shadow 0s, transform 0s;
+            border-radius: 2px;
         }
 
         .key-input:focus {
-            box-shadow: 4px 4px 0px #0D0D0D;
-            background: #FFFDF4;
+            border-color: var(--fg);
+            box-shadow: 2px 2px 0 var(--fg);
         }
 
-        .btn-action {
+        .btn-ghost {
             width: 100%;
             padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 14px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            background: #FFD23F; /* Gold Yellow */
-            color: #0D0D0D;
-            border: 3px solid #0D0D0D;
+            background: transparent;
+            color: var(--fg);
+            border: 1px solid var(--fg);
             cursor: pointer;
-            box-shadow: 4px 4px 0px #0D0D0D;
-            transition: all 0.1s ease-in-out;
+            border-radius: 2px;
+            transition: all 0s;
         }
 
-        .btn-action:hover {
+        .btn-ghost:hover {
+            background: var(--fg);
+            color: var(--bg-card);
             transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #0D0D0D;
+            box-shadow: 2px 2px 0 var(--fg);
         }
 
-        .btn-action:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #0D0D0D;
+        .btn-ghost:active {
+            transform: translate(0, 0);
+            box-shadow: none;
         }
 
         .error-message {
-            font-family: 'JetBrains Mono', monospace;
-            color: #D93838;
+            font-family: var(--font-mono);
+            color: var(--fg);
             font-size: 12px;
             margin-top: 15px;
             font-weight: 700;
             display: none;
+            border: 1px solid var(--fg);
+            padding: 8px;
+            background: var(--bg);
         }
 
         /* --- PREVIEW SECTION --- */
@@ -141,22 +193,23 @@
         /* Preview Toolbar */
         .preview-toolbar {
             width: 100%;
-            background: #FFFFFF;
-            border: 3px solid #0D0D0D;
-            box-shadow: 6px 6px 0px #0D0D0D;
+            background: var(--bg-card);
+            border: 1px solid var(--fg);
+            box-shadow: 2px 2px 0 var(--fg);
             padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border-radius: 2px;
         }
 
         .status-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 13px;
             font-weight: 700;
         }
@@ -164,10 +217,10 @@
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #00A86B; /* Green */
-            border-radius: 50%;
+            background: var(--accent-success);
+            border-radius: 0;
             display: inline-block;
-            box-shadow: 0 0 8px rgba(0, 168, 107, 0.6);
+            border: 1px solid var(--fg);
         }
 
         .toolbar-actions {
@@ -181,7 +234,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 13px;
             font-weight: 700;
         }
@@ -191,8 +244,8 @@
             appearance: none;
             width: 110px;
             height: 6px;
-            background: #E0E0E0;
-            border: 2px solid #0D0D0D;
+            background: var(--fg-faint);
+            border: 1px solid var(--fg);
             outline: none;
         }
 
@@ -201,31 +254,33 @@
             appearance: none;
             width: 14px;
             height: 14px;
-            background: #FFD23F;
-            border: 2px solid #0D0D0D;
+            background: var(--fg);
+            border: 1px solid var(--fg);
             cursor: pointer;
+            border-radius: 0;
         }
 
         .btn-small {
             padding: 10px 18px;
             font-size: 12px;
-            box-shadow: 3px 3px 0px #0D0D0D;
+            width: auto;
         }
 
         .btn-logout {
             background: transparent;
             border: none;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 12px;
-            color: #666666;
+            color: var(--fg);
             cursor: pointer;
             text-decoration: underline;
-            transition: color 0.2s;
             font-weight: 700;
         }
 
         .btn-logout:hover {
-            color: #0D0D0D;
+            background: var(--fg);
+            color: var(--bg-card);
+            text-decoration: none;
         }
 
         /* Scroll Frame for Document Preview */
@@ -234,9 +289,9 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: 24px;
-            border: 3px solid #0D0D0D;
-            background: #EBEBEB;
-            box-shadow: 6px 6px 0px #0D0D0D;
+            border: 1px solid var(--fg);
+            background: var(--fg-faint);
+            box-shadow: 2px 2px 0 var(--fg);
             display: flex;
             justify-content: center;
         }
@@ -245,50 +300,50 @@
             transform-origin: top center;
             width: 210mm;
             height: 296mm;
-            transition: transform 0.1s ease-out;
+            transition: transform 0s;
         }
 
         /* --- THE TRANSCRIPT (A4 PORTRAIT EXACT 210mm x 296mm) --- */
         #transcript-container {
             width: 210mm;
             height: 296mm;
-            background-color: #FFFFFF;
-            color: #1A1A1A;
+            background-color: var(--bg-card);
+            color: var(--fg);
             box-sizing: border-box;
             padding: 20mm;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--fg);
         }
 
         /* --- DOCUMENT ELEMENT STYLES --- */
         .doc-header {
             text-align: center;
-            border-top: 4px solid #000000;
-            border-bottom: 4px solid #000000;
+            border-top: 1px solid var(--fg);
+            border-bottom: 1px solid var(--fg);
             padding: 6mm 0;
             margin-bottom: 8mm;
         }
 
         .doc-title {
-            font-family: 'Cinzel', serif;
-            font-size: 22pt;
-            font-weight: 900;
-            color: #000000;
+            font-family: var(--font-display);
+            font-size: 26pt;
+            font-weight: 700;
+            color: var(--fg);
             letter-spacing: 1px;
             margin-bottom: 1.5mm;
             line-height: 1.2;
         }
 
         .doc-subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 8.5pt;
+            font-family: var(--font-mono);
+            font-size: 9pt;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2.5px;
-            color: #444444;
+            color: var(--fg);
         }
 
         /* Student info grid */
@@ -297,10 +352,10 @@
             grid-template-columns: 1fr 1fr;
             row-gap: 3mm;
             column-gap: 10mm;
-            border-bottom: 2px dashed #000000;
+            border-bottom: 1px solid var(--fg);
             padding-bottom: 5mm;
             margin-bottom: 8mm;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 9pt;
         }
 
@@ -316,23 +371,24 @@
 
         .info-label {
             font-weight: 700;
-            color: #555555;
+            color: var(--fg);
             width: 90px;
             flex-shrink: 0;
         }
 
         .info-value {
-            font-weight: 700;
-            color: #000000;
+            font-weight: 500;
+            color: var(--fg);
         }
 
         .badge-completed {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--fg);
+            color: var(--bg-card);
             padding: 0.5mm 2.5mm;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 8pt;
             letter-spacing: 0.5px;
+            border: 1px solid var(--fg);
         }
 
         /* Grades Table */
@@ -343,15 +399,15 @@
         }
 
         .grades-table th {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Cinzel', serif;
+            background-color: var(--fg);
+            color: var(--bg-card);
+            font-family: var(--font-mono);
             font-size: 9pt;
             font-weight: 700;
             padding: 3.5mm 4mm;
             text-align: left;
             letter-spacing: 1px;
-            border: 2px solid #000000;
+            border: 1px solid var(--fg);
         }
 
         .grades-table th.text-right {
@@ -360,108 +416,109 @@
 
         .grades-table td {
             padding: 5mm 4mm;
-            border: 2px solid #000000;
+            border: 1px solid var(--fg);
             font-size: 9.5pt;
             vertical-align: middle;
         }
 
         .grades-table tr:nth-child(even) {
-            background-color: #FAFAFA;
+            background-color: var(--bg);
         }
 
         .grade-code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-weight: 700;
         }
 
         .grade-subject {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--font-mono);
         }
 
         .grade-subject-title {
             font-weight: 700;
-            color: #000000;
+            color: var(--fg);
             margin-bottom: 0.8mm;
             font-size: 9.5pt;
         }
 
         .grade-subject-desc {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 7.5pt;
-            color: #555555;
+            color: var(--fg);
             display: block;
         }
 
         .grade-score {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-weight: 700;
             font-size: 11pt;
             text-align: right;
-            color: #000000;
+            color: var(--fg);
         }
 
         /* Verdict Box */
         .verdict-box {
-            border: 3px solid #000000;
-            background-color: #FAFAFA;
+            border: 1px solid var(--fg);
+            background-color: var(--bg);
             padding: 5.5mm;
             text-align: center;
             margin-bottom: 8mm;
             position: relative;
+            box-shadow: 2px 2px 0 var(--fg);
         }
 
         .verdict-title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 8pt;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #555555;
+            color: var(--fg);
             margin-bottom: 2mm;
         }
 
         .verdict-rank {
-            font-family: 'Cinzel', serif;
-            font-size: 16pt;
-            font-weight: 900;
-            color: #000000;
+            font-family: var(--font-display);
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--fg);
             letter-spacing: 1px;
         }
 
         /* Recovery Key Section */
         .key-section {
-            border: 2px dashed #000000;
+            border: 1px solid var(--fg);
             padding: 4mm;
-            background-color: #FCFCFC;
+            background-color: var(--bg-card);
             margin-bottom: 8mm;
             text-align: center;
         }
 
         .key-title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 8pt;
             font-weight: 700;
             letter-spacing: 1px;
-            color: #555555;
+            color: var(--fg);
             margin-bottom: 2.5mm;
         }
 
         .key-code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 11pt;
             font-weight: 700;
-            background-color: #F0F0F0;
+            background-color: var(--bg);
             padding: 2mm 5mm;
-            border: 2px solid #000000;
+            border: 1px solid var(--fg);
             display: inline-block;
             letter-spacing: 2px;
             margin-bottom: 2.5mm;
-            color: #000000;
+            color: var(--fg);
         }
 
         .key-hash {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 7.5pt;
-            color: #555555;
+            color: var(--fg);
         }
 
         /* Footer & Signature Section */
@@ -479,22 +536,22 @@
         }
 
         .authority-title {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 8pt;
             font-weight: 700;
-            color: #555555;
+            color: var(--fg);
             margin-bottom: 12mm;
         }
 
         .authority-name {
-            font-family: 'Cinzel', serif;
-            font-size: 10pt;
+            font-family: var(--font-display);
+            font-size: 12pt;
             font-weight: 700;
-            border-top: 2px solid #000000;
+            border-top: 1px solid var(--fg);
             padding-top: 2mm;
             display: inline-block;
             width: 90%;
-            color: #000000;
+            color: var(--fg);
         }
 
         .signature-block {
@@ -507,20 +564,19 @@
             position: absolute;
             width: 32mm;
             height: 32mm;
-            border: 2px dashed #D97706; /* Stamp color (Amber) */
-            border-radius: 50%;
-            color: #D97706;
-            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid var(--fg);
+            border-radius: 0;
+            color: var(--fg);
+            font-family: var(--font-mono);
             font-size: 6.5pt;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            opacity: 0.85;
-            transform: rotate(12deg);
+            transform: rotate(4deg);
             pointer-events: none;
             
             /* Overlap coordinates */
@@ -531,43 +587,46 @@
         .stamp-inner {
             width: 28mm;
             height: 28mm;
-            border: 1px solid #D97706;
-            border-radius: 50%;
+            border: 1px solid var(--fg);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 2px;
+            background: var(--bg-card);
         }
 
         .signature-img {
-            font-family: 'Pinyon Script', cursive;
-            font-size: 38pt;
-            color: #000000;
+            font-family: var(--font-display);
+            font-size: 24pt;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--fg);
             line-height: 1;
-            margin-bottom: -1mm;
+            margin-bottom: 2mm;
             display: block;
-            transform: rotate(-3deg);
             user-select: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .signature-line {
-            border-top: 2px solid #000000;
+            border-top: 1px solid var(--fg);
             padding-top: 2mm;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 8pt;
             font-weight: 700;
             letter-spacing: 1.5px;
-            color: #000000;
+            color: var(--fg);
         }
 
         .disclaimer {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 6.5pt;
-            color: #666666;
+            color: var(--fg);
             text-align: justify;
             line-height: 1.4;
-            border-top: 1px solid #E0E0E0;
+            border-top: 1px solid var(--fg);
             padding-top: 4mm;
             margin-top: 6mm;
         }
@@ -577,7 +636,7 @@
 
     <!-- GATE / ACCELERATOR INPUT -->
     <div id="gate-section">
-        <h1 class="gate-title">OFFICIAL TRANSCRIPT</h1>
+        <h1 class="gate-title anim-glitch">OFFICIAL TRANSCRIPT</h1>
         <p class="gate-subtitle">Access Restricted • Enter Verification Key</p>
         
         <div class="input-group">
@@ -585,7 +644,7 @@
             <input type="text" id="master-key-input" placeholder="PASTE KEY..." class="key-input" autofocus>
         </div>
         
-        <button onclick="unlockTranscript()" class="btn-action">Access Records</button>
+        <button onclick="unlockTranscript()" class="btn-ghost">Access Records</button>
         <p id="gate-error" class="error-message">Error: Invalid Verification Key.</p>
     </div>
 
@@ -593,7 +652,7 @@
     <div id="cert-section">
         <div class="preview-toolbar">
             <div class="status-badge">
-                <span class="status-dot"></span>
+                <span class="status-dot anim-flicker"></span>
                 <span>Verification Successful. Document Loaded.</span>
             </div>
             <div class="toolbar-actions">
@@ -602,7 +661,7 @@
                     <input type="range" id="zoom-slider" class="zoom-slider" min="0.4" max="1.2" step="0.05" value="0.75" oninput="updateZoom(this.value)">
                     <span id="zoom-value" style="min-width: 38px;">75%</span>
                 </div>
-                <button onclick="downloadPDF()" class="btn-action btn-small">Download Official PDF</button>
+                <button onclick="downloadPDF()" class="btn-ghost btn-small">Download Official PDF</button>
                 <button onclick="location.reload()" class="btn-logout">[ LOGOUT ]</button>
             </div>
         </div>
@@ -616,7 +675,7 @@
                     
                     <!-- HEADER -->
                     <div class="doc-header">
-                        <div class="doc-title">COOKING WITH THE ALCHEMIST</div>
+                        <div class="doc-title anim-glitch">COOKING WITH THE ALCHEMIST</div>
                         <div class="doc-subtitle">Holiday School 2025 • Official Transcript</div>
                     </div>
 
@@ -701,11 +760,11 @@
                             <div class="official-stamp">
                                 <div class="stamp-inner">
                                     <div>ALCHEMIST</div>
-                                    <div style="font-size: 7.5pt; margin: 0.8mm 0; border-top: 1px solid #D97706; border-bottom: 1px solid #D97706; padding: 0.3mm 1mm; font-weight: 800;">SEAL</div>
+                                    <div style="font-size: 7.5pt; margin: 0.8mm 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); padding: 0.3mm 1mm; font-weight: 700;">SEAL</div>
                                     <div style="font-size: 4.5pt; font-weight: 700;">HIGH COUNCIL</div>
                                 </div>
                             </div>
-                            <div class="signature-img">Been</div>
+                            <div class="signature-img">BEEN</div>
                             <div class="signature-line">HEADMASTER</div>
                         </div>
                     </div>

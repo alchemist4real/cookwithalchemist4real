@@ -17,9 +17,10 @@
                         void: '#FAFAFA',
                         surface: '#FFFFFF',
                         border: '#0D0D0D',
-                        accent: '#10b981', 
-                        accentdim: '#a7f3d0',
-                        mist: '#4b5563',
+                        accent: '#0D0D0D', 
+                        'accent-live': '#10b981',
+                        accentdim: '#C4C4C4',
+                        mist: '#C4C4C4',
                         text: '#0D0D0D'
                     },
                     fontFamily: {
@@ -35,9 +36,9 @@
                                 h1: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
                                 h2: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
                                 h3: { color: '#0D0D0D', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold' },
-                                strong: { color: '#10b981', fontWeight: 'bold' },
-                                blockquote: { borderLeftColor: '#10b981', color: '#4b5563', fontStyle: 'italic' },
-                                code: { color: '#10b981', backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '2px', fontFamily: 'DM Mono, monospace' },
+                                strong: { color: '#0D0D0D', fontWeight: 'bold' },
+                                blockquote: { borderLeftColor: '#0D0D0D', color: '#0D0D0D', fontStyle: 'italic' },
+                                code: { color: '#0D0D0D', backgroundColor: '#FAFAFA', border: '1px solid #C4C4C4', padding: '2px 4px', borderRadius: '2px', fontFamily: 'DM Mono, monospace' },
                             },
                         },
                     }),
@@ -49,8 +50,9 @@
         :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
-            --accent: #10b981;
-            --fg-faint: #0D0D0D;
+            --accent: #0D0D0D;
+            --accent-live: #10b981;
+            --fg-faint: #C4C4C4;
             --radius: 2px;
         }
 
@@ -69,7 +71,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            opacity: 0.05;
+            opacity: 0.035;
             pointer-events: none;
             z-index: 9999;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -87,10 +89,10 @@
 
         /* Neo-Brutalist cards, inputs, and buttons */
         .neo-card {
-            background: #FFFFFF;
-            border: 1px solid var(--fg-faint);
+            background: var(--bg-card, #FFFFFF);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: none;
         }
 
         .neo-card-hover:hover {
@@ -98,39 +100,43 @@
             box-shadow: 2px 2px 0 var(--fg);
         }
 
-        .neo-btn {
-            background: var(--accent);
+        .btn-ghost {
+            background: transparent;
             color: var(--fg);
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             font-weight: 700;
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 2px 2px 0 var(--fg);
+            transition: all 0s;
             cursor: pointer;
+            box-shadow: 2px 2px 0 var(--fg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .neo-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 var(--fg);
-            background: #34d399; /* emerald hover */
+        .btn-ghost:hover {
+            background: var(--fg);
+            color: var(--bg-card, #FFFFFF);
+            box-shadow: 4px 4px 0 var(--fg);
+            transform: translate(-2px, -2px);
         }
-        
-        .neo-btn:active {
+
+        .btn-ghost:active {
             transform: translate(1px, 1px);
             box-shadow: 1px 1px 0 var(--fg);
         }
 
         .neo-input {
-            background: #FFFFFF;
+            background: var(--bg-card, #FFFFFF);
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
             color: var(--fg);
-            transition: all 0.15s ease;
+            transition: all 0s;
         }
 
         .neo-input:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: var(--fg);
             box-shadow: 2px 2px 0 var(--fg);
         }
 
@@ -226,8 +232,8 @@
                 </div>
 
                 <div class="w-full max-w-md space-y-4">
-                    <input type="text" id="genesis-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-white border border-[#0D0D0D] p-4 text-center text-[#0D0D0D] rounded-[2px] transition-all font-mono text-lg uppercase tracking-widest focus:outline-none focus:border-[#10b981] focus:shadow-[2px_2px_0_#0D0D0D]">
-                    <button onclick="unlockGate()" class="w-full bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-8 py-4 font-bold text-sm uppercase tracking-wider rounded-[2px]">
+                    <input type="text" id="genesis-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" class="neo-input w-full p-4 text-center text-lg uppercase tracking-widest font-mono">
+                    <button onclick="unlockGate()" class="btn-ghost w-full px-8 py-4 text-sm uppercase tracking-wider font-mono">
                         DEKRIPSI & MASUK
                     </button>
                     <div id="gate-error" class="bg-red-100 border border-red-500 text-red-700 text-xs font-mono p-3 rounded-[2px] hidden">
@@ -265,7 +271,7 @@
                         <p class="text-gray-600 mb-6 text-sm font-mono">
                             Sebelum kita bicara soal API dan Logic, gue perlu cek asumsi lo tentang bagaimana internet bekerja di ranah asinkron dan logika pertukaran data.
                         </p>
-                        <button onclick="startPreTest()" class="bg-[#10b981] text-[#0d0d0d] border border-[#0d0d0d] shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0d0d0d] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0d0d0d] transition-all px-6 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                        <button onclick="startPreTest()" class="btn-ghost px-6 py-3 text-sm uppercase tracking-wider w-full md:w-auto font-mono">
                             MULAI DIAGNOSA LEVEL 2
                         </button>
                     </div>
@@ -335,8 +341,8 @@
                                 <div id="mini-quiz-ui" class="space-y-3">
                                     <p class="text-[#0D0D0D] text-sm font-bold font-mono">Soal: 1 + 1 = ?</p>
                                     <div class="grid grid-cols-2 gap-2 font-mono">
-                                        <button onclick="miniQuiz(false)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-red-100 transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">11</button>
-                                        <button onclick="miniQuiz(true)" class="bg-[#FAFAFA] border border-[#0D0D0D] p-2 text-xs text-[#0D0D0D] hover:bg-[#a7f3d0] transition-colors rounded-[2px] font-mono font-bold shadow-[1px_1px_0_#0D0D0D]">2</button>
+                                        <button onclick="miniQuiz(false)" class="btn-ghost p-2 text-xs font-mono w-full">11</button>
+                                        <button onclick="miniQuiz(true)" class="btn-ghost p-2 text-xs font-mono w-full">2</button>
                                     </div>
                                     <p id="mini-quiz-result" class="text-xs text-gray-500 h-4 italic font-mono">Status: Menunggu jawaban...</p>
                                 </div>
@@ -353,9 +359,9 @@
                             <div class="not-prose my-6 p-4 bg-white border border-[#0d0d0d] rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
                                 <h4 class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-4">Demo: Logic Random Number (Tebak 1-3)</h4>
                                 <div class="flex gap-4 justify-center mb-3">
-                                    <button onclick="miniGame(1)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">1</button>
-                                    <button onclick="miniGame(2)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">2</button>
-                                    <button onclick="miniGame(3)" class="w-10 h-10 rounded-[2px] bg-[#FAFAFA] border border-[#0d0d0d] shadow-[2px_2px_0_#0D0D0D] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#0D0D0D] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#0D0D0D] text-[#0d0d0d] font-bold font-mono">3</button>
+                                    <button onclick="miniGame(1)" class="btn-ghost w-10 h-10 font-mono">1</button>
+                                    <button onclick="miniGame(2)" class="btn-ghost w-10 h-10 font-mono">2</button>
+                                    <button onclick="miniGame(3)" class="btn-ghost w-10 h-10 font-mono">3</button>
                                 </div>
                                 <p id="mini-game-result" class="text-center text-xs text-gray-500 h-4 font-mono">Komputer menyembunyikan angka...</p>
                             </div>
@@ -511,7 +517,7 @@ function decryptData(keyString) {
                                 <div class="neo-card p-4 bg-[#FAFAFA] flex flex-col items-center justify-center text-center w-full md:w-1/3 border-[#0d0d0d]">
                                     <div class="text-[10px] font-mono text-gray-500 mb-1 tracking-widest">CLIENT</div>
                                     <div class="font-serif font-bold text-[#0D0D0D] text-lg mb-4">Web Browser</div>
-                                    <button onclick="fetchSimulatedData()" id="api-btn" class="neo-btn px-4 py-2 text-xs uppercase tracking-wider bg-[#10b981] text-[#0D0D0D] font-mono font-bold rounded-[2px] shadow-[2px_2px_0_#0D0D0D]">
+                                    <button onclick="fetchSimulatedData()" id="api-btn" class="btn-ghost px-4 py-2 text-xs uppercase tracking-wider font-mono">
                                         Send fetch()
                                     </button>
                                 </div>
@@ -590,7 +596,7 @@ function decryptData(keyString) {
                         <p class="text-gray-600 mb-6 text-sm font-mono">
                             Lo udah paham konsepnya secara teori. Sekarang buktikan bahwa lo layak mendapatkan <strong>Exodus Key</strong>.
                         </p>
-                        <button onclick="startPostTest()" class="bg-[#0D0D0D] text-white border border-[#0d0d0d] shadow-[2px_2px_0_#10b981] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0_#10b981] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0_#10b981] transition-all px-8 py-3 font-bold text-sm uppercase tracking-wider rounded-[2px] w-full md:w-auto font-mono">
+                        <button onclick="startPostTest()" class="btn-ghost px-8 py-3 text-sm uppercase tracking-wider w-full md:w-auto font-mono">
                             UJI PEMAHAMAN FINAL
                         </button>
                     </div>
@@ -614,7 +620,7 @@ function decryptData(keyString) {
                         <div>CH.2 SCORE: <span id="final-s2" class="text-[#10b981] font-bold">0</span></div>
                     </div>
 
-                    <div id="final-analysis" class="bg-white border border-[#0d0d0d] p-6 rounded-[2px] max-w-xl mx-auto text-left shadow-[4px_4px_0_#0d0d0d]">
+                    <div id="final-analysis" class="neo-card p-6 max-w-xl mx-auto text-left">
                         <!-- JS Analysis -->
                     </div>
                 </div>
@@ -806,8 +812,8 @@ function decryptData(keyString) {
             
             q.options.forEach((opt, i) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-[2px] bg-white border border-[#0d0d0d] hover:bg-[#a7f3d0]/30 hover:shadow-[2px_2px_0_#0d0d0d] hover:translate-x-[-1px] hover:translate-y-[-1px] text-[#0d0d0d] transition-all text-xs font-mono font-bold group flex justify-between items-center";
-                btn.innerHTML = `<span>${opt}</span> <span class="opacity-0 group-hover:opacity-100 text-[#10b981] font-bold transition-opacity">→</span>`;
+                btn.className = "btn-ghost w-full text-left p-4 text-xs font-mono group flex justify-between items-center";
+                btn.innerHTML = `<span>${opt}</span> <span class="opacity-0 group-hover:opacity-100 text-inherit font-bold transition-opacity">→</span>`;
                 btn.onclick = () => answer(i);
                 opts.appendChild(btn);
             });
@@ -955,26 +961,27 @@ function decryptData(keyString) {
             if (passed) {
                 key = generateExodusKey();
                 analysis.innerHTML = `
-                    <p class="text-[#0d0d0d] font-serif font-bold text-xl mb-2">Akses Level 3 Terbuka.</p>
-                    <p class="mb-6 text-sm text-gray-700 leading-relaxed font-mono">Lo sekarang paham bahwa HTML bisa 'berpikir' (Logic), 'berbicara' (API) secara asinkron, dan menyandikan datanya (Caesar Cipher). Lo bukan lagi sekadar menyusun bata, lo sedang merakit mesin digital.</p>
+                    <p class="text-[var(--fg)] font-serif font-bold text-xl mb-2">AKSES LEVEL 3 TERBUKA.</p>
+                    <p class="mb-6 text-sm text-[var(--fg)] leading-relaxed font-mono">Lo sekarang paham bahwa HTML bisa 'berpikir' (Logic), 'berbicara' (API) secara asinkron, dan menyandikan datanya (Caesar Cipher). Lo bukan lagi sekadar menyusun bata, lo sedang merakit mesin digital.</p>
                     
-                    <div class="bg-[#FAFAFA] border border-[#0d0d0d] p-6 rounded-[2px] relative group mt-6 break-words shadow-[2px_2px_0_#0d0d0d]">
-                        <div class="absolute top-0 right-0 bg-[#10b981] text-[#0d0d0d] px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-wider border-l border-b border-[#0d0d0d]">EXODUS KEY</div>
+                    <div class="neo-card bg-[#FAFAFA] p-6 relative group mt-6 break-words">
+                        <div class="absolute top-0 right-0 bg-[var(--fg)] text-[var(--bg-card, #FFFFFF)] px-3 py-1 text-[10px] font-bold font-mono uppercase tracking-wider border-l border-b border-[var(--fg)]">EXODUS KEY</div>
                         
-                        <p class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-widest">Simpan Kunci Ini:</p>
-                        <div class="font-mono text-lg tracking-widest text-[#0d0d0d] select-all cursor-text mb-4 break-all hover:text-[#10b981] transition-colors border border-dashed border-[#0d0d0d] p-4 bg-white">${key}</div>
+                        <p class="text-xs text-[var(--fg)] font-mono mb-2 uppercase tracking-widest">SIMPAN KUNCI INI:</p>
+                        <div class="font-mono text-lg tracking-widest text-[var(--fg)] select-all cursor-text mb-4 break-all border border-dashed border-[var(--fg-faint)] p-4 bg-[#FFFFFF] hover:bg-[var(--fg)] hover:text-[#FFFFFF] transition-all duration-0">${key}</div>
                         
-                        <p class="text-[10px] text-gray-500 border-t border-gray-200 pt-3 italic font-mono">
-                            Kunci ini berisi data gabungan Chapter 1 & 2. Gunakan untuk proyek selanjutnya.
-                        </p>
+                        <div class="border-t border-[var(--fg-faint)] pt-3 mt-4 text-[10px] font-mono text-[var(--fg)] flex justify-between uppercase items-center">
+                            <span>Hash Code Verified</span>
+                            <span class="font-serif italic font-bold text-sm">The Architect</span>
+                        </div>
                     </div>
                 `;
             } else {
                 analysis.innerHTML = `
-                    <p class="text-red-600 font-serif font-bold text-xl mb-2">Logic Error.</p>
-                    <p class="mb-4 text-sm text-gray-700 font-mono">Pemahaman lo tentang API, State, atau Sandi Caesar masih kabur. Jangan memaksa lanjut jika pondasi retak.</p>
-                    <button onclick="location.reload()" class="neo-btn bg-red-100 hover:bg-red-200 text-[#0d0d0d] text-xs px-4 py-2 font-bold font-mono">
-                        Reset Protokol Chapter 2
+                    <p class="text-[var(--fg)] font-serif font-bold text-xl mb-2">LOGIC ERROR.</p>
+                    <p class="mb-4 text-sm text-[var(--fg)] font-mono">Pemahaman lo tentang API, State, atau Sandi Caesar masih kabur. Jangan memaksa lanjut jika pondasi retak.</p>
+                    <button onclick="location.reload()" class="btn-ghost text-xs px-4 py-2 font-mono mt-2">
+                        RESET PROTOKOL CHAPTER 2
                     </button>
                 `;
             }

@@ -14,10 +14,10 @@
         :root {
             --bg: #FAFAFA;
             --fg: #0D0D0D;
-            --fg-faint: rgba(13, 13, 13, 0.2);
-            --accent: #fbbf24; /* Emas */
-            --accent-light: #fef3c7; /* Emas pudar */
-            --accent-dark: #b45309;
+            --fg-faint: #C4C4C4;
+            --accent: #0D0D0D;
+            --accent-light: #E5E5E5;
+            --accent-dark: #22C55E;
             --card-bg: #FFFFFF;
             --radius: 2px;
         }
@@ -58,7 +58,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.05;
+            opacity: 0.035;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
@@ -179,12 +179,12 @@
         /* NEO-BRUTALIST CARD STYLE */
         .card {
             background-color: var(--card-bg);
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             padding: 28px;
             margin-bottom: 35px;
             box-shadow: 2px 2px 0 var(--fg);
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0s, box-shadow 0s;
             position: relative;
         }
 
@@ -215,39 +215,39 @@
             font-family: 'DM Mono', monospace;
             font-size: 1rem;
             color: var(--fg);
-            background-color: #FFFFFF;
+            background-color: transparent;
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
-            box-shadow: 2px 2px 0 var(--fg);
+            box-shadow: none;
             outline: none;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: 0s;
         }
 
         input[type="text"]:focus {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 var(--fg);
+            border-color: var(--fg);
         }
 
         button {
             cursor: pointer;
-            background-color: var(--accent);
+            background-color: transparent;
             color: var(--fg);
             font-family: 'DM Mono', monospace;
             font-weight: bold;
             font-size: 0.85rem;
             text-transform: uppercase;
             padding: 12px 24px;
-            border: 1px solid var(--fg-faint);
+            border: 1px solid var(--fg);
             border-radius: var(--radius);
             box-shadow: 2px 2px 0 var(--fg);
-            transition: all 0.15s ease;
+            transition: 0s;
             display: inline-block;
         }
 
         button:hover {
             transform: translate(-2px, -2px);
             box-shadow: 4px 4px 0 var(--fg);
-            background-color: #fcd34d;
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
         button:active {
@@ -345,15 +345,16 @@
             width: 100%;
             text-align: left;
             padding: 14px;
-            background-color: #FFFFFF;
+            background-color: transparent;
             border: 1px solid var(--fg-faint);
             border-radius: var(--radius);
             box-shadow: 2px 2px 0 var(--fg);
             font-family: 'DM Mono', monospace;
             font-size: 0.85rem;
             font-weight: 500;
+            color: var(--fg);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: 0s;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -363,7 +364,8 @@
             transform: translate(-2px, -2px);
             box-shadow: 4px 4px 0 var(--fg);
             border-color: var(--fg);
-            background-color: var(--accent-light);
+            background-color: var(--fg);
+            color: var(--bg);
         }
 
         .option-btn span.arrow {
@@ -456,7 +458,7 @@
             }
         }
         
-        .glitch-hover:hover {
+        .anim-glitch:hover {
             animation: glitch 0.2s linear infinite;
         }
 
@@ -469,7 +471,7 @@
             }
         }
 
-        .flicker-effect {
+        .anim-flicker {
             animation: flicker 4s linear infinite;
         }
 
@@ -531,7 +533,7 @@
                 <span class="brand-logo">Ac</span>
                 <span class="brand-text">ALCHEMIST4REAL</span>
             </div>
-            <div class="nav-tag flicker-effect">
+            <div class="nav-tag anim-flicker">
                 Trilogy Final: Ascension
             </div>
         </div>
@@ -543,7 +545,7 @@
         <section id="gate-section" class="gate-section">
             <div class="card text-center" style="max-width: 520px;">
                 <span class="badge float-effect" style="background-color: var(--accent-light);">Gatekeeper Protocol</span>
-                <h1 class="glitch-hover">Kunci Eksodus Diperlukan.</h1>
+                <h1 class="anim-glitch">Kunci Eksodus Diperlukan.</h1>
                 <p style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">
                     Ini adalah gerbang terakhir perjalanan. Tempelkan <span style="font-weight: bold; color: var(--accent-dark);">Exodus Key</span> yang lo peroleh setelah menyelesaikan Ujian Chapter 2.
                 </p>
@@ -564,10 +566,10 @@
             <!-- Welcome Header -->
             <header class="card">
                 <div class="float-effect" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px;">
-                    <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent); border: 1px solid var(--fg); border-radius: 50%;"></span>
+                    <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--accent); border: 1px solid var(--fg); border-radius: 0;"></span>
                     STATUS: GRANDMASTER INITIATE
                 </div>
-                <h1 class="glitch-hover" style="font-size: 3rem;">Saatnya Naik Kelas, <span id="user-display-name" style="background: var(--accent-light); padding: 0 8px;">Alchemist</span>.</h1>
+                <h1 class="anim-glitch" style="font-size: 3rem;">Saatnya Naik Kelas, <span id="user-display-name" style="background: var(--accent-light); padding: 0 8px;">Alchemist</span>.</h1>
                 <p style="font-size: 1.05rem; margin-top: 15px;">
                     Di Chapter 1 dan 2 lo udah kelar belajar struktur dasar HTML dan logika interaktif Javascript. Keren. Tapi kalau lo cuma nulis kode baris-per-baris manual di zaman sekarang, lo bakal ketinggalan jauh. 
                 </p>
