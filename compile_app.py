@@ -106,6 +106,13 @@ def apply_replacements(html_text, js_text, prefix):
     js_text = js_text.replace("(state.", f"({prefix}_state.")
     js_text = js_text.replace("state_instance", f"{prefix}_state_instance")
     
+    # Prefix userState as well to prevent re-declaration SyntaxErrors
+    js_text = js_text.replace("let userState = ", f"let {prefix}_userState = ")
+    js_text = js_text.replace("const userState = ", f"const {prefix}_userState = ")
+    js_text = js_text.replace(" userState.", f" {prefix}_userState.")
+    js_text = js_text.replace("(userState.", f"({prefix}_userState.")
+    js_text = js_text.replace("!userState.", f"!{prefix}_userState.")
+    
     js_text = js_text.replace("const QUESTIONS = ", f"const {prefix}_QUESTIONS = ")
     js_text = js_text.replace("const questions = ", f"const {prefix}_questions = ")
     js_text = js_text.replace(" QUESTIONS", f" {prefix}_QUESTIONS")

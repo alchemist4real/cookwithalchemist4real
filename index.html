@@ -3418,7 +3418,7 @@ function decryptData(keyString) {
 
         // --- CHAPTER 2 JS ---
         // --- STATE MANAGEMENT ---
-        let userState = {
+        let ch2_userState = {
             name: "Guest",
             ch1_pre: 0,
             ch1_post: 0,
@@ -3547,14 +3547,14 @@ function decryptData(keyString) {
                 }
 
                 // Load Data
-                userState.name = data.n;
-                userState.ch1_pre = data.s1;
-                userState.ch1_post = data.s2;
+                ch2_userState.name = data.n;
+                ch2_userState.ch1_pre = data.s1;
+                ch2_userState.ch1_post = data.s2;
 
                 // Update UI
-                document.getElementById('user-display-name').innerText = userState.name;
-                document.getElementById('p1-pre').innerText = Math.round((userState.ch1_pre/3)*100);
-                document.getElementById('p1-post').innerText = Math.round((userState.ch1_post/3)*100);
+                document.getElementById('user-display-name').innerText = ch2_userState.name;
+                document.getElementById('p1-pre').innerText = Math.round((ch2_userState.ch1_pre/3)*100);
+                document.getElementById('p1-post').innerText = Math.round((ch2_userState.ch1_post/3)*100);
 
                 // Start Greeting Clock
                 updateGreeting();
@@ -3581,10 +3581,10 @@ function decryptData(keyString) {
 
         // --- RENDER ch2_QUESTIONS ---
         function renderQ() {
-            const container = userState.isPre ? 'pre' : 'post';
+            const container = ch2_userState.isPre ? 'pre' : 'post';
             const q = ch2_questions[userState.qIndex];
             
-            document.getElementById(`${container}-q-num`).innerText = userState.qIndex + 1;
+            document.getElementById(`${container}-q-num`).innerText = ch2_userState.qIndex + 1;
             document.getElementById(`${container}-q-text`).innerText = q.q;
             
             const opts = document.getElementById(`${container}-options`);
@@ -3601,11 +3601,11 @@ function decryptData(keyString) {
 
         function ch2_answer(idx) {
             if (idx === ch2_questions[userState.qIndex].correct) {
-                if (userState.isPre) userState.ch2_pre++; else userState.ch2_post++;
+                if (ch2_userState.isPre) ch2_userState.ch2_pre++; else ch2_userState.ch2_post++;
             }
             
-            userState.qIndex++;
-            if (userState.qIndex < ch2_questions.length) {
+            ch2_userState.qIndex++;
+            if (ch2_userState.qIndex < ch2_questions.length) {
                 renderQ();
             } else {
                 ch2_finishSection();
@@ -3613,7 +3613,7 @@ function decryptData(keyString) {
         }
 
         function ch2_finishSection() {
-            if (userState.isPre) {
+            if (ch2_userState.isPre) {
                 // Unlock Materi
                 document.getElementById('ch2-pretest-section').innerHTML = `
                     <div class="p-6 text-center border border-[#10b981] bg-[#a7f3d0]/30 rounded-[2px] shadow-[2px_2px_0_#0d0d0d]">
@@ -3696,8 +3696,8 @@ function decryptData(keyString) {
 
         // --- POST-TEST START ---
         function ch2_startPostTest() {
-            userState.isPre = false;
-            userState.qIndex = 0;
+            ch2_userState.isPre = false;
+            ch2_userState.qIndex = 0;
             document.getElementById('posttest-intro').classList.add('hidden');
             document.getElementById('posttest-container').classList.remove('hidden');
             renderQ();
@@ -3707,9 +3707,9 @@ function decryptData(keyString) {
         function generateExodusKey() {
             // Pack Data: Nama, Ch1 Scores, Ch2 Scores, Timestamp
             const payload = {
-                n: userState.name,
-                c1: [userState.ch1_pre, userState.ch1_post],
-                c2: [userState.ch2_pre, userState.ch2_post],
+                n: ch2_userState.name,
+                c1: [userState.ch1_pre, ch2_userState.ch1_post],
+                c2: [userState.ch2_pre, ch2_userState.ch2_post],
                 rank: "ALCHEMIST_L2",
                 t: Date.now()
             };
@@ -3728,9 +3728,9 @@ function decryptData(keyString) {
         }
 
         function renderFinalResult() {
-            const ch2_score = Math.round((userState.ch2_post / ch2_questions.length) * 100);
+            const ch2_score = Math.round((ch2_userState.ch2_post / ch2_questions.length) * 100);
             
-            document.getElementById('final-s1').innerText = Math.round((userState.ch1_post/3)*100) + "%";
+            document.getElementById('final-s1').innerText = Math.round((ch2_userState.ch1_post/3)*100) + "%";
             document.getElementById('final-s2').innerText = ch2_score + "%";
 
             const analysis = document.getElementById('final-analysis');
@@ -3791,7 +3791,7 @@ function decryptData(keyString) {
 
         // --- CHAPTER 3 JS ---
         // --- GLOBAL STATE ---
-        let userState = {
+        let ch3_userState = {
             name: "Alchemist",
             ch1_scores: [0, 0], // pre, post
             ch2_scores: [0, 0], // pre, post
@@ -3885,12 +3885,12 @@ function decryptData(keyString) {
                 }
 
                 // Load to state
-                userState.name = data.n;
-                userState.ch1_scores = data.c1;
-                userState.ch2_scores = data.c2;
+                ch3_userState.name = data.n;
+                ch3_userState.ch1_scores = data.c1;
+                ch3_userState.ch2_scores = data.c2;
 
                 // Update UI Display
-                document.getElementById('user-display-name').innerText = userState.name;
+                document.getElementById('user-display-name').innerText = ch3_userState.name;
 
                 // Hitung rata-rata kuis lama (Chapter 1 & Chapter 2 menggunakan pembagi 6 karena masing-masing ada 3 pertanyaan, total pre+post = 6)
                 const s1_avg_val = Math.round(((data.c1[0] + data.c1[1]) / 6) * 100);
@@ -3931,10 +3931,10 @@ function decryptData(keyString) {
         }
 
         function renderQ() {
-            const container = userState.isPre ? 'pre' : 'post';
+            const container = ch3_userState.isPre ? 'pre' : 'post';
             const qData = ch3_questions[userState.qIndex];
 
-            document.getElementById(`${container}-q-num`).innerText = userState.qIndex + 1;
+            document.getElementById(`${container}-q-num`).innerText = ch3_userState.qIndex + 1;
             document.getElementById(`${container}-q-text`).innerText = qData.q;
 
             const optsDiv = document.getElementById(`${container}-options`);
@@ -3952,15 +3952,15 @@ function decryptData(keyString) {
         function ch3_answer(selectedIdx) {
             const correctIdx = ch3_questions[userState.qIndex].correct;
             if (selectedIdx === correctIdx) {
-                if (userState.isPre) {
-                    userState.ch3_pre++;
+                if (ch3_userState.isPre) {
+                    ch3_userState.ch3_pre++;
                 } else {
-                    userState.ch3_post++;
+                    ch3_userState.ch3_post++;
                 }
             }
 
-            userState.qIndex++;
-            if (userState.qIndex < ch3_questions.length) {
+            ch3_userState.qIndex++;
+            if (ch3_userState.qIndex < ch3_questions.length) {
                 renderQ();
             } else {
                 ch3_finishSection();
@@ -3968,7 +3968,7 @@ function decryptData(keyString) {
         }
 
         function ch3_finishSection() {
-            if (userState.isPre) {
+            if (ch3_userState.isPre) {
                 // Selesai pretest
                 document.getElementById('ch3-pretest-section').innerHTML = `
                     <div style="text-align: center; padding: 10px 0;">
@@ -4005,8 +4005,8 @@ function decryptData(keyString) {
 
         // --- POST TEST LOGIC ---
         function ch3_startPostTest() {
-            userState.isPre = false;
-            userState.qIndex = 0;
+            ch3_userState.isPre = false;
+            ch3_userState.qIndex = 0;
             document.getElementById('posttest-intro').classList.add('hidden');
             document.getElementById('posttest-container').classList.remove('hidden');
             renderQ();
@@ -4015,10 +4015,10 @@ function decryptData(keyString) {
         // --- ENCRYPTION LOGIC FOR PHILOSOPHER'S STONE ---
         function generatePhilosopherStone(rank) {
             const payload = {
-                n: userState.name,
-                c1: userState.ch1_scores,
-                c2: userState.ch2_scores,
-                c3: [userState.ch3_pre, userState.ch3_post],
+                n: ch3_userState.name,
+                c1: ch3_userState.ch1_scores,
+                c2: ch3_userState.ch2_scores,
+                c3: [userState.ch3_pre, ch3_userState.ch3_post],
                 rank: rank,
                 t: Date.now()
             };
@@ -4042,16 +4042,16 @@ function decryptData(keyString) {
             const ch3_questionsCount = ch3_questions.length;
             
             // Hitung rata-rata tiap chapter
-            const s1_avg = ((userState.ch1_scores[0] + userState.ch1_scores[1]) / 6) * 100;
-            const s2_avg = ((userState.ch2_scores[0] + userState.ch2_scores[1]) / 6) * 100;
-            const s3_avg = ((userState.ch3_pre + userState.ch3_post) / (questionsCount * 2)) * 100;
+            const s1_avg = ((ch3_userState.ch1_scores[0] + ch3_userState.ch1_scores[1]) / 6) * 100;
+            const s2_avg = ((ch3_userState.ch2_scores[0] + ch3_userState.ch2_scores[1]) / 6) * 100;
+            const s3_avg = ((ch3_userState.ch3_pre + ch3_userState.ch3_post) / (questionsCount * 2)) * 100;
 
             const total_avg = (s1_avg + s2_avg + s3_avg) / 3;
 
             // Render persentase Chapter 3 ke UI
-            const s3_post_pct = Math.round((userState.ch3_post / ch3_questionsCount) * 100);
-            document.getElementById('final-s1').innerText = Math.round((userState.ch1_scores[1] / 3) * 100) + "%";
-            document.getElementById('final-s2').innerText = Math.round((userState.ch2_scores[1] / 3) * 100) + "%";
+            const s3_post_pct = Math.round((ch3_userState.ch3_post / ch3_questionsCount) * 100);
+            document.getElementById('final-s1').innerText = Math.round((ch3_userState.ch1_scores[1] / 3) * 100) + "%";
+            document.getElementById('final-s2').innerText = Math.round((ch3_userState.ch2_scores[1] / 3) * 100) + "%";
             document.getElementById('final-s3').innerText = s3_post_pct + "%";
 
             const title = document.getElementById('final-rank-title');
